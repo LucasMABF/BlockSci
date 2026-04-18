@@ -1,5 +1,7 @@
 
-execute_process(COMMAND git submodule update --init --recursive)
+if(NOT USE_SYSTEM_DEPS)
+  execute_process(COMMAND git submodule update --init --recursive)
+endif()
 
 add_library(date INTERFACE)
 target_include_directories(date INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}/date/include/)

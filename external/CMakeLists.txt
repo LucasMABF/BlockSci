@@ -1,6 +1,8 @@
 include(CheckCXXCompilerFlag)
 
-execute_process(COMMAND git submodule update --init --recursive)
+if(NOT USE_SYSTEM_DEPS)
+  execute_process(COMMAND git submodule update --init --recursive)
+endif()
 
 set_property(GLOBAL PROPERTY ranges_headers "${CMAKE_CURRENT_SOURCE_DIR}/range-v3/include/")
 set_property(GLOBAL PROPERTY variant_headers "${CMAKE_CURRENT_SOURCE_DIR}/variant/include/")
@@ -32,58 +34,66 @@ target_include_directories(json SYSTEM INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}/jso
 add_library(cereal INTERFACE)
 target_include_directories(cereal SYSTEM INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}/cereal/include/)
 
-include(ExternalProject)
+if(USE_SYSTEM_DEPS)
+  find_package(GTest REQUIRED)
+  if(NOT TARGET gtest)
+    add_library(gtest INTERFACE)
+    target_link_libraries(gtest INTERFACE GTest::GTest)
+  endif()
+  if(NOT TARGET gtest_main)
+    add_library(gtest_main INTERFACE)
+    target_link_libraries(gtest_main INTERFACE GTest::Main)
+  endif()
 
+  find_library(SECP256K1_LIBRARY secp256k1 REQUIRED)
+  find_path(SECP256K1_INCLUDE_DIR secp256k1.h REQUIRED)
+  add_library(secp256k1 INTERFACE)
+  target_include_directories(secp256k1 INTERFACE ${SECP256K1_INCLUDE_DIR})
+  target_link_libraries(secp256k1 INTERFACE ${SECP256K1_LIBRARY})
+else()
+  include(ExternalProject)
 
-# googletest -- https://github.com/google/googletest/tree/master/googletest#incorporating-into-an-existing-cmake-project
+  configure_file(../cmake/Googletest.cmake googletest-download/CMakeLists.txt)
+  execute_process(COMMAND ${CMAKE_COMMAND} -G "${CMAKE_GENERATOR}" .
+    RESULT_VARIABLE result
+    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/googletest-download )
+  if(result)
+    message(FATAL_ERROR "CMake step for googletest failed: ${result}")
+  endif()
+  execute_process(COMMAND ${CMAKE_COMMAND} --build .
+    RESULT_VARIABLE result
+    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/googletest-download )
+  if(result)
+    message(FATAL_ERROR "Build step for googletest failed: ${result}")
+  endif()
 
-configure_file(../cmake/Googletest.cmake googletest-download/CMakeLists.txt)
-execute_process(COMMAND ${CMAKE_COMMAND} -G "${CMAKE_GENERATOR}" .
-  RESULT_VARIABLE result
-  WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/googletest-download )
-if(result)
-  message(FATAL_ERROR "CMake step for googletest failed: ${result}")
+  set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
+
+  add_subdirectory(${CMAKE_CURRENT_BINARY_DIR}/googletest-src
+                   ${CMAKE_CURRENT_BINARY_DIR}/googletest-build
+                   EXCLUDE_FROM_ALL)
+
+  ExternalProject_Add(project_secp256k1
+    GIT_REPOSITORY "https://github.com/bitcoin-core/secp256k1.git"
+    GIT_TAG "master"
+    PREFIX "${CMAKE_CURRENT_BINARY_DIR}/secp256k1"
+    CONFIGURE_COMMAND CFLAGS=-fPIC CPPFLAGS=-fPIC <SOURCE_DIR>/configure --disable-shared --disable-benchmark --disable-tests --disable-exhaustive-tests --enable-module-recovery --with-bignum=no --prefix <INSTALL_DIR>
+    UPDATE_COMMAND ""
+  )
+
+  ExternalProject_Add_Step(project_secp256k1 autogen
+     COMMAND              <SOURCE_DIR>/autogen.sh
+     WORKING_DIRECTORY    <SOURCE_DIR>
+     DEPENDEES            update
+     DEPENDERS            configure
+  )
+
+  ExternalProject_Get_Property(project_secp256k1 install_dir)
+  add_library(secp256k1 INTERFACE)
+  add_dependencies(secp256k1 project_secp256k1)
+  target_include_directories(secp256k1 INTERFACE ${install_dir}/include)
+  target_link_libraries(secp256k1 INTERFACE ${install_dir}/lib/libsecp256k1.a)
 endif()
-execute_process(COMMAND ${CMAKE_COMMAND} --build .
-  RESULT_VARIABLE result
-  WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/googletest-download )
-if(result)
-  message(FATAL_ERROR "Build step for googletest failed: ${result}")
-endif()
-
-# Prevent overriding the parent project's compiler/linker
-# settings on Windows
-set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
-
-# Add googletest directly to our build. This defines
-# the gtest and gtest_main targets.
-add_subdirectory(${CMAKE_CURRENT_BINARY_DIR}/googletest-src
-                 ${CMAKE_CURRENT_BINARY_DIR}/googletest-build
-                 EXCLUDE_FROM_ALL)
-target_include_directories(gtest_main INTERFACE)
-
-# secp256k1
-
-ExternalProject_Add(project_secp256k1
-  GIT_REPOSITORY "https://github.com/bitcoin-core/secp256k1.git"
-  GIT_TAG "master"
-  PREFIX "${CMAKE_CURRENT_BINARY_DIR}/secp256k1"
-  CONFIGURE_COMMAND CFLAGS=-fPIC CPPFLAGS=-fPIC <SOURCE_DIR>/configure --disable-shared --disable-benchmark --disable-tests --disable-exhaustive-tests --enable-module-recovery --with-bignum=no --prefix <INSTALL_DIR>
-  UPDATE_COMMAND ""
-)
-
-ExternalProject_Add_Step(project_secp256k1 autogen
-   COMMAND              <SOURCE_DIR>/autogen.sh
-   WORKING_DIRECTORY    <SOURCE_DIR>
-   DEPENDEES            update
-   DEPENDERS            configure
-)
-
-ExternalProject_Get_Property(project_secp256k1 install_dir)
-add_library(secp256k1 INTERFACE)
-add_dependencies(secp256k1 project_secp256k1)
-target_include_directories(secp256k1 INTERFACE ${install_dir}/include)
-target_link_libraries(secp256k1 INTERFACE ${install_dir}/lib/libsecp256k1.a)
 
 set(saved_flags "${CMAKE_CXX_FLAGS}")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC -fvisibility=hidden")
