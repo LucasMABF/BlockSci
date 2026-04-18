@@ -19,6 +19,15 @@
       system:
       let
         pkgs = import nixpkgs { inherit system; };
+        pythonRuntimeDeps =
+          ps: with ps; [
+            dateparser
+            multiprocess
+            pandas
+            psutil
+            pycrypto
+            requests
+          ];
       in
       {
         packages.default = pkgs.stdenv.mkDerivation {
@@ -50,6 +59,26 @@
             "-DCMAKE_BUILD_TYPE=Release"
             "-DUSE_SYSTEM_DEPS=ON"
           ];
+        };
+
+        packages.blockscipy = pkgs.python37Packages.buildPythonPackage {
+          pname = "blockscipy";
+          version = "0.7.0";
+          format = "setuptools";
+
+          dontUseCmakeConfigure = true;
+
+          src = "${self}/blockscipy";
+
+          nativeBuildInputs = with pkgs; [
+            cmake
+          ];
+
+          buildInputs = [
+            self.packages.${system}.default
+          ];
+
+          propagatedBuildInputs = pythonRuntimeDeps pkgs.python37Packages;
         };
       }
     );
