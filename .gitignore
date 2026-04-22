@@ -16,3 +16,5 @@ blockscipy/dist/*
 .idea
 .benchmarks
 result
+.nix-install
+.nix-pip

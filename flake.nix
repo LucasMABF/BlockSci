@@ -80,6 +80,30 @@
 
           propagatedBuildInputs = pythonRuntimeDeps pkgs.python37Packages;
         };
+
+        devShells.default = pkgs.mkShell {
+          inputsFrom = [ self.packages.${system}.default ];
+
+          nativeBuildInputs =
+            with pkgs;
+            [
+              autoconf
+              automake
+              git
+              libtool
+              python37Packages.pip
+            ]
+            ++ pythonRuntimeDeps pkgs.python37Packages;
+
+          shellHook = ''
+            export LOCAL_PIP="$PWD/.nix-pip"
+            mkdir -p "$LOCAL_PIP/${pkgs.python37.sitePackages}"
+            export PYTHONPATH="$LOCAL_PIP/${pkgs.python37.sitePackages}:$PYTHONPATH"
+            export PATH="$LOCAL_PIP/bin:$PATH"
+
+            export CMAKE_PREFIX_PATH="$PWD/.nix-install:$CMAKE_PREFIX_PATH"
+          '';
+        };
       }
     );
 }
