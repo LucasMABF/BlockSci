@@ -11,7 +11,12 @@ The flake is pinned to `nixpkgs-19.03`, the last nixpkgs release on which
 BlockSci builds unpatched. Supported systems: `x86_64-linux`, `aarch64-linux`.
 
 BlockSci vendors several dependencies as git submodules, so `nix build`
-invocations below requires `?submodules=1`.
+invocations below require `?submodules=1`. If the repository was cloned
+without `--recurse-submodules`, initialize them first:
+
+```
+git submodule update --init --recursive
+```
 
 ## Build libblocksci and the command-line tools
 
