@@ -10,7 +10,7 @@ target_compile_options(mempool_recorder PRIVATE -Weverything -Wno-c++98-compat -
 endif()
 
 target_link_libraries( mempool_recorder blocksci blocksci_internal)
-target_link_libraries( mempool_recorder bitcoinapi_static)
+target_link_libraries( mempool_recorder bitcoinapi)
 target_link_libraries( mempool_recorder clipp)
 target_link_libraries( mempool_recorder filesystem)
 target_link_libraries( mempool_recorder json)

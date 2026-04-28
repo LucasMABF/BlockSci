@@ -5,8 +5,6 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/cmake/")
 
 set(BlockSci_VERSION 0.7.0)
 
-option(USE_SYSTEM_DEPS "Link against system-provided secp256k1 and gtest instead of fetching them" OFF)
-
 include(GNUInstallDirs)
 
 add_subdirectory(external)

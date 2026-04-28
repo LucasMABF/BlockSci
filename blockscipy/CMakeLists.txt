@@ -5,7 +5,7 @@ set (CMAKE_CXX_STANDARD 17)
 
 find_package(blocksci REQUIRED)
 
-add_subdirectory(blocksci/pybind11)
+find_package(pybind11 CONFIG REQUIRED)
 
 file(GLOB_RECURSE PYTHON_CLUSTER_HEADERS "src/cluster/*.hpp")
 file(GLOB_RECURSE PYTHON_CLUSTER_SOURCES "src/cluster/*.cpp")

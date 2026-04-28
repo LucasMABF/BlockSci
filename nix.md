@@ -8,26 +8,18 @@ This project ships a Nix flake that provides:
   build manual with all native dependencies preinstalled, no system pollution.
 
 The flake is pinned to `nixpkgs-19.03`, the last nixpkgs release on which
-BlockSci builds unpatched. Supported systems: `x86_64-linux`, `aarch64-linux`.
-
-BlockSci vendors several dependencies as git submodules, so `nix build`
-invocations below require `?submodules=1`. If the repository was cloned
-without `--recurse-submodules`, initialize them first:
-
-```
-git submodule update --init --recursive
-```
+BlockSci builds unpatched. Supported systems: `x86_64-linux`.
 
 ## Build libblocksci and the command-line tools
 
 ```
-nix build '.?submodules=1'
+nix build
 ```
 
 ## Build the Python bindings
 
 ```
-nix build '.?submodules=1#blockscipy'
+nix build .#blockscipy
 ```
 
 ## Building in the development shell

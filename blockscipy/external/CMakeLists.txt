@@ -1,7 +1,3 @@
-
-if(NOT USE_SYSTEM_DEPS)
-  execute_process(COMMAND git submodule update --init --recursive)
-endif()
-
+find_path(DATE_INCLUDE_DIR date/date.h REQUIRED)
 add_library(date INTERFACE)
-target_include_directories(date INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}/date/include/)
+target_include_directories(date SYSTEM INTERFACE ${DATE_INCLUDE_DIR})
