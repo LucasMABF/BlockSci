@@ -1,0 +1,290 @@
+{
+  description = "BlockSci analysis tool for blockchains";
+
+  inputs = {
+    nixpkgs = {
+      url = "github:NixOS/nixpkgs/nixos-19.03";
+      flake = false;
+    };
+    flake-utils.url = "github:numtide/flake-utils";
+  };
+
+  outputs =
+    {
+      self,
+      nixpkgs,
+      flake-utils,
+    }:
+    flake-utils.lib.eachSystem [ "x86_64-linux" ] (
+      system:
+      let
+        pkgs = import nixpkgs { inherit system; };
+        pythonRuntimeDeps =
+          ps: with ps; [
+            dateparser
+            multiprocess
+            pandas
+            psutil
+            pycrypto
+            requests
+          ];
+        mkHeaderOnly =
+          {
+            pname,
+            version,
+            owner,
+            repo ? pname,
+            rev,
+            sha256,
+            copyFiles ? "include/.",
+            destDir ? "include",
+          }:
+          pkgs.stdenv.mkDerivation {
+            inherit pname version;
+
+            src = pkgs.fetchFromGitHub {
+              inherit
+                owner
+                rev
+                sha256
+                repo
+                ;
+            };
+
+            dontBuild = true;
+            dontConfigure = true;
+
+            installPhase = ''
+              mkdir -p $out/${destDir}
+              cp -r ${copyFiles} $out/${destDir}
+            '';
+          };
+      in
+      {
+        packages.default = pkgs.stdenv.mkDerivation {
+          pname = "blocksci";
+          version = "0.7.0";
+          src = self;
+
+          nativeBuildInputs = with pkgs; [
+            cmake
+          ];
+
+          buildInputs = with pkgs; [
+            gtest
+            openssl_1_1
+            secp256k1
+            sparsehash
+            rocksdb
+            self.packages.${system}.bitcoin-api-cpp
+            self.packages.${system}.cereal
+            self.packages.${system}.clipp
+            self.packages.${system}.dset
+            self.packages.${system}.endian
+            self.packages.${system}.filesystem
+            self.packages.${system}.json
+            self.packages.${system}.mio
+          ];
+
+          propagatedBuildInputs = with pkgs; [
+            boost
+            self.packages.${system}.range-v3
+            self.packages.${system}.variant
+          ];
+        };
+
+        packages.blockscipy = pkgs.python37Packages.buildPythonPackage {
+          pname = "blockscipy";
+          version = "0.7.0";
+          format = "setuptools";
+
+          dontUseCmakeConfigure = true;
+
+          src = ./blockscipy;
+
+          nativeBuildInputs = with pkgs; [
+            cmake
+          ];
+
+          buildInputs = [
+            self.packages.${system}.pybind11
+            self.packages.${system}.date
+            self.packages.${system}.default
+          ];
+
+          propagatedBuildInputs = pythonRuntimeDeps pkgs.python37Packages;
+
+          doCheck = false;
+        };
+
+        devShells.default = pkgs.mkShell {
+          inputsFrom = [
+            self.packages.${system}.default
+          ];
+
+          nativeBuildInputs =
+            with pkgs;
+            [
+              python37
+              python37Packages.pip
+            ]
+            ++ pythonRuntimeDeps pkgs.python37Packages;
+
+          buildInputs = [
+            self.packages.${system}.pybind11
+            self.packages.${system}.date
+          ];
+
+          shellHook = ''
+            export LOCAL_PIP="$PWD/.nix-pip"
+            mkdir -p "$LOCAL_PIP/${pkgs.python37.sitePackages}"
+            export PYTHONPATH="$LOCAL_PIP/${pkgs.python37.sitePackages}:$PYTHONPATH"
+            export PATH="$LOCAL_PIP/bin:$PATH"
+
+            export CMAKE_PREFIX_PATH="$PWD/.nix-install:$CMAKE_PREFIX_PATH"
+          '';
+        };
+
+        packages.bitcoin-api-cpp = pkgs.stdenv.mkDerivation {
+          pname = "bitcoin-api-cpp";
+          version = "0.3.1-unstable-2018-11-12";
+
+          src = pkgs.fetchFromGitHub {
+            owner = "hkalodner";
+            repo = "bitcoin-api-cpp";
+            rev = "952bef34a7ad63f752982afcc6231013db7a19dd";
+            sha256 = "sha256-T7NrGW/MbIAQMHx4jrSkxoJpuODp7fcNkPJQBxz4EVs=";
+          };
+
+          nativeBuildInputs = with pkgs; [
+            cmake
+          ];
+
+          buildInputs = with pkgs; [
+            curl
+          ];
+
+          propagatedBuildInputs = with pkgs; [
+            jsoncpp
+            libjson-rpc-cpp
+          ];
+        };
+
+        packages.pybind11 = pkgs.stdenv.mkDerivation {
+          pname = "pybind11";
+          version = "2.5.0";
+
+          src = pkgs.fetchFromGitHub {
+            owner = "pybind";
+            repo = "pybind11";
+            rev = "v2.5.0";
+            sha256 = "sha256-9BvIAuyfVeTKYwHvnN2xFJVXizNZCZ/tkdufeZ6RDI4=";
+          };
+
+          nativeBuildInputs = with pkgs; [
+            cmake
+            python37
+          ];
+
+          cmakeFlags = [
+            "-DPYBIND11_TEST=OFF"
+          ];
+        };
+
+        packages.cereal = mkHeaderOnly {
+          pname = "cereal";
+          version = "1.2.2";
+
+          owner = "USCiLab";
+          rev = "v1.2.2";
+          sha256 = "sha256-pGeb0e3dFcS6pdhvqWyBgGCtSwOEe/S+v+W9N0BGebI=";
+        };
+
+        packages.clipp = mkHeaderOnly {
+          pname = "clipp";
+          version = "1.1.0";
+
+          owner = "muellan";
+          rev = "v1.1.0";
+          sha256 = "sha256-gKxG84JhDJM6iQWLyTVbceLUJ5Ksue9e/gq20a0iX8c=";
+        };
+
+        packages.dset = mkHeaderOnly {
+          pname = "dset";
+          version = "unstable-2015-06-28";
+
+          owner = "wjakob";
+          rev = "7967ef0e6041cd9d73b9c7f614ab8ae92e9e587a";
+          sha256 = "sha256-EwboSCVaeuMfPjKftZuRD0GZvx8dD6VGwFIp6oxhV8Y=";
+
+          copyFiles = "dset.h";
+          destDir = "include/dset";
+        };
+
+        packages.endian = mkHeaderOnly {
+          pname = "endian";
+          version = "10.0.0";
+
+          owner = "steinwurf";
+          rev = "10.0.0";
+          sha256 = "sha256-XXucL/yV2w9xXqHK3UjCM9iFaa5QD5jEpFhxOs9WPcg=";
+
+          copyFiles = "src/endian";
+        };
+
+        packages.filesystem = mkHeaderOnly {
+          pname = "filesystem";
+          version = "unstable-2018-09-12";
+
+          owner = "hkalodner";
+          rev = "8cb505d6f51479645e670366df45951eeacb9fc4";
+          sha256 = "sha256-zwHcyAiax4OpWShCqEOggVe5a+f6SRH13toCNBS+IUY=";
+        };
+
+        packages.json = mkHeaderOnly {
+          pname = "json";
+          version = "3.3.0";
+
+          owner = "nlohmann";
+          rev = "v3.3.0";
+          sha256 = "sha256-sNhmeRmrWcxitV4Xdj+fa/3FkvQItQyneVrarQJNj94=";
+        };
+
+        packages.mio = mkHeaderOnly {
+          pname = "mio";
+          version = "unstable-2018-05-18";
+
+          owner = "hkalodner";
+          rev = "9d2d5f397cad9ca6d2dfa31cd6716fdd98542862";
+          sha256 = "sha256-TZmXHBvHwiupKFDuRTelvnP4JHfuwaT0EPT2N4w+KF4=";
+        };
+
+        packages.range-v3 = mkHeaderOnly {
+          pname = "range-v3";
+          version = "0.10.0-unstable-2020-02-26";
+
+          owner = "ericniebler";
+          rev = "5f51a81d4de57f7c563ec25fdc19b295ad94c7d8";
+          sha256 = "sha256-sARuQNtr5TPORj57xeooGCkAuy7fqUq6gWRafTYkAMY=";
+        };
+
+        packages.variant = mkHeaderOnly {
+          pname = "variant";
+          version = "1.3.0";
+
+          owner = "mpark";
+          rev = "v1.3.0";
+          sha256 = "sha256-pPqUNaQ9e03NUkQMg3bKkcbTtGc1HmvPpm7dwfYbX9k=";
+        };
+
+        packages.date = mkHeaderOnly {
+          pname = "date";
+          version = "2.4.1-unstable-2018-10-03";
+
+          owner = "HowardHinnant";
+          rev = "1eed461d06b02854d9310d5ab0198eccd2be1d1d";
+          sha256 = "sha256-1UtL82KVy587wbTHXAjBrG5AE3zgAHxdZisIAvjGadk=";
+        };
+      }
+    );
+}

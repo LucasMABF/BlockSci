@@ -1,89 +1,58 @@
 include(CheckCXXCompilerFlag)
 
-execute_process(COMMAND git submodule update --init --recursive)
-
-set_property(GLOBAL PROPERTY ranges_headers "${CMAKE_CURRENT_SOURCE_DIR}/range-v3/include/")
-set_property(GLOBAL PROPERTY variant_headers "${CMAKE_CURRENT_SOURCE_DIR}/variant/include/")
-
+find_path(VARIANT_INCLUDE_DIR mpark/variant.hpp REQUIRED)
 add_library(variant INTERFACE)
-target_include_directories(variant INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}/variant/include/)
+target_include_directories(variant SYSTEM INTERFACE ${VARIANT_INCLUDE_DIR})
+install(TARGETS variant EXPORT blocksci-targets)
 
+find_path(RANGE_V3_INCLUDE_DIR range/v3/all.hpp REQUIRED)
 add_library(ranges INTERFACE)
-target_include_directories(ranges INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}/range-v3/include/)
+target_include_directories(ranges SYSTEM INTERFACE ${RANGE_V3_INCLUDE_DIR})
+install(TARGETS ranges EXPORT blocksci-targets)
 
+find_path(FILESYSTEM_INCLUDE_DIR wjfilesystem/path.h REQUIRED)
 add_library(filesystem INTERFACE)
-target_include_directories(filesystem INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}/filesystem/include/)
+target_include_directories(filesystem SYSTEM INTERFACE ${FILESYSTEM_INCLUDE_DIR})
 
+find_path(MIO_INCLUDE_DIR mio/mmap.hpp REQUIRED)
 add_library(mio INTERFACE)
-target_include_directories(mio INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}/mio/include/)
+target_include_directories(mio SYSTEM INTERFACE ${MIO_INCLUDE_DIR})
 
+find_path(DSET_INCLUDE_DIR dset/dset.h REQUIRED)
 add_library(dset INTERFACE)
-target_include_directories(dset INTERFACE ${CMAKE_CURRENT_SOURCE_DIR})
+target_include_directories(dset SYSTEM INTERFACE ${DSET_INCLUDE_DIR})
 
+find_path(CLIPP_INCLUDE_DIR clipp.h REQUIRED)
 add_library(clipp INTERFACE)
-target_include_directories(clipp SYSTEM INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}/clipp/include)
+target_include_directories(clipp SYSTEM INTERFACE ${CLIPP_INCLUDE_DIR})
 
+find_path(ENDIAN_INCLUDE_DIR endian/big_endian.hpp REQUIRED)
 add_library(endian INTERFACE)
-target_include_directories(endian SYSTEM INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}/endian/src/)
+target_include_directories(endian SYSTEM INTERFACE ${ENDIAN_INCLUDE_DIR})
 
+find_path(JSON_INCLUDE_DIR nlohmann/json.hpp REQUIRED)
 add_library(json INTERFACE)
-target_include_directories(json SYSTEM INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}/json/include/)
+target_include_directories(json SYSTEM INTERFACE ${JSON_INCLUDE_DIR})
 
+find_path(CEREAL_INCLUDE_DIR cereal/cereal.hpp REQUIRED)
 add_library(cereal INTERFACE)
-target_include_directories(cereal SYSTEM INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}/cereal/include/)
+target_include_directories(cereal SYSTEM INTERFACE ${CEREAL_INCLUDE_DIR})
 
-include(ExternalProject)
-
-
-# googletest -- https://github.com/google/googletest/tree/master/googletest#incorporating-into-an-existing-cmake-project
-
-configure_file(../cmake/Googletest.cmake googletest-download/CMakeLists.txt)
-execute_process(COMMAND ${CMAKE_COMMAND} -G "${CMAKE_GENERATOR}" .
-  RESULT_VARIABLE result
-  WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/googletest-download )
-if(result)
-  message(FATAL_ERROR "CMake step for googletest failed: ${result}")
+find_package(GTest REQUIRED)
+if(NOT TARGET gtest)
+  add_library(gtest INTERFACE)
+  target_link_libraries(gtest INTERFACE GTest::GTest)
 endif()
-execute_process(COMMAND ${CMAKE_COMMAND} --build .
-  RESULT_VARIABLE result
-  WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/googletest-download )
-if(result)
-  message(FATAL_ERROR "Build step for googletest failed: ${result}")
+if(NOT TARGET gtest_main)
+  add_library(gtest_main INTERFACE)
+  target_link_libraries(gtest_main INTERFACE GTest::Main)
 endif()
 
-# Prevent overriding the parent project's compiler/linker
-# settings on Windows
-set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
-
-# Add googletest directly to our build. This defines
-# the gtest and gtest_main targets.
-add_subdirectory(${CMAKE_CURRENT_BINARY_DIR}/googletest-src
-                 ${CMAKE_CURRENT_BINARY_DIR}/googletest-build
-                 EXCLUDE_FROM_ALL)
-target_include_directories(gtest_main INTERFACE)
-
-# secp256k1
-
-ExternalProject_Add(project_secp256k1
-  GIT_REPOSITORY "https://github.com/bitcoin-core/secp256k1.git"
-  GIT_TAG "master"
-  PREFIX "${CMAKE_CURRENT_BINARY_DIR}/secp256k1"
-  CONFIGURE_COMMAND CFLAGS=-fPIC CPPFLAGS=-fPIC <SOURCE_DIR>/configure --disable-shared --disable-benchmark --disable-tests --disable-exhaustive-tests --enable-module-recovery --with-bignum=no --prefix <INSTALL_DIR>
-  UPDATE_COMMAND ""
-)
-
-ExternalProject_Add_Step(project_secp256k1 autogen
-   COMMAND              <SOURCE_DIR>/autogen.sh
-   WORKING_DIRECTORY    <SOURCE_DIR>
-   DEPENDEES            update
-   DEPENDERS            configure
-)
-
-ExternalProject_Get_Property(project_secp256k1 install_dir)
+find_library(SECP256K1_LIBRARY secp256k1 REQUIRED)
+find_path(SECP256K1_INCLUDE_DIR secp256k1.h REQUIRED)
 add_library(secp256k1 INTERFACE)
-add_dependencies(secp256k1 project_secp256k1)
-target_include_directories(secp256k1 INTERFACE ${install_dir}/include)
-target_link_libraries(secp256k1 INTERFACE ${install_dir}/lib/libsecp256k1.a)
+target_include_directories(secp256k1 INTERFACE ${SECP256K1_INCLUDE_DIR})
+target_link_libraries(secp256k1 INTERFACE ${SECP256K1_LIBRARY})
 
 set(saved_flags "${CMAKE_CXX_FLAGS}")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC -fvisibility=hidden")
@@ -93,25 +62,22 @@ if(HAS_CLASS_MEMACCESS)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-error=class-memaccess")
 endif()
 
-option(WITH_TESTS "" OFF)
-option(WITH_TOOLS "" OFF)
-option(WITH_GFLAGS "" OFF)
-# Turn jemalloc off to fix undefined reference to `malloc_stats_print'
-option(WITH_JEMALLOC "" OFF)
-option(WITH_SNAPPY "" OFF)
-option(WITH_LZ4 "" ON)
-option(WITH_ZLIB "" OFF)
-option(WITH_BZ2 "" OFF)
-option(WITH_ZSTD "" OFF)
-
-
 # rocksdb
-
-add_subdirectory(rocksdb EXCLUDE_FROM_ALL)
+find_library(ROCKSDB_LIBRARY rocksdb REQUIRED)
+find_path(ROCKSDB_INCLUDE_DIR rocksdb/db.h REQUIRED)
+add_library(rocksdb INTERFACE)
+target_include_directories(rocksdb SYSTEM INTERFACE ${ROCKSDB_INCLUDE_DIR})
+find_package(Threads REQUIRED)
+target_link_libraries(rocksdb INTERFACE ${ROCKSDB_LIBRARY} Threads::Threads)
 
 add_library(rocksdb_headers INTERFACE)
-target_include_directories(rocksdb_headers SYSTEM INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}/rocksdb/include)
+target_include_directories(rocksdb_headers SYSTEM INTERFACE ${ROCKSDB_INCLUDE_DIR})
+
 
 set(CMAKE_CXX_FLAGS "${saved_flags}")
 
-add_subdirectory(bitcoin-api-cpp EXCLUDE_FROM_ALL)
+find_library(BITCOINAPI_LIBRARY bitcoinapi REQUIRED)
+find_path(BITCOINAPI_INCLUDE_DIR bitcoinapi/bitcoinapi.h REQUIRED)
+add_library(bitcoinapi INTERFACE)
+target_include_directories(bitcoinapi SYSTEM INTERFACE ${BITCOINAPI_INCLUDE_DIR})
+target_link_libraries(bitcoinapi INTERFACE ${BITCOINAPI_LIBRARY})
