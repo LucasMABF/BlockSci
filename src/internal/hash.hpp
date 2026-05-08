@@ -17,6 +17,23 @@ namespace blocksci {
     class uint160;
 }
 
+struct evp_md_ctx_st;
+typedef struct evp_md_ctx_st EVP_MD_CTX;
+
+class Sha256Stream {
+private:
+    EVP_MD_CTX *ctx;
+
+public:
+    Sha256Stream();
+    ~Sha256Stream();
+    Sha256Stream(const Sha256Stream &) = delete;
+    Sha256Stream &operator=(const Sha256Stream &) = delete;
+
+    void update(const void *data, size_t len);
+    blocksci::uint256 finalize();
+};
+
 blocksci::uint256 sha256(const uint8_t *data, size_t len);
 blocksci::uint256 sha256(const unsigned char *begin, const unsigned char *end);
 blocksci::uint256 doubleSha256(const char *data, uint64_t len);

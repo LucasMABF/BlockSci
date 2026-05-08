@@ -20,8 +20,6 @@
 #include <bitcoinapi/types.h>
 #endif
 
-#include <openssl/sha.h>
-
 #include <iostream>
 
 using SequenceNum = uint32_t;
@@ -164,12 +162,11 @@ TransactionHeader::TransactionHeader(SafeMemReader &reader) {
 
 void RawTransaction::calculateHash() {
     if (hash.IsNull()) {
-        SHA256_CTX sha256CTX;
-        SHA256_Init(&sha256CTX);
-        SHA256_Update(&sha256CTX, &version, sizeof(version));
-        SHA256_Update(&sha256CTX, txHashStart, txHashLength);
-        SHA256_Update(&sha256CTX, &locktime, sizeof(locktime));
-        SHA256_Final(reinterpret_cast<unsigned char *>(&hash), &sha256CTX);
+        Sha256Stream stream;
+        stream.update(&version, sizeof(version));
+        stream.update(txHashStart, txHashLength);
+        stream.update(&locktime, sizeof(locktime));
+        hash = stream.finalize();
         hash = sha256(reinterpret_cast<const uint8_t *>(&hash), sizeof(hash));
     }
 }
@@ -227,19 +224,15 @@ blocksci::InoutPointer RawInput::getOutputPointer() const {
 }
 
 struct Serializer {
-    SHA256_CTX sha256;
-    
-    Serializer() : sha256{} {
-        SHA256_Init(&sha256);
-    }
+    Sha256Stream stream;
     
     template <typename T>
     void serialize(T t) {
-        SHA256_Update(&sha256, reinterpret_cast<const char *>(&t), sizeof(t));
+        stream.update(reinterpret_cast<const char *>(&t), sizeof(t));
     }
     
     void serialize(const unsigned char *pos, size_t size) {
-        SHA256_Update(&sha256, pos, size);
+        stream.update(pos, size);
     }
     
     void serializeCompact(uint64_t t) {
@@ -259,9 +252,8 @@ struct Serializer {
     }
     
     blocksci::uint256 finalize() {
-        blocksci::uint256 hash;
-        SHA256_Final(reinterpret_cast<unsigned char *>(&hash), &sha256);
-        return ::sha256(reinterpret_cast<const uint8_t *>(&hash), sizeof(hash));
+        blocksci::uint256 hash = stream.finalize();
+        return sha256(reinterpret_cast<const uint8_t *>(&hash), sizeof(hash));
     }
 };
 

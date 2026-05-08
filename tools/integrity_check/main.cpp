@@ -5,6 +5,7 @@
 //  Created by Malte Möser on 3/6/20.
 //
 
+#include "internal/hash.hpp"
 #include <blocksci/address.hpp>
 #include <blocksci/core/dedup_address.hpp>
 #include <blocksci/chain/blockchain.hpp>
@@ -21,8 +22,6 @@
 
 #include <range/v3/utility/optional.hpp>
 
-#include <openssl/sha.h>
-
 #include <clipp.h>
 
 #include <iostream>
@@ -34,43 +33,37 @@ using namespace blocksci;
  Compute a checksum over block data.
  */
 uint256 compute_block_hash(const ChainAccess &access) {
-    uint256 hash;
-    SHA256_CTX sha256;
-    SHA256_Init(&sha256);
+    Sha256Stream stream;
     for(int i = 0; i < access.blockCount(); i++) {
         const RawBlock *block = access.getBlock(i);
-        SHA256_Update(&sha256, &block->baseSize, 4);
-        SHA256_Update(&sha256, &block->bits, 4);
-        SHA256_Update(&sha256, &block->coinbaseOffset, 8);
-        SHA256_Update(&sha256, &block->firstTxIndex, 4);
-        SHA256_Update(&sha256, &block->hash, 32);
-        SHA256_Update(&sha256, &block->height, 4);
-        SHA256_Update(&sha256, &block->inputCount, 4);
-        SHA256_Update(&sha256, &block->nonce, 4);
-        SHA256_Update(&sha256, &block->outputCount, 4);
-        SHA256_Update(&sha256, &block->realSize, 4);
-        SHA256_Update(&sha256, &block->timestamp, 4);
-        SHA256_Update(&sha256, &block->txCount, 4);
-        SHA256_Update(&sha256, &block->version, 4);
+        stream.update(&block->baseSize, 4);
+        stream.update(&block->bits, 4);
+        stream.update(&block->coinbaseOffset, 8);
+        stream.update(&block->firstTxIndex, 4);
+        stream.update(&block->hash, 32);
+        stream.update(&block->height, 4);
+        stream.update(&block->inputCount, 4);
+        stream.update(&block->nonce, 4);
+        stream.update(&block->outputCount, 4);
+        stream.update(&block->realSize, 4);
+        stream.update(&block->timestamp, 4);
+        stream.update(&block->txCount, 4);
+        stream.update(&block->version, 4);
     }
-    SHA256_Final(reinterpret_cast<unsigned char *>(&hash), &sha256);
-    return hash;
+    return stream.finalize();
 }
 
 /**
  Compute a checksum over core transaction data.
  */
 uint256 compute_txdata_hash(const ChainAccess &access) {
-    uint256 hash;
-    SHA256_CTX sha256;
-    SHA256_Init(&sha256);
+    Sha256Stream stream;
     for(size_t i = 0; i < access.txCount(); i++) {
         // no additional padding in RawTransaction, can simply hash struct
         const RawTransaction *tx = access.getTx(i);
-        SHA256_Update(&sha256, tx, tx->serializedSize());
+        stream.update(tx, tx->serializedSize());
     }
-    SHA256_Final(reinterpret_cast<unsigned char *>(&hash), &sha256);
-    return hash;
+    return stream.finalize();
 }
 
 /**
@@ -83,44 +76,41 @@ uint256 compute_txdata_hash(const ChainAccess &access) {
  - Index of first output for each transaction
  */
 uint256 compute_additional_data_hash(const DataAccess &access) {
-    uint256 hash;
-    SHA256_CTX sha256;
-    SHA256_Init(&sha256);
+    Sha256Stream stream;
     const ChainAccess &chainAccess = access.getChain();
     auto chainDirectory = access.config.chainDirectory();
 
     FixedSizeFileMapper<uint32_t> sequenceFile(chainAccess.sequenceFilePath(chainDirectory));
     for(uint64_t i = 0; i < chainAccess.inputCount(); ++i) {
-        SHA256_Update(&sha256, sequenceFile[i], 4);
+        stream.update(sequenceFile[i], 4);
     }
 
     FixedSizeFileMapper<uint16_t> spentOutNumFile(chainAccess.inputSpentOutNumFilePath(chainDirectory));
     for(uint64_t i = 0; i < chainAccess.inputCount(); ++i) {
-        SHA256_Update(&sha256, spentOutNumFile[i], 2);
+        stream.update(spentOutNumFile[i], 2);
     }
 
     FixedSizeFileMapper<int32_t> txVersionFile(chainAccess.txVersionFilePath(chainDirectory));
     for(uint32_t i = 0; i < chainAccess.txCount(); ++i) {
-        SHA256_Update(&sha256, txVersionFile[i], 4);
+        stream.update(txVersionFile[i], 4);
     }
 
     FixedSizeFileMapper<uint256> txHashesFile(chainAccess.txHashesFilePath(chainDirectory));
     for(uint32_t i = 0; i < chainAccess.txCount(); ++i) {
-        SHA256_Update(&sha256, txHashesFile[i], 32);
+        stream.update(txHashesFile[i], 32);
     }
 
     FixedSizeFileMapper<uint64_t> txFirstInputFile(chainAccess.firstInputFilePath(chainDirectory));
     for(uint32_t i = 0; i < chainAccess.txCount(); ++i) {
-        SHA256_Update(&sha256, txFirstInputFile[i], 8);
+        stream.update(txFirstInputFile[i], 8);
     }
 
     FixedSizeFileMapper<uint64_t> txFirstOutputFile(chainAccess.firstOutputFilePath(chainDirectory));
     for(uint32_t i = 0; i < chainAccess.txCount(); ++i) {
-        SHA256_Update(&sha256, txFirstOutputFile[i], 8);
+        stream.update(txFirstOutputFile[i], 8);
     }
 
-    SHA256_Final(reinterpret_cast<unsigned char *>(&hash), &sha256);
-    return hash;
+    return stream.finalize();
 }
 
 template<DedupAddressType::Enum dedupType>
@@ -131,9 +121,7 @@ uint256 compute_scriptdata_hash(const DataAccess &access);
  */
 template<>
 uint256 compute_scriptdata_hash<DedupAddressType::Enum::PUBKEY>(const DataAccess &access) {
-    uint256 hash;
-    SHA256_CTX sha256;
-    SHA256_Init(&sha256);
+    Sha256Stream stream;
 
     auto scripts = &access.getScripts();
     constexpr DedupAddressType::Enum dedupType = DedupAddressType::PUBKEY;
@@ -141,16 +129,15 @@ uint256 compute_scriptdata_hash<DedupAddressType::Enum::PUBKEY>(const DataAccess
 
     for(uint32_t i = 1; i <= scriptCount; ++i) {
         auto data = scripts->getScriptData<dedupType>(i);
-        SHA256_Update(&sha256, &data->address, sizeof(uint160));
-        SHA256_Update(&sha256, &data->pubkey, sizeof(RawPubkey));
-        SHA256_Update(&sha256, &data->hasPubkey, sizeof(bool));
-        SHA256_Update(&sha256, &data->txFirstSeen, 4);
-        SHA256_Update(&sha256, &data->txFirstSpent, 4);
-        SHA256_Update(&sha256, &data->typesSeen, 4);
+        stream.update(&data->address, sizeof(uint160));
+        stream.update(&data->pubkey, sizeof(RawPubkey));
+        stream.update(&data->hasPubkey, sizeof(bool));
+        stream.update(&data->txFirstSeen, 4);
+        stream.update(&data->txFirstSpent, 4);
+        stream.update(&data->typesSeen, 4);
     }
 
-    SHA256_Final(reinterpret_cast<unsigned char *>(&hash), &sha256);
-    return hash;
+    return stream.finalize();
 }
 
 /**
@@ -158,9 +145,7 @@ Compute a checksum over scripthash data.
 */
 template<>
 uint256 compute_scriptdata_hash<DedupAddressType::Enum::SCRIPTHASH>(const DataAccess &access) {
-    uint256 hash;
-    SHA256_CTX sha256;
-    SHA256_Init(&sha256);
+    Sha256Stream stream;
 
     auto scripts = &access.getScripts();
     constexpr DedupAddressType::Enum dedupType = DedupAddressType::SCRIPTHASH;
@@ -168,17 +153,16 @@ uint256 compute_scriptdata_hash<DedupAddressType::Enum::SCRIPTHASH>(const DataAc
 
     for(uint32_t i = 1; i <= scriptCount; ++i) {
         auto data = scripts->getScriptData<dedupType>(i);
-        SHA256_Update(&sha256, &data->hash160, sizeof(uint160));
-        SHA256_Update(&sha256, &data->hash256, sizeof(uint256));
-        SHA256_Update(&sha256, &data->isSegwit, sizeof(bool));
-        SHA256_Update(&sha256, &data->txFirstSeen, 4);
-        SHA256_Update(&sha256, &data->txFirstSpent, 4);
-        SHA256_Update(&sha256, &data->typesSeen, 4);
-        SHA256_Update(&sha256, &data->wrappedAddress, sizeof(RawAddress));
+        stream.update(&data->hash160, sizeof(uint160));
+        stream.update(&data->hash256, sizeof(uint256));
+        stream.update(&data->isSegwit, sizeof(bool));
+        stream.update(&data->txFirstSeen, 4);
+        stream.update(&data->txFirstSpent, 4);
+        stream.update(&data->typesSeen, 4);
+        stream.update(&data->wrappedAddress, sizeof(RawAddress));
     }
 
-    SHA256_Final(reinterpret_cast<unsigned char *>(&hash), &sha256);
-    return hash;
+    return stream.finalize();
 }
 
 /**
@@ -186,9 +170,7 @@ Compute a checksum over multisig data.
 */
 template<>
 uint256 compute_scriptdata_hash<DedupAddressType::Enum::MULTISIG>(const DataAccess &access) {
-    uint256 hash;
-    SHA256_CTX sha256;
-    SHA256_Init(&sha256);
+    Sha256Stream stream;
 
     auto scripts = &access.getScripts();
     constexpr DedupAddressType::Enum dedupType = DedupAddressType::MULTISIG;
@@ -196,11 +178,10 @@ uint256 compute_scriptdata_hash<DedupAddressType::Enum::MULTISIG>(const DataAcce
 
     for(uint32_t i = 1; i <= scriptCount; ++i) {
         auto data = scripts->getScriptData<dedupType>(i);
-        SHA256_Update(&sha256, data, data->realSize());
+        stream.update(data, data->realSize());
     }
 
-    SHA256_Final(reinterpret_cast<unsigned char *>(&hash), &sha256);
-    return hash;
+    return stream.finalize();
 }
 
 /**
@@ -208,9 +189,7 @@ Compute a checksum over OP_RETURN data.
 */
 template<>
 uint256 compute_scriptdata_hash<DedupAddressType::Enum::NULL_DATA>(const DataAccess &access) {
-    uint256 hash;
-    SHA256_CTX sha256;
-    SHA256_Init(&sha256);
+    Sha256Stream stream;
 
     auto scripts = &access.getScripts();
     constexpr DedupAddressType::Enum dedupType = DedupAddressType::NULL_DATA;
@@ -218,11 +197,10 @@ uint256 compute_scriptdata_hash<DedupAddressType::Enum::NULL_DATA>(const DataAcc
 
     for(uint32_t i = 1; i <= scriptCount; ++i) {
         auto data = scripts->getScriptData<dedupType>(i);
-        SHA256_Update(&sha256, data, data->realSize());
+        stream.update(data, data->realSize());
     }
 
-    SHA256_Final(reinterpret_cast<unsigned char *>(&hash), &sha256);
-    return hash;
+    return stream.finalize();
 }
 
 /**
@@ -230,9 +208,7 @@ Compute a checksum over nonstandard data.
 */
 template<>
 uint256 compute_scriptdata_hash<DedupAddressType::Enum::NONSTANDARD>(const DataAccess &access) {
-    uint256 hash;
-    SHA256_CTX sha256;
-    SHA256_Init(&sha256);
+    Sha256Stream stream;
 
     auto scripts = &access.getScripts();
     constexpr DedupAddressType::Enum dedupType = DedupAddressType::NONSTANDARD;
@@ -241,15 +217,14 @@ uint256 compute_scriptdata_hash<DedupAddressType::Enum::NONSTANDARD>(const DataA
     for(uint32_t i = 1; i <= scriptCount; ++i) {
         auto data = scripts->getScriptData<dedupType>(i);
         auto script_data = std::get<0>(data);
-        SHA256_Update(&sha256, script_data, script_data->realSize());
+        stream.update(script_data, script_data->realSize());
         auto spend_script_data = std::get<1>(data);
         if(spend_script_data != nullptr) {
-            SHA256_Update(&sha256, spend_script_data, spend_script_data->realSize());
+            stream.update(spend_script_data, spend_script_data->realSize());
         }
     }
 
-    SHA256_Final(reinterpret_cast<unsigned char *>(&hash), &sha256);
-    return hash;
+    return stream.finalize();
 }
 
 /**
@@ -257,9 +232,7 @@ Compute a checksum over unknown witness data.
 */
 template<>
 uint256 compute_scriptdata_hash<DedupAddressType::Enum::WITNESS_UNKNOWN>(const DataAccess &access) {
-    uint256 hash;
-    SHA256_CTX sha256;
-    SHA256_Init(&sha256);
+    Sha256Stream stream;
 
     auto scripts = &access.getScripts();
     constexpr DedupAddressType::Enum dedupType = DedupAddressType::WITNESS_UNKNOWN;
@@ -268,28 +241,27 @@ uint256 compute_scriptdata_hash<DedupAddressType::Enum::WITNESS_UNKNOWN>(const D
     for(uint32_t i = 1; i <= scriptCount; ++i) {
         auto data = scripts->getScriptData<dedupType>(i);
         auto script_data = std::get<0>(data);
-        SHA256_Update(&sha256, &script_data->witnessVersion, sizeof(script_data->witnessVersion));
-        SHA256_Update(&sha256, &script_data->scriptData, sizeof(script_data->scriptData) + script_data->scriptData.extraSize());
+        stream.update(&script_data->witnessVersion, sizeof(script_data->witnessVersion));
+        stream.update(&script_data->scriptData, sizeof(script_data->scriptData) + script_data->scriptData.extraSize());
         auto spend_script_data = std::get<1>(data);
         if(spend_script_data != nullptr) {
-            SHA256_Update(&sha256, spend_script_data, spend_script_data->realSize());
+            stream.update(spend_script_data, spend_script_data->realSize());
         }
     }
 
-    SHA256_Final(reinterpret_cast<unsigned char *>(&hash), &sha256);
-    return hash;
+    return stream.finalize();
 }
 
 /**
  Compute a checksum over address range in hash index
  */
 template<AddressType::Enum type>
-void hash_addressrange(SHA256_CTX &sha256, const DataAccess &access) {
+void hash_addressrange(Sha256Stream &stream, const DataAccess &access) {
     auto &hashIndex = access.hashIndex;
     auto rng = hashIndex->getAddressRange<type>();
     RANGES_FOR(auto pair, rng) {
-        SHA256_Update(&sha256, &pair.first, sizeof(pair.first));
-        SHA256_Update(&sha256, &pair.second, sizeof(pair.second));
+        stream.update(&pair.first, sizeof(pair.first));
+        stream.update(&pair.second, sizeof(pair.second));
     }
 }
 
@@ -297,20 +269,17 @@ void hash_addressrange(SHA256_CTX &sha256, const DataAccess &access) {
  Compute a checksum over all addres ranges in hash index.
  */
 uint256 compute_hashindex_addressrange_hash(const DataAccess &access) {
-    uint256 hash;
-    SHA256_CTX sha256;
-    SHA256_Init(&sha256);
+    Sha256Stream stream;
 
-    hash_addressrange<AddressType::MULTISIG>(sha256, access);
-    hash_addressrange<AddressType::MULTISIG_PUBKEY>(sha256, access);
-    hash_addressrange<AddressType::PUBKEY>(sha256, access);
-    hash_addressrange<AddressType::PUBKEYHASH>(sha256, access);
-    hash_addressrange<AddressType::SCRIPTHASH>(sha256, access);
-    hash_addressrange<AddressType::WITNESS_PUBKEYHASH>(sha256, access);
-    hash_addressrange<AddressType::WITNESS_SCRIPTHASH>(sha256, access);
+    hash_addressrange<AddressType::MULTISIG>(stream, access);
+    hash_addressrange<AddressType::MULTISIG_PUBKEY>(stream, access);
+    hash_addressrange<AddressType::PUBKEY>(stream, access);
+    hash_addressrange<AddressType::PUBKEYHASH>(stream, access);
+    hash_addressrange<AddressType::SCRIPTHASH>(stream, access);
+    hash_addressrange<AddressType::WITNESS_PUBKEYHASH>(stream, access);
+    hash_addressrange<AddressType::WITNESS_SCRIPTHASH>(stream, access);
 
-    SHA256_Final(reinterpret_cast<unsigned char *>(&hash), &sha256);
-    return hash;
+    return stream.finalize();
 }
 
 /**
