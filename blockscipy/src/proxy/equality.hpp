@@ -11,6 +11,8 @@
 
 #include "proxy.hpp"
 
+#include <utility>
+
 template<typename Class>
 void addProxyEqualityMethods(Class &cl) {
 	using P = typename Class::type;

@@ -17,7 +17,10 @@
 #include <internal/hash.hpp>
 #include <internal/script_access.hpp>
 
+#include <cstdint>
 #include <sstream>
+#include <string>
+#include <vector>
 
 namespace blocksci {
     using script::ScriptHash;

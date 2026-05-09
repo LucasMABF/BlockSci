@@ -14,7 +14,9 @@
 
 #include <range/v3/view/split.hpp>
 
+#include <cstdint>
 #include <sstream>
+#include <string>
 
 namespace blocksci {
 

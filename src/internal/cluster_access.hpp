@@ -19,6 +19,14 @@
 
 #include <wjfilesystem/path.h>
 
+#include <cstddef>
+#include <cstdint>
+#include <sstream>
+#include <stdexcept>
+#include <string>
+#include <tuple>
+#include <vector>
+
 namespace blocksci {
     template<DedupAddressType::Enum type>
     struct ScriptClusterIndexFile : public FixedSizeFileMapper<uint32_t> {

@@ -11,6 +11,8 @@
 
 #include <blocksci/core/address_types.hpp>
 
+#include <cstdint>
+
 struct UTXO {
     int64_t value;
     uint32_t txNum;

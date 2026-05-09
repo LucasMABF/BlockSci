@@ -22,6 +22,14 @@
 #include <wjfilesystem/path.h>
 
 #include <algorithm>
+#include <cstddef>
+#include <cstdint>
+#include <cstring>
+#include <iterator>
+#include <sstream>
+#include <stdexcept>
+#include <string>
+#include <vector>
 
 namespace blocksci {
 

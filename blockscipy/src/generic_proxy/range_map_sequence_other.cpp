@@ -10,6 +10,8 @@
 #include "range_map_sequence_impl.hpp"
 
 #include <chrono>
+#include <cstdint>
+#include <string>
 
 void applyProxyMapSequenceFuncsOther(pybind11::class_<IteratorProxy, GenericProxy> &cl) {
 	using namespace blocksci;

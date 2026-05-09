@@ -18,7 +18,14 @@
 
 #include <range/v3/utility/optional.hpp>
 
+#include <array>
 #include <chrono>
+#include <cstddef>
+#include <cstdint>
+#include <string>
+#include <typeindex>
+#include <typeinfo>
+#include <unordered_map>
 
 using namespace blocksci;
 namespace py = pybind11;

@@ -15,6 +15,11 @@
 
 #include <pybind11/pybind11.h>
 
+#include <any>
+#include <functional>
+#include <string>
+#include <utility>
+
 template <typename P, typename Out, typename R> 
 struct ApplyMethodsToProxyFuncBinder {
     using Func = std::function<R(Out &)>;

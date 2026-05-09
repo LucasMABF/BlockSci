@@ -20,6 +20,12 @@
 
 #include <mpark/variant.hpp>
 
+#include <cstddef>
+#include <cstdint>
+#include <functional>
+#include <string>
+#include <tuple>
+
 namespace blocksci {
     class BLOCKSCI_EXPORT AnyScript {
     public:

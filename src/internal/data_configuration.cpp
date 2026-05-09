@@ -10,7 +10,11 @@
 
 #include <nlohmann/json.hpp>
 
+#include <cstdint>
 #include <fstream>
+#include <sstream>
+#include <string>
+#include <stdexcept>
 
 using json = nlohmann::json;
 

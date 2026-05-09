@@ -10,6 +10,11 @@
 #include "address_writer.hpp"
 #include "preproccessed_block.hpp"
 
+#include <algorithm>
+#include <cstdint>
+#include <string>
+#include <tuple>
+
 using blocksci::AddressType;
 using blocksci::DedupAddressType;
 

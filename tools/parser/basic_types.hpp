@@ -11,8 +11,10 @@
 
 #include <blocksci/core/bitcoin_uint256.hpp>
 
+#include <cstddef>
 #include <functional>
 #include <cstdint>
+#include <ostream>
 
 /** Represents a pointer to an output by tx hash and output number */
 struct RawOutputPointer {

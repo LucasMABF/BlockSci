@@ -17,6 +17,10 @@
 #include <mpark/variant.hpp>
 
 #include <bitset>
+#include <cstdint>
+#include <memory>
+#include <utility>
+#include <vector>
 
 struct InputView {
     uint32_t inputNum;

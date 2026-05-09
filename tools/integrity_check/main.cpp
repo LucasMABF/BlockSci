@@ -24,8 +24,13 @@
 
 #include <clipp.h>
 
+#include <algorithm>
+#include <cstddef>
+#include <cstdint>
 #include <iostream>
 #include <fstream>
+#include <string>
+#include <tuple>
 
 using namespace blocksci;
 

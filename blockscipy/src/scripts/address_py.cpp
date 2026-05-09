@@ -20,6 +20,8 @@
 
 #include <range/v3/view/transform.hpp>
 
+#include <array>
+
 namespace py = pybind11;
 
 using namespace blocksci;

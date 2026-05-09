@@ -13,6 +13,8 @@
 #include <blocksci/chain/chain_fwd.hpp>
 #include <blocksci/core/inout_pointer.hpp>
 
+#include <cstddef>
+#include <ostream>
 #include <string>
 #include <vector>
 

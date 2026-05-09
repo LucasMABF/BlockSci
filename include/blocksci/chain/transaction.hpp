@@ -21,6 +21,13 @@
 #include <range/v3/utility/optional.hpp>
 
 #include <chrono>
+#include <cstddef>
+#include <cstdint>
+#include <ostream>
+#include <stdexcept>
+#include <string>
+#include <utility>
+#include <vector>
 
 namespace blocksci {
     class uint256;

@@ -17,6 +17,10 @@
 #include <blocksci/core/inout_pointer.hpp>
 #include <blocksci/core/core_fwd.hpp>
 
+#include <functional>
+#include <cstdint>
+#include <vector>
+
 class BlockFileReaderBase {
 public:
     BlockFileReaderBase() = default;

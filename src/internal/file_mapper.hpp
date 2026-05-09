@@ -13,14 +13,21 @@
 
 #include <wjfilesystem/path.h>
 
+#include <algorithm>
 #include <array>
 #include <cassert>
+#include <cstddef>
+#include <cstdint>
 #include <fstream>
 #include <cstring>
 #include <limits>
 #include <string>
+#include <system_error>
 #include <vector>
 #include <tuple>
+#include <type_traits>
+#include <initializer_list>
+#include <utility>
 
 namespace blocksci {
     template<mio::access_mode mode = mio::access_mode::read>

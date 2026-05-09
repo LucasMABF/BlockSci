@@ -10,6 +10,8 @@
 
 #include "dedup_address_type.hpp"
 
+#include <cstddef>
+#include <cstdint>
 #include <functional>
 
 namespace blocksci {

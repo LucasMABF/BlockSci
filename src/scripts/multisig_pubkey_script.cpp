@@ -13,7 +13,9 @@
 #include <internal/data_access.hpp>
 #include <internal/script_access.hpp>
 
+#include <cstdint>
 #include <sstream>
+#include <string>
 
 namespace blocksci {
     ScriptAddress<AddressType::MULTISIG_PUBKEY>::ScriptAddress(uint32_t addressNum_, DataAccess &access_) : ScriptAddress(addressNum_, access_.getScripts().getScriptData<dedupType(addressType)>(addressNum_), access_) {}

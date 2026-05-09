@@ -18,6 +18,8 @@
 #include <range/v3/view/transform.hpp>
 #include <range/v3/utility/optional.hpp>
 
+#include <cstdint>
+
 struct BlockSciTypeConverter {
 
     template <typename T>

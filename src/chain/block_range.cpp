@@ -12,6 +12,9 @@
 #include <range/v3/view/filter.hpp>
 
 #include <algorithm>
+#include <cstdint>
+#include <functional>
+#include <vector>
 
 namespace blocksci {
     

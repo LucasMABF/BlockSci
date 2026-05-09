@@ -15,6 +15,9 @@
 
 #include <range/v3/action/push_back.hpp>
 
+#include <any>
+#include <functional>
+#include <utility>
 
 template <typename T>
 class take_while_range : public ranges::view_facade<take_while_range<T>> {

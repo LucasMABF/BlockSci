@@ -19,6 +19,10 @@
 #include <pybind11/pybind11.h>
 #include <pybind11/chrono.h>
 
+#include <any>
+#include <typeinfo>
+#include <utility>
+
 struct AddProxyMethods {
 	template<typename T, typename BaseSimple>
 	void operator()(pybind11::class_<Proxy<T>, BaseSimple> &cl) {

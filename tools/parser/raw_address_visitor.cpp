@@ -17,6 +17,10 @@
 
 #include <mpark/variant.hpp>
 
+#include <functional>
+#include <cstddef>
+#include <cstdint>
+
 using namespace blocksci;
 
 template <AddressType::Enum addressType>

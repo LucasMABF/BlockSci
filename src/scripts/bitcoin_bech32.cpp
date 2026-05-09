@@ -21,6 +21,12 @@
 
 #include "bitcoin_bech32.hpp"
 
+#include <cstddef>
+#include <cstdint>
+#include <string>
+#include <utility>
+#include <vector>
+
 namespace {
 
 typedef std::vector<uint8_t> bech32_data;

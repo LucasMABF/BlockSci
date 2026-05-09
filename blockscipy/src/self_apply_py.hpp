@@ -14,6 +14,8 @@
 
 #include <pybind11/pybind11.h>
 
+#include <string>
+#include <utility>
 
 template <typename Class>
 struct ApplyMethodsToSelfImpl {

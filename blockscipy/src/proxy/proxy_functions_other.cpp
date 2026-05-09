@@ -9,6 +9,8 @@
 #include "proxy_functions_impl.hpp"
 
 #include <chrono>
+#include <cstdint>
+#include <string>
 
 void addProxyFunctionsOther(pybind11::module &m, pybind11::module &pm) {
 	using namespace blocksci;

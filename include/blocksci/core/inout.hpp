@@ -14,6 +14,10 @@
 #include <blocksci/core/hash_combine.hpp>
 #include <blocksci/core/typedefs.hpp>
 
+#include <cstddef>
+#include <cstdint>
+#include <functional>
+
 namespace blocksci {
     struct Inout;
 }

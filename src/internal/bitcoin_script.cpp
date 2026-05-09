@@ -7,7 +7,14 @@
 
 #include <blocksci/core/bitcoin_uint256.hpp>
 
+#include <cassert>
+#include <cstddef>
+#include <cstdint>
 #include <sstream>
+#include <stdexcept>
+#include <string>
+#include <tuple>
+#include <vector>
 
 namespace blocksci {
     const char* GetOpName(opcodetype opcode)

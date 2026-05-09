@@ -10,6 +10,9 @@
 #include "blocksci_iterator_type.hpp"
 #include "caster_py.hpp"
 
+#include <any>
+#include <utility>
+
 struct BlocksciRangeTypeObjectCaster {
     template <typename T>
     pybind11::object operator()(const T &o) {

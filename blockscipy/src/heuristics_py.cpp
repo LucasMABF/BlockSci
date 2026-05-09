@@ -14,6 +14,10 @@
 #include <blocksci/chain/blockchain.hpp>
 #include <blocksci/chain/transaction.hpp>
 
+#include <cstddef>
+#include <cstdint>
+#include <functional>
+
 namespace py = pybind11;
 using namespace blocksci;
 using namespace blocksci::heuristics;

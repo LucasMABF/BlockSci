@@ -18,6 +18,12 @@
 
 #include <range/v3/utility/optional.hpp>
 
+#include <cstddef>
+#include <cstdint>
+#include <functional>
+#include <ostream>
+#include <string>
+
 namespace std {
     template<> struct BLOCKSCI_EXPORT hash<blocksci::Output> {
         size_t operator()(const blocksci::Output &output) const;

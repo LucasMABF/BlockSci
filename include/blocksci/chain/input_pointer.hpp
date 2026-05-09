@@ -12,6 +12,8 @@
 #include <blocksci/blocksci_export.h>
 #include <blocksci/core/inout_pointer.hpp>
 
+#include <cstddef>
+#include <ostream>
 #include <string>
 
 namespace blocksci {

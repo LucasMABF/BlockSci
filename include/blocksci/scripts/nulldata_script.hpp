@@ -14,6 +14,8 @@
 #include <blocksci/blocksci_export.h>
 #include <blocksci/core/hash_combine.hpp>
 
+#include <cstddef>
+#include <cstdint>
 #include <string>
 
 namespace blocksci {

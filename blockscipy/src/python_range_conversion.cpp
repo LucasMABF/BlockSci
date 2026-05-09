@@ -21,7 +21,13 @@
 #include <range/v3/view/transform.hpp>
 #include <range/v3/algorithm/copy.hpp>
 
+#include <algorithm>
+#include <array>
 #include <chrono>
+#include <cstddef>
+#include <cstdint>
+#include <string>
+#include <utility>
 
 using namespace blocksci;
 namespace py = pybind11;

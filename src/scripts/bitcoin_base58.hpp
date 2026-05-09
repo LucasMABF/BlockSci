@@ -17,7 +17,9 @@
 #include <blocksci/exception.hpp>
 #include <blocksci/core/address_types.hpp>
 
+#include <cstddef>
 #include <string>
+#include <utility>
 #include <vector>
 
 namespace blocksci {

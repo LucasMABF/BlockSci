@@ -15,6 +15,8 @@
 #include <pybind11/pybind11.h>
 
 #include <chrono>
+#include <cstdint>
+#include <string>
 
 void addIntProxyMethods(AllProxyClasses<int64_t> &cls);
 void addBoolProxyMethods(AllProxyClasses<bool> &cls);

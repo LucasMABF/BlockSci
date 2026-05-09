@@ -12,6 +12,8 @@
 #include "proxy_utils.hpp"
 #include "caster_py.hpp"
 
+#include <utility>
+
 void addOptionalProxyMethods(pybind11::class_<OptionalProxy, RangeProxy> &cl, pybind11::module &) {
 	addOptionalProxyMapMethods(cl);
 	

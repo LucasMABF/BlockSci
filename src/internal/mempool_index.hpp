@@ -15,7 +15,14 @@
 
 #include <wjfilesystem/path.h>
 
+#include <cassert>
 #include <chrono>
+#include <cstdint>
+#include <ctime>
+#include <functional>
+#include <string>
+#include <utility>
+#include <vector>
 
 namespace blocksci {
     

@@ -19,9 +19,21 @@
 
 #include <cereal/archives/binary.hpp>
 
+#include <atomic>
+#include <cassert>
+#include <chrono>
 #include <cmath>
+#include <cstddef>
+#include <cstdint>
 #include <future>
 #include <iostream>
+#include <mutex>
+#include <stdexcept>
+#include <string>
+#include <thread>
+#include <unordered_map>
+#include <utility>
+#include <vector>
 
 #ifdef BLOCKSCI_FILE_PARSER
 

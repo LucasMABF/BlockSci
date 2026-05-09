@@ -16,7 +16,10 @@
 
 #include <range/v3/utility/optional.hpp>
 
+#include <cstddef>
+#include <cstdint>
 #include <string>
+#include <tuple>
 
 namespace blocksci {
     template <>

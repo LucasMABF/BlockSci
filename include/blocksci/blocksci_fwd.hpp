@@ -13,6 +13,8 @@
 #include <blocksci/scripts/scripts_fwd.hpp>
 #include <blocksci/cluster/cluster_fwd.hpp>
 
+#include <cstdint>
+
 namespace blocksci {
     using TxIndex = uint32_t;
     

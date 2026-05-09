@@ -19,9 +19,13 @@
 
 #include <wjfilesystem/path.h>
 
+#include <cassert>
+#include <cstddef>
 #include <vector>
 #include <cstdint>
 #include <cstring>
+#include <memory>
+#include <utility>
 
 namespace blocksci {
 

@@ -11,7 +11,11 @@
 
 #include <wjfilesystem/path.h>
 
+#include <cstddef>
+#include <cstdint>
 #include <fstream>
+#include <iterator>
+#include <type_traits>
 #include <array>
 
 struct SimpleFileWriter {

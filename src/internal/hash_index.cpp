@@ -19,6 +19,15 @@
 #include <rocksdb/table_properties.h>
 
 #include <array>
+#include <cstddef>
+#include <cstdint>
+#include <cstring>
+#include <memory>
+#include <stdexcept>
+#include <string>
+#include <utility>
+#include <vector>
+
 //
 //namespace {
 //    void OptimizeForPointLookup(rocksdb::ColumnFamilyOptions &options, std::shared_ptr<rocksdb::Cache> cache) {

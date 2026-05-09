@@ -12,9 +12,15 @@
 #include <blocksci/blocksci_export.h>
 #include <blocksci/chain/block.hpp>
 
+#include <cstdint>
+#include <functional>
+#include <iterator>
 #include <map>
+#include <thread>
 #include <type_traits>
 #include <future>
+#include <utility>
+#include <vector>
 
 namespace blocksci {
     struct DataConfiguration;

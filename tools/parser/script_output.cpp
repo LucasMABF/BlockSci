@@ -14,6 +14,12 @@
 
 #include <blocksci/scripts/bitcoin_pubkey.hpp>
 
+#include <algorithm>
+#include <cstddef>
+#include <cstdint>
+#include <cstring>
+#include <vector>
+
 using namespace blocksci;
 
 bool isValidPubkey(ranges::subrange<const unsigned char *> &vch1) {

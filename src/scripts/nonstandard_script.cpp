@@ -12,7 +12,9 @@
 #include <internal/script_access.hpp>
 #include <internal/script_view.hpp>
 
+#include <cstdint>
 #include <sstream>
+#include <string>
 
 namespace blocksci {
 

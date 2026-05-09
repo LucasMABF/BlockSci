@@ -10,6 +10,7 @@
 #include <blocksci/core/bitcoin_uint256.hpp>
 
 #include <array>
+#include <cstring>
 #include <stdexcept>
 #include <vector>
 

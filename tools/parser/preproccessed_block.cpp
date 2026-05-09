@@ -20,7 +20,15 @@
 #include <bitcoinapi/types.h>
 #endif
 
+#include <cstddef>
+#include <cstdint>
+#include <cstdlib>
+#include <initializer_list>
 #include <iostream>
+#include <limits>
+#include <string>
+#include <utility>
+#include <vector>
 
 using SequenceNum = uint32_t;
 using Value = uint64_t;

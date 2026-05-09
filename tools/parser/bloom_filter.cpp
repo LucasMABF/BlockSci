@@ -10,9 +10,15 @@
 
 #include <cereal/archives/binary.hpp>
 
+#include <cassert>
+#include <cstddef>
+#include <cstdint>
+#include <cstring>
 #include <fstream>
 #include <array>
 #include <cmath>
+#include <stdexcept>
+#include <string>
 
 
 constexpr double Log2 = 0.69314718056;

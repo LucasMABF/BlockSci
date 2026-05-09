@@ -16,6 +16,11 @@
 #include <pybind11/chrono.h>
 #include <pybind11/operators.h>
 
+#include <chrono>
+#include <cstdint>
+#include <stdexcept>
+#include <string>
+
 struct AddTransactionMethods {
     template <typename FuncApplication>
     void operator()(FuncApplication func) {

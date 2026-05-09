@@ -8,6 +8,12 @@
 #include "blocksci_type.hpp"
 #include "caster_py.hpp"
 
+#include <any>
+#include <chrono>
+#include <cstddef>
+#include <functional>
+#include <string>
+
 struct BlocksciTypeHasher {
     size_t operator()(const std::chrono::system_clock::time_point &time) const {
         return std::chrono::time_point_cast<std::chrono::milliseconds>(time).time_since_epoch().count();

@@ -13,9 +13,13 @@
 
 #include <internal/address_info.hpp>
 
+#include <cstddef>
+#include <cstdint>
 #include <fstream>
 #include <string>
 #include <sstream>
+#include <memory>
+#include <utility>
 
 namespace {
     static constexpr auto multiAddressFileName = "multi";

@@ -10,6 +10,16 @@
 
 #include <mio/mmap.hpp>
 
+#include <cstdint>
+#include <cstring>
+#include <initializer_list>
+#include <iterator>
+#include <limits>
+#include <stdexcept>
+#include <string>
+#include <system_error>
+#include <utility>
+
 inline unsigned int variableLengthIntSize(uint64_t nSize) {
     if (nSize < 253)             return sizeof(unsigned char);
     else if (nSize <= std::numeric_limits<unsigned short>::max()) return sizeof(unsigned char) + sizeof(unsigned short);

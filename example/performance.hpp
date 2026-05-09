@@ -11,7 +11,9 @@
 
 #include <blocksci/blocksci.hpp>
 
+#include <cstdint>
 #include <unordered_map>
+#include <vector>
 
 std::vector<int64_t> unspentSums1(blocksci::Blockchain &chain, int start, int stop);
 std::vector<int64_t> unspentSums2(blocksci::Blockchain &chain, int start, int stop);

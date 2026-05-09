@@ -14,6 +14,10 @@
 
 #include <blocksci/core/inout_pointer.hpp>
 
+#include <tuple>
+#include <string>
+#include <type_traits>
+
 template<blocksci::AddressType::Enum addressType>
 class UTXOAddressTypeState {
     SerializableMap<blocksci::InoutPointer, SpendData<addressType>> map;

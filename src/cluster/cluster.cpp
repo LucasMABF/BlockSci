@@ -25,6 +25,12 @@
 #include <range/v3/iterator/operations.hpp>
 #include <range/v3/view/join.hpp>
 
+#include <cstddef>
+#include <cstdint>
+#include <string>
+#include <vector>
+#include <unordered_map>
+
 namespace {
     using namespace blocksci;
     

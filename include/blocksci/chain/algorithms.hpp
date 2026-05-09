@@ -22,6 +22,10 @@
 #include <range/v3/view/remove_if.hpp>
 #include <range/v3/view/transform.hpp>
 
+#include <cstdint>
+#include <type_traits>
+#include <utility>
+
 namespace blocksci {
     
     CPP_template(typename B)(requires ranges::range<B>)

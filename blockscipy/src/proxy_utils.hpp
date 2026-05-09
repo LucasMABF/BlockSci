@@ -11,6 +11,10 @@
 #include "proxy.hpp"
 #include "proxy_type_check.hpp"
 
+#include <any>
+#include <functional>
+#include <utility>
+
 template <typename P1, typename P2, typename F>
 auto lift(P1 && p1, P2 && p2, F && f) -> Proxy<decltype(f(p1(std::declval<std::any &>()), p2(std::declval<std::any &>())))> {
 	p1.getSourceType().checkMatch(p2.getSourceType());

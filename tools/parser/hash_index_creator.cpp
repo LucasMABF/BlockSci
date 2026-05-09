@@ -12,6 +12,13 @@
 
 #include <blocksci/core/raw_address.hpp>
 
+#include <cstdint>
+#include <functional>
+#include <tuple>
+#include <type_traits>
+#include <utility>
+#include <vector>
+
 HashIndexCreator::HashIndexCreator(const ParserConfigurationBase &config_, const filesystem::path &path) : ParserIndex(config_, "hashIndex"), db(path, false) {}
 
 template <bool, blocksci::AddressType::Enum type>

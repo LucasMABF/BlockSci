@@ -20,11 +20,14 @@
 #include <cereal/types/vector.hpp>
 #include <cereal/types/string.hpp>
 
+#include <cstddef>
+#include <initializer_list>
 #include <unordered_map>
 #include <algorithm>
 #include <vector>
 #include <cstdint>
 #include <limits>
+#include <string>
 
 class CBlockIndex;
 struct blockinfo_t;

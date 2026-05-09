@@ -12,6 +12,10 @@
 #include <blocksci/address/equiv_address.hpp>
 #include <blocksci/cluster/cluster.hpp>
 
+#include <chrono>
+#include <cstdint>
+#include <string>
+
 void applyProxyMapOptionalFuncsOther(pybind11::class_<IteratorProxy, GenericProxy> &cl) {
 	using namespace blocksci;
 	cl

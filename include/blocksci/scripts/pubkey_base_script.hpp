@@ -14,6 +14,9 @@
 #include <blocksci/blocksci_export.h>
 #include <blocksci/core/bitcoin_uint256.hpp>
 
+#include <cstddef>
+#include <cstdint>
+
 namespace blocksci {
     class BLOCKSCI_EXPORT PubkeyAddressBase : public ScriptBase {
     protected:

@@ -20,8 +20,12 @@
 #include <range/v3/view/filter.hpp>
 #include <range/v3/view/transform.hpp>
 
+#include <cstdint>
+#include <ostream>
 #include <sstream>
+#include <string>
 #include <unordered_set>
+#include <vector>
 
 namespace blocksci {
     

@@ -10,6 +10,8 @@
 
 #include <blocksci/core/bitcoin_uint256.hpp>
 
+#include <cstddef>
+#include <cstdint>
 #include <cstring>
 #include <openssl/evp.h>
 #include <stdexcept>

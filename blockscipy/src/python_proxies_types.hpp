@@ -13,6 +13,10 @@
 
 #include <blocksci/blocksci_fwd.hpp>
 
+#include <chrono>
+#include <cstdint>
+#include <string>
+
 struct MainProxies {
     AllProxyClasses<blocksci::Block> block;
     AllProxyClasses<blocksci::Transaction> tx;

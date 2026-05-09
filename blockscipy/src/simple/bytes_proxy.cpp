@@ -16,6 +16,8 @@
 #include <blocksci/cluster/cluster.hpp>
 #include <blocksci/address/equiv_address.hpp>
 
+#include <string>
+
 namespace py = pybind11;
 
 struct AddBytesMethods {

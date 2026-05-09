@@ -9,6 +9,7 @@
 #define method_types_h
 
 #include <typeindex>
+#include <typeinfo>
 #include <string>
 #include <unordered_map>
 

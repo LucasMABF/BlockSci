@@ -14,6 +14,11 @@
 #include <blocksci/blocksci_export.h>
 #include <blocksci/core/hash_combine.hpp>
 
+#include <cstddef>
+#include <cstdint>
+#include <functional>
+#include <string>
+
 namespace blocksci {
     class BLOCKSCI_EXPORT ScriptHashBase : public ScriptBase {
         const ScriptHashData *getBackingData() const {

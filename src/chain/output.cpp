@@ -14,7 +14,11 @@
 #include <internal/data_access.hpp>
 #include <range/v3/range_for.hpp>
 
+#include <cstdint>
+#include <ostream>
 #include <sstream>
+#include <string>
+#include <stdexcept>
 
 namespace blocksci {
     Output::Output(const OutputPointer &pointer_, DataAccess &access_) :

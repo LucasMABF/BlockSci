@@ -12,6 +12,9 @@
 #include "blocksci_iterator_type.hpp"
 #include "blocksci_range_type.hpp"
 
+#include <cstdint>
+#include <utility>
+
 template <typename T>
 struct Range : public Sequence<T>, public GenericRange {
 	ranges::any_view<T, random_access_sized> rng;

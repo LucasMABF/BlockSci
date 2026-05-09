@@ -17,6 +17,9 @@
 
 #include <pybind11/operators.h>
 
+#include <stdexcept>
+#include <vector>
+
 namespace py = pybind11;
 using namespace blocksci;
 

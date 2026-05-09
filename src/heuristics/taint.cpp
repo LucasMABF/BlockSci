@@ -14,9 +14,17 @@
 #include <internal/data_access.hpp>
 #include <internal/chain_access.hpp>
 
+#include <algorithm>
+#include <cassert>
+#include <cstddef>
+#include <cstdint>
 #include <numeric>
 #include <map>
 #include <unordered_map>
+#include <initializer_list>
+#include <limits>
+#include <utility>
+#include <vector>
 
 #include <iostream>
 

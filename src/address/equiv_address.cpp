@@ -19,7 +19,14 @@
 
 #include <range/v3/action/sort.hpp>
 
+#include <cstddef>
+#include <cstdint>
+#include <set>
 #include <sstream>
+#include <string>
+#include <unordered_set>
+#include <utility>
+#include <vector>
 
 namespace {
     using namespace blocksci;

@@ -18,6 +18,11 @@
 
 #include <range/v3/view/transform.hpp>
 
+#include <chrono>
+#include <cstdint>
+#include <string>
+#include <utility>
+
 template<ranges::category range_cat, typename R>
 Proxy<ranges::any_view<R, range_cat>> mapSimple(proxy_sequence<range_cat> &p, Proxy<R> &p2) {
 	return liftGeneric(p, [p2](auto && seq) -> ranges::any_view<R, range_cat> {

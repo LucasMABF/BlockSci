@@ -16,6 +16,9 @@
 #include <internal/data_access.hpp>
 #include <internal/script_access.hpp>
 
+#include <cstddef>
+#include <cstdint>
+
 namespace {
     template<blocksci::AddressType::Enum type>
     struct ScriptCreateFunctor {

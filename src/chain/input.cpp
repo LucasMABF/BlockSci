@@ -15,7 +15,10 @@
 #include <internal/chain_access.hpp>
 #include <internal/data_access.hpp>
 
+#include <cstdint>
+#include <ostream>
 #include <sstream>
+#include <string>
 
 namespace blocksci {
     Input::Input(const InputPointer &pointer_, DataAccess &access_) :

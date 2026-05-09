@@ -9,6 +9,11 @@
 #include <secp256k1_recovery.h>
 #include <secp256k1.h>
 
+#include <cassert>
+#include <cstddef>
+#include <cstring>
+#include <vector>
+
 namespace {
 /* Global secp256k1_context object used for verification. */
 secp256k1_context* secp256k1_context_verify = nullptr;

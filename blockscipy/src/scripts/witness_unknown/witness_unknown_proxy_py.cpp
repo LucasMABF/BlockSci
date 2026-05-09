@@ -21,6 +21,9 @@
 
 #include <range/v3/range_for.hpp>
 
+#include <cstdint>
+#include <string>
+
 using namespace blocksci;
 namespace py = pybind11;
 

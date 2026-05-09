@@ -21,6 +21,12 @@
 
 #include <any>
 #include <chrono>
+#include <cstddef>
+#include <cstdint>
+#include <functional>
+#include <string>
+#include <type_traits>
+#include <utility>
 
 using BlocksciTypeVariant = mpark::variant<
 	blocksci::Block,

@@ -24,6 +24,12 @@
 #include <pybind11/iostream.h>
 #include <pybind11/operators.h>
 
+#include <cstdint>
+#include <iostream>
+#include <set>
+#include <string>
+#include <unordered_map>
+
 namespace py = pybind11;
 using namespace blocksci;
 

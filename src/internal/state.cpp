@@ -10,6 +10,8 @@
 #include "chain_access.hpp"
 #include "script_access.hpp"
 
+#include <cstdint>
+#include <iomanip>
 #include <iostream>
 
 namespace blocksci {

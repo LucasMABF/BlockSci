@@ -21,6 +21,8 @@
 #include <range/v3/view/iota.hpp>
 #include <range/v3/view/join.hpp>
 
+#include <cstdint>
+
 struct AddEquivAddressMethods {
     template <typename FuncApplication>
     void operator()(FuncApplication func) {

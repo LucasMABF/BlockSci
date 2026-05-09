@@ -17,6 +17,10 @@
 #include <range/v3/view/slice.hpp>
 #include <range/v3/size.hpp>
 
+#include <cstddef>
+#include <cstdint>
+#include <utility>
+
 template <typename T, typename BaseSimple>
 void setupRangesProxy(AllProxyClasses<T, BaseSimple> &cls) {
 	cls.sequence

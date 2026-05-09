@@ -8,6 +8,12 @@
 
 #include "performance.hpp"
 
+#include <algorithm>
+#include <cstdint>
+#include <unordered_map>
+#include <utility>
+#include <vector>
+
 using namespace blocksci;
 
 std::vector<int64_t> unspentSums1(Blockchain &chain, int start, int stop) {

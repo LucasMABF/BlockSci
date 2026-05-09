@@ -12,6 +12,9 @@
 #include "proxy_type_check.hpp"
 #include "caster_py.hpp"
 
+#include <any>
+#include <functional>
+
 template <typename T>
 void addProxyFunctionsT(pybind11::module &m) {
     m

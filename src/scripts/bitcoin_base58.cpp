@@ -10,7 +10,13 @@
 #include <internal/data_configuration.hpp>
 
 #include <cassert>
+#include <cctype>
+#include <cstddef>
+#include <cstdint>
+#include <cstring>
+#include <iterator>
 #include <string>
+#include <utility>
 #include <vector>
 
 namespace blocksci {

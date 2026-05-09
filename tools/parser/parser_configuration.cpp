@@ -17,6 +17,10 @@
 
 #include <nlohmann/json.hpp>
 
+#include <sstream>
+#include <stdexcept>
+#include <string>
+
 using json = nlohmann::json;
 
 ParserConfigurationBase::ParserConfigurationBase() : dataConfig() {}

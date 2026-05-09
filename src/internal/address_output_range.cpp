@@ -14,6 +14,11 @@
 
 #include <rocksdb/db.h>
 
+#include <cstddef>
+#include <cstdint>
+#include <cstring>
+#include <utility>
+
 namespace blocksci {
     RawAddressOutputRange::cursor::cursor() : index(nullptr), it(nullptr) {}
     

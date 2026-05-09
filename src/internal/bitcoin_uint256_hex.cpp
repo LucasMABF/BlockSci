@@ -5,6 +5,7 @@
 
 #include "bitcoin_uint256_hex.hpp"
 
+#include <cctype>
 #include <string>
 
 namespace blocksci {

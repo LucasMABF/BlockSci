@@ -12,6 +12,7 @@
 
 #include <blocksci/core/hash_combine.hpp>
 
+#include <cstddef>
 #include <ostream>
 
 namespace std

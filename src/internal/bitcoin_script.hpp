@@ -6,8 +6,12 @@
 #ifndef BLOCKSCI_BITCOIN_SCRIPT_SCRIPT_H
 #define BLOCKSCI_BITCOIN_SCRIPT_SCRIPT_H
 
+#include <algorithm>
 #include <cassert>
+#include <cstddef>
+#include <cstdint>
 #include <cstring>
+#include <initializer_list>
 #include <limits>
 #include <stdexcept>
 #include <string>

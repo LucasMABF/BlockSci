@@ -13,6 +13,10 @@
 #include "hash_index.hpp"
 #include "mempool_index.hpp"
 
+#include <algorithm>
+#include <memory>
+#include <utility>
+
 namespace blocksci {
     
     DataAccess::DataAccess() = default;

@@ -9,7 +9,11 @@
 
 #include <blocksci/core/bitcoin_uint256.hpp>
 
+#include <cstddef>
+#include <cstdint>
 #include <sstream>
+#include <string>
+#include <vector>
 
 namespace blocksci {
     unsigned int CScriptView::GetSigOpCount(bool fAccurate) const

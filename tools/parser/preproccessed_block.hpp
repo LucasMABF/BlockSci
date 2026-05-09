@@ -18,6 +18,10 @@
 
 #include <boost/container/small_vector.hpp>
 
+#include <cstdint>
+#include <string>
+#include <vector>
+
 struct getrawtransaction_t;
 struct vout_t;
 struct vin_t;

@@ -12,8 +12,10 @@
 #include <blocksci/blocksci_export.h>
 #include <blocksci/core/hash_combine.hpp>
 
+#include <cstddef>
 #include <cstdint>
 #include <functional>
+#include <tuple>
 
 namespace blocksci {
     /** Contains data to uniquely identify one input or output using txNum and inoutNum */

@@ -11,6 +11,8 @@
 #include <blocksci/blocksci_export.h>
 #include <blocksci/chain/transaction.hpp>
 
+#include <cstdint>
+
 namespace blocksci {
     /** Represents an iterable collection of contiguous Transaction objects */
     class BLOCKSCI_EXPORT TransactionRange {

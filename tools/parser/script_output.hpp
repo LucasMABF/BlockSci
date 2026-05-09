@@ -17,6 +17,11 @@
 
 #include <mpark/variant.hpp>
 
+#include <cassert>
+#include <cstdint>
+#include <tuple>
+#include <vector>
+
 template<blocksci::AddressType::Enum type>
 struct ScriptOutput {
     static constexpr auto address_v = type;

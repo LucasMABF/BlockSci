@@ -12,6 +12,12 @@
 #include <blocksci/core/script_data.hpp>
 #include <blocksci/address/address.hpp>
 
+#include <cstddef>
+#include <cstdint>
+#include <functional>
+#include <initializer_list>
+#include <limits>
+
 namespace blocksci {
     struct DataConfiguration;
     class DataAccess;

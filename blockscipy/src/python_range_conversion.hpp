@@ -15,7 +15,11 @@
 
 #include <pybind11/numpy.h>
 
+#include <array>
 #include <chrono>
+#include <cstdint>
+#include <string>
+#include <utility>
 
 namespace pybind11 { namespace detail {
     template <>

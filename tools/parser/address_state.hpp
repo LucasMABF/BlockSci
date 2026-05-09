@@ -17,7 +17,12 @@
 #include <internal/dedup_address_info.hpp>
 #include <internal/bitcoin_uint256_hex.hpp>
 
+#include <cstdint>
 #include <memory>
+#include <tuple>
+#include <type_traits>
+#include <utility>
+#include <vector>
 
 enum class AddressLocation {
     MultiUseMap,

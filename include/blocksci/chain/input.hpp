@@ -17,6 +17,12 @@
 #include <blocksci/core/inout.hpp>
 #include <blocksci/core/raw_transaction.hpp>
 
+#include <cstddef>
+#include <cstdint>
+#include <functional>
+#include <ostream>
+#include <string>
+
 namespace std {
     template<> struct BLOCKSCI_EXPORT hash<blocksci::Input> {
         size_t operator()(const blocksci::Input &input) const;

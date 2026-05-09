@@ -14,6 +14,8 @@
 
 #include <range/v3/range/concepts.hpp>
 
+#include <cstdint>
+
 namespace blocksci {
     class ChainAccess;
     class DataAccess;
