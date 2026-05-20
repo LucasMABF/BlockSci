@@ -1,8 +1,6 @@
 
 add_subdirectory(internal)
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -march=native -mtune=native")
-
 set(THREADS_PREFER_PTHREAD_FLAG ON)
 find_package(Threads REQUIRED)
 
@@ -11,7 +9,7 @@ set(SYSCONFIG_INSTALL_DIR etc/blocksci/ . )
 set(BLOCKSCI_HEADER_PREFIX ${CMAKE_CURRENT_SOURCE_DIR}/../include/blocksci)
 set(BLOCKSCI_SOURCE_PREFIX ${CMAKE_CURRENT_SOURCE_DIR})
 
-add_library(blocksci SHARED "")
+add_library(blocksci SHARED)
 
 set_target_properties(blocksci PROPERTIES CXX_VISIBILITY_PRESET hidden)
 set_target_properties(blocksci PROPERTIES VISIBILITY_INLINES_HIDDEN 1)
@@ -49,6 +47,10 @@ cxx_template_template_parameters
 target_compile_features(blocksci PUBLIC ${BLOCKSCI_FEATURE_REQUIREMENTS})
 
 target_compile_options(blocksci PRIVATE -Wall -Wextra -Wpedantic)
+
+if(BLOCKSCI_NATIVE_ARCH)
+  target_compile_options(blocksci PRIVATE -march=native -mtune=native)
+endif()
 
 if(CMAKE_CXX_COMPILER_ID STREQUAL "AppleClang" OR CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
 target_compile_options(blocksci PRIVATE -Weverything -Wno-c++98-compat -Wno-c++98-compat-pedantic -Wno-old-style-cast -Wno-documentation-unknown-command -Wno-documentation -Wno-shadow -Wno-covered-switch-default -Wno-missing-prototypes -Wno-weak-vtables -Wno-unused-macros -Wno-padded)
@@ -219,19 +221,10 @@ set(CLUSTER_SOURCES
 )
 
 target_sources(blocksci 
-  PUBLIC
-    $<BUILD_INTERFACE:${CORE_HEADERS}>
-    $<BUILD_INTERFACE:${BLOCKSCI_HEADERS}>
-    $<BUILD_INTERFACE:${ADDRESS_HEADERS}>
-    $<BUILD_INTERFACE:${CHAIN_HEADERS}>
-    $<BUILD_INTERFACE:${SCRIPT_HEADERS}>
-    $<BUILD_INTERFACE:${HEURISTICS_HEADERS}>
-    $<BUILD_INTERFACE:${CLUSTER_HEADERS}>
   PRIVATE
     ${BLOCKSCI_SOURCES}
     ${ADDRESS_SOURCES}
     ${SCRIPT_SOURCES}
-    ${SCRIPT_PRIVATE_HEADERS}
     ${CHAIN_SOURCES}
     ${HEURISTICS_SOURCES}
     ${CLUSTER_SOURCES}

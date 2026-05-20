@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.5)
+cmake_minimum_required(VERSION 3.10...3.31)
 project(blocksci_example)
 
 file(GLOB EXAMPLE_HEADERS "*.hpp")

@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.5)
+cmake_minimum_required(VERSION 3.10...3.31)
 project(mempool_recorder)
 
 add_executable(mempool_recorder main.cpp file_writer.hpp)
