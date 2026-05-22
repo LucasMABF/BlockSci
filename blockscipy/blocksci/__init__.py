@@ -425,7 +425,7 @@ def setup_sequence_proxy_map_funcs():
         getattr(proxy, cl).any = range_any_func
         getattr(proxy, cl).all = range_all_func
 
-non_copying_methods = set(["ptype", "iterator_proxy", "range_proxy", "optional_proxy", "output_type_name"])
+non_copying_methods = set(["ptype", "iterator_proxy", "range_proxy", "optional_proxy", "output_type_name", "_pybind11_conduit_v1_"])
 
 def _get_core_functions_methods(obj):
     return (attr for attr in obj.__dict__ if

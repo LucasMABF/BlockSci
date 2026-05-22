@@ -2,10 +2,7 @@
   description = "BlockSci analysis tool for blockchains";
 
   inputs = {
-    nixpkgs = {
-      url = "github:NixOS/nixpkgs/nixos-19.03";
-      flake = false;
-    };
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.11";
     flake-utils.url = "github:numtide/flake-utils";
   };
 
@@ -25,7 +22,7 @@
             multiprocess
             pandas
             psutil
-            pycrypto
+            pycryptodome
             requests
           ];
         mkHeaderOnly =
@@ -72,7 +69,7 @@
 
           buildInputs = with pkgs; [
             gtest
-            openssl_1_1
+            openssl
             secp256k1
             sparsehash
             rocksdb
@@ -93,26 +90,33 @@
           ];
         };
 
-        packages.blockscipy = pkgs.python37Packages.buildPythonPackage {
+        packages.blockscipy = pkgs.python3Packages.buildPythonPackage {
           pname = "blockscipy";
           version = "0.7.0";
-          format = "setuptools";
-
-          dontUseCmakeConfigure = true;
+          pyproject = true;
 
           src = ./blockscipy;
 
-          nativeBuildInputs = with pkgs; [
-            cmake
+          build-system = with pkgs.python3Packages; [
+            scikit-build-core
+            pybind11
           ];
 
+          nativeBuildInputs = with pkgs; [
+            cmake
+            ninja
+          ];
+
+          dontUseCmakeConfigure = true;
+
           buildInputs = [
-            self.packages.${system}.pybind11
             self.packages.${system}.date
             self.packages.${system}.default
           ];
 
-          propagatedBuildInputs = pythonRuntimeDeps pkgs.python37Packages;
+          dependencies = pythonRuntimeDeps pkgs.python3Packages;
+
+          pythonImportsCheck = [ "blocksci" ];
 
           doCheck = false;
         };
@@ -125,23 +129,25 @@
           nativeBuildInputs =
             with pkgs;
             [
-              python37
-              python37Packages.pip
+              python3
+              python3Packages.pip
+              python3Packages.scikit-build-core
+              ninja
             ]
-            ++ pythonRuntimeDeps pkgs.python37Packages;
+            ++ pythonRuntimeDeps pkgs.python3Packages;
 
-          buildInputs = [
-            self.packages.${system}.pybind11
+          buildInputs = with pkgs.python3Packages; [
+            pybind11
             self.packages.${system}.date
           ];
 
           shellHook = ''
             export LOCAL_PIP="$PWD/.nix-pip"
-            mkdir -p "$LOCAL_PIP/${pkgs.python37.sitePackages}"
-            export PYTHONPATH="$LOCAL_PIP/${pkgs.python37.sitePackages}:$PYTHONPATH"
+            export PYTHONPATH="$LOCAL_PIP/${pkgs.python3.sitePackages}:$PYTHONPATH"
             export PATH="$LOCAL_PIP/bin:$PATH"
 
             export CMAKE_PREFIX_PATH="$PWD/.nix-install:$CMAKE_PREFIX_PATH"
+            export LD_LIBRARY_PATH="$PWD/.nix-install/lib64:$LD_LIBRARY_PATH"
           '';
         };
 
@@ -167,27 +173,6 @@
           propagatedBuildInputs = with pkgs; [
             jsoncpp
             libjson-rpc-cpp
-          ];
-        };
-
-        packages.pybind11 = pkgs.stdenv.mkDerivation {
-          pname = "pybind11";
-          version = "2.5.0";
-
-          src = pkgs.fetchFromGitHub {
-            owner = "pybind";
-            repo = "pybind11";
-            rev = "v2.5.0";
-            sha256 = "sha256-9BvIAuyfVeTKYwHvnN2xFJVXizNZCZ/tkdufeZ6RDI4=";
-          };
-
-          nativeBuildInputs = with pkgs; [
-            cmake
-            python37
-          ];
-
-          cmakeFlags = [
-            "-DPYBIND11_TEST=OFF"
           ];
         };
 
