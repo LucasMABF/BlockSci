@@ -50,4 +50,8 @@ namespace blocksci {
 } // namespace blocksci
 
 
+namespace ranges {
+    template <> inline constexpr bool enable_view<blocksci::Blockchain> = true;
+} // namespace ranges
+
 #endif /* blockchain_hpp */

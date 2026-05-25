@@ -147,4 +147,8 @@ namespace std {
     };
 } // namespace std
 
+namespace ranges {
+    template <> inline constexpr bool enable_view<blocksci::Block> = true;
+} // namespace ranges
+
 #endif /* block_hpp */

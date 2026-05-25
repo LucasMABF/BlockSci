@@ -23,6 +23,7 @@
 #include <internal/script_access.hpp>
 
 #include <range/v3/iterator/operations.hpp>
+#include <range/v3/range/conversion.hpp>
 #include <range/v3/view/join.hpp>
 
 #include <cstddef>
@@ -213,17 +214,17 @@ namespace blocksci {
     }
     
     std::vector<blocksci::Transaction> Cluster::getTransactions() const {
-        auto pointers = getOutputPointers() | ranges::to_vector;
+        auto pointers = getOutputPointers() | ranges::to<std::vector>();
         return blocksci::getTransactions(pointers, clusterAccess->access);
     }
     
     std::vector<blocksci::Transaction> Cluster::getOutputTransactions() const {
-        auto pointers = getOutputPointers() | ranges::to_vector;
+        auto pointers = getOutputPointers() | ranges::to<std::vector>();
         return blocksci::getOutputTransactions(pointers, clusterAccess->access);
     }
     
     std::vector<blocksci::Transaction> Cluster::getInputTransactions() const {
-        auto pointers = getOutputPointers() | ranges::to_vector;
+        auto pointers = getOutputPointers() | ranges::to<std::vector>();
         return blocksci::getInputTransactions(pointers, clusterAccess->access);
     }
     

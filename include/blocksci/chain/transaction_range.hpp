@@ -176,4 +176,8 @@ namespace blocksci {
     }
 }
 
+namespace ranges {
+    template <> inline constexpr bool enable_view<blocksci::TransactionRange> = true;
+} // namespace ranges
+
 #endif /* transaction_range_hpp */

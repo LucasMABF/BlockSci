@@ -117,4 +117,8 @@ namespace blocksci {
     CPP_assert(ranges::sized_range<InputRange>);
 }
 
+namespace ranges {
+    template <> inline constexpr bool enable_view<blocksci::InputRange> = true;
+} // namespace ranges
+
 #endif /* blocksci_input_range_hpp */

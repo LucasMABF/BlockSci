@@ -19,6 +19,7 @@
 #include <blocksci/cluster/cluster.hpp>
 #include <blocksci/scripts/witness_unknown_script.hpp>
 
+#include <range/v3/range/conversion.hpp>
 #include <range/v3/range_for.hpp>
 
 #include <cstdint>
@@ -37,7 +38,7 @@ struct AddWitnessUnknownMethods {
             if (stack) {
                 py::list list;
                 RANGES_FOR(auto && item, *stack) {
-                    auto charVector = item | ranges::views::transform([](auto && c) -> char { return c; } ) | ranges::to_vector;
+                    auto charVector = item | ranges::views::transform([](auto && c) -> char { return c; } ) | ranges::to<std::vector>();
                     list.append(py::bytes(std::string{charVector.begin(), charVector.end()}));
                 }
                 return list;

@@ -14,6 +14,8 @@
 
 #include <blocksci/scripts/bitcoin_pubkey.hpp>
 
+#include <range/v3/range/conversion.hpp>
+
 #include <algorithm>
 #include <cstddef>
 #include <cstdint>
@@ -44,11 +46,11 @@ static bool MatchPayToPubkey(const CScriptView& script, valtype& pubkey)
 {
     if (script.size() == CPubKey::PUBLIC_KEY_SIZE + 2 && script[0] == CPubKey::PUBLIC_KEY_SIZE && script.back() == OP_CHECKSIG) {
         pubkey = valtype(script.begin() + 1, script.begin() + blocksci::CPubKey::PUBLIC_KEY_SIZE + 1);
-        return CPubKey::ValidSize(pubkey | ranges::to_vector);
+        return CPubKey::ValidSize(pubkey | ranges::to<std::vector>());
     }
     if (script.size() == CPubKey::COMPRESSED_PUBLIC_KEY_SIZE + 2 && script[0] == CPubKey::COMPRESSED_PUBLIC_KEY_SIZE && script.back() == OP_CHECKSIG) {
         pubkey = valtype(script.begin() + 1, script.begin() + CPubKey::COMPRESSED_PUBLIC_KEY_SIZE + 1);
-        return CPubKey::ValidSize(pubkey | ranges::to_vector);
+        return CPubKey::ValidSize(pubkey | ranges::to<std::vector>());
     }
     return false;
 }
@@ -77,7 +79,7 @@ static bool MatchMultisig(const CScriptView& script, ScriptOutputData<blocksci::
     
     if (!script.GetOp(it, opcode, data) || !IsSmallInteger(opcode)) return false;
     multisig.numRequired = CScript::DecodeOP_N(opcode);
-    while (script.GetOp(it, opcode, data) && CPubKey::ValidSize(data | ranges::to_vector)) {
+    while (script.GetOp(it, opcode, data) && CPubKey::ValidSize(data | ranges::to<std::vector>())) {
         multisig.addAddress(data);
     }
     if (!IsSmallInteger(opcode)) return false;

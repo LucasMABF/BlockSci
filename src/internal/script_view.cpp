@@ -9,6 +9,8 @@
 
 #include <blocksci/core/bitcoin_uint256.hpp>
 
+#include <range/v3/range/conversion.hpp>
+
 #include <cstddef>
 #include <cstdint>
 #include <sstream>
@@ -145,7 +147,7 @@ namespace blocksci {
             }
             if (0 <= opcode && opcode <= OP_PUSHDATA4) {
                 if (vch.size() <= static_cast<std::vector<unsigned char>::size_type>(4)) {
-                    ss << CScriptNum(vch | ranges::to_vector, false).getint();
+                    ss << CScriptNum(vch | ranges::to<std::vector>(), false).getint();
                 } else {
                     // the IsUnspendable check makes sure not to try to decode OP_RETURN data that may match the format of a signature
                     if (fAttemptSighashDecode && !script.IsUnspendable()) {

@@ -18,6 +18,7 @@
 #include <internal/script_access.hpp>
 
 #include <range/v3/action/sort.hpp>
+#include <range/v3/range/conversion.hpp>
 
 #include <cstddef>
 #include <cstdint>
@@ -89,8 +90,8 @@ namespace blocksci {
     EquivAddress::EquivAddress(const DedupAddress &address, bool scriptEquivalent_, DataAccess &access_) : scriptEquivalent(scriptEquivalent_), access(&access_), addresses(initAddresses(address, scriptEquivalent_, access_)) {}
     
     std::string EquivAddress::toString() const {
-        auto sortedAddresses = addresses | ranges::to_vector;
-        sortedAddresses = std::move(sortedAddresses) | ranges::action::sort;
+        auto sortedAddresses = addresses | ranges::to<std::vector>();
+        sortedAddresses = std::move(sortedAddresses) | ranges::actions::sort;
         
         std::stringstream ss;
         ss << "EquivAddress(";
@@ -132,15 +133,15 @@ namespace blocksci {
     }
     
     std::vector<Transaction> EquivAddress::getTransactions() const {
-        return blocksci::getTransactions(getOutputPointers() | ranges::to_vector, *access);
+        return blocksci::getTransactions(getOutputPointers() | ranges::to<std::vector>(), *access);
     }
     
     std::vector<Transaction> EquivAddress::getOutputTransactions() const {
-        return blocksci::getOutputTransactions(getOutputPointers() | ranges::to_vector, *access);
+        return blocksci::getOutputTransactions(getOutputPointers() | ranges::to<std::vector>(), *access);
     }
     
     std::vector<Transaction> EquivAddress::getInputTransactions() const {
-        return blocksci::getInputTransactions(getOutputPointers() | ranges::to_vector, *access);
+        return blocksci::getInputTransactions(getOutputPointers() | ranges::to<std::vector>(), *access);
     }
 }
 

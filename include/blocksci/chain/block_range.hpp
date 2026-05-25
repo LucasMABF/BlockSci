@@ -232,5 +232,8 @@ namespace blocksci {
     CPP_assert(ranges::sized_range<BlockRange>);
 } // namespace blocksci
 
+namespace ranges {
+    template <> inline constexpr bool enable_view<blocksci::BlockRange> = true;
+} // namespace ranges
 
 #endif /* block_range_hpp */

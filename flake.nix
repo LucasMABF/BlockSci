@@ -68,24 +68,24 @@
           ];
 
           buildInputs = with pkgs; [
+            cereal
+            clipp
             gtest
+            nlohmann_json
             openssl
+            rocksdb
             secp256k1
             sparsehash
-            rocksdb
             self.packages.${system}.bitcoin-api-cpp
-            self.packages.${system}.cereal
-            self.packages.${system}.clipp
             self.packages.${system}.dset
             self.packages.${system}.endian
             self.packages.${system}.filesystem
-            self.packages.${system}.json
             self.packages.${system}.mio
           ];
 
           propagatedBuildInputs = with pkgs; [
             boost
-            self.packages.${system}.range-v3
+            range-v3
             self.packages.${system}.variant
           ];
         };
@@ -109,8 +109,8 @@
 
           dontUseCmakeConfigure = true;
 
-          buildInputs = [
-            self.packages.${system}.date
+          buildInputs = with pkgs; [
+            howard-hinnant-date
             self.packages.${system}.default
           ];
 
@@ -136,9 +136,9 @@
             ]
             ++ pythonRuntimeDeps pkgs.python3Packages;
 
-          buildInputs = with pkgs.python3Packages; [
-            pybind11
-            self.packages.${system}.date
+          buildInputs = with pkgs; [
+            python3Packages.pybind11
+            howard-hinnant-date
           ];
 
           shellHook = ''
@@ -176,24 +176,6 @@
           ];
         };
 
-        packages.cereal = mkHeaderOnly {
-          pname = "cereal";
-          version = "1.2.2";
-
-          owner = "USCiLab";
-          rev = "v1.2.2";
-          sha256 = "sha256-pGeb0e3dFcS6pdhvqWyBgGCtSwOEe/S+v+W9N0BGebI=";
-        };
-
-        packages.clipp = mkHeaderOnly {
-          pname = "clipp";
-          version = "1.1.0";
-
-          owner = "muellan";
-          rev = "v1.1.0";
-          sha256 = "sha256-gKxG84JhDJM6iQWLyTVbceLUJ5Ksue9e/gq20a0iX8c=";
-        };
-
         packages.dset = mkHeaderOnly {
           pname = "dset";
           version = "unstable-2015-06-28";
@@ -226,15 +208,6 @@
           sha256 = "sha256-zwHcyAiax4OpWShCqEOggVe5a+f6SRH13toCNBS+IUY=";
         };
 
-        packages.json = mkHeaderOnly {
-          pname = "json";
-          version = "3.3.0";
-
-          owner = "nlohmann";
-          rev = "v3.3.0";
-          sha256 = "sha256-sNhmeRmrWcxitV4Xdj+fa/3FkvQItQyneVrarQJNj94=";
-        };
-
         packages.mio = mkHeaderOnly {
           pname = "mio";
           version = "unstable-2018-05-18";
@@ -244,15 +217,6 @@
           sha256 = "sha256-TZmXHBvHwiupKFDuRTelvnP4JHfuwaT0EPT2N4w+KF4=";
         };
 
-        packages.range-v3 = mkHeaderOnly {
-          pname = "range-v3";
-          version = "0.10.0-unstable-2020-02-26";
-
-          owner = "ericniebler";
-          rev = "5f51a81d4de57f7c563ec25fdc19b295ad94c7d8";
-          sha256 = "sha256-sARuQNtr5TPORj57xeooGCkAuy7fqUq6gWRafTYkAMY=";
-        };
-
         packages.variant = mkHeaderOnly {
           pname = "variant";
           version = "1.3.0";
@@ -260,15 +224,6 @@
           owner = "mpark";
           rev = "v1.3.0";
           sha256 = "sha256-pPqUNaQ9e03NUkQMg3bKkcbTtGc1HmvPpm7dwfYbX9k=";
-        };
-
-        packages.date = mkHeaderOnly {
-          pname = "date";
-          version = "2.4.1-unstable-2018-10-03";
-
-          owner = "HowardHinnant";
-          rev = "1eed461d06b02854d9310d5ab0198eccd2be1d1d";
-          sha256 = "sha256-1UtL82KVy587wbTHXAjBrG5AE3zgAHxdZisIAvjGadk=";
         };
       }
     );
