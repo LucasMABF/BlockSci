@@ -5,6 +5,12 @@
 //  Created by Harry Kalodner on 3/20/18.
 //
 
+#include <blocksci/chain/transaction.hpp>
+#include <blocksci/chain/output_pointer.hpp>
+#include <blocksci/blocksci_export.h>
+#include <blocksci/core/hash_combine.hpp>
+#include <blocksci/chain/output.hpp>
+#include <blocksci/core/typedefs.hpp>
 #include <blocksci/heuristics/taint.hpp>
 #include <blocksci/address/address.hpp>
 #include <blocksci/chain/algorithms.hpp>
@@ -18,8 +24,10 @@
 #include <cassert>
 #include <cstddef>
 #include <cstdint>
+#include <functional>
 #include <numeric>
 #include <map>
+#include <tuple>
 #include <unordered_map>
 #include <initializer_list>
 #include <limits>

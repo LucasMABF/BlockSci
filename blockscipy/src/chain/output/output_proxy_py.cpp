@@ -7,6 +7,7 @@
 //
 
 #include "output_proxy_py.hpp"
+#include "method_tags.hpp"
 #include "output_properties_py.hpp"
 #include "proxy_apply_py.hpp"
 #include "proxy/basic.hpp"
@@ -14,6 +15,8 @@
 #include "proxy/comparison.hpp"
 #include "proxy/optional.hpp"
 #include "proxy/range.hpp"
+#include <blocksci/chain/output.hpp>
+#include "proxy_py.hpp"
 
 struct AddOutputProxyMethods {
     template <typename FuncApplication>

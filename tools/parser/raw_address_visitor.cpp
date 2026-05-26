@@ -7,6 +7,9 @@
 //
 
 #include "raw_address_visitor.hpp"
+#include <blocksci/core/address_types.hpp>
+#include "internal/script_info.hpp"
+#include <blocksci/core/raw_address.hpp>
 
 #include <blocksci/core/address_type_meta.hpp>
 #include <blocksci/core/meta.hpp>

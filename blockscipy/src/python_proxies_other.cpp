@@ -13,6 +13,10 @@
 #include "simple/simple_proxies.hpp"
 
 #include <blocksci/chain/block.hpp>
+#include <pybind11/pybind11.h>
+#include <blocksci/core/bitcoin_uint256.hpp>
+#include <blocksci/core/address_types.hpp>
+#include <pybind11/pytypes.h>
 
 #include <chrono>
 #include <cstdint>

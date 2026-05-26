@@ -6,8 +6,13 @@
 //
 
 #include "utxo_address_state.hpp"
+#include "output_spend_data.hpp"
+#include <blocksci/core/inout_pointer.hpp>
+#include <blocksci/core/address_types.hpp>
+#include <blocksci/core/meta.hpp>
 #include "script_output.hpp"
 
+#include <mpark/variant.hpp>
 #include <wjfilesystem/path.h>
 
 #include <cstddef>

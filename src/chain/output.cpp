@@ -6,6 +6,11 @@
 //  Copyright © 2017 Harry Kalodner. All rights reserved.
 //
 
+#include <blocksci/chain/output_pointer.hpp>
+#include <blocksci/chain/transaction.hpp>
+#include <blocksci/chain/input.hpp>
+#include <blocksci/chain/input_pointer.hpp>
+#include <blocksci/core/typedefs.hpp>
 #include <blocksci/chain/output.hpp>
 #include <blocksci/chain/block.hpp>
 #include <blocksci/address/address.hpp>
@@ -13,6 +18,7 @@
 #include <internal/chain_access.hpp>
 #include <internal/data_access.hpp>
 #include <range/v3/range_for.hpp>
+#include <range/v3/utility/optional.hpp>
 
 #include <cstdint>
 #include <ostream>

@@ -8,6 +8,10 @@
 #include "blocksci_type.hpp"
 #include "blocksci_iterator_type.hpp"
 #include "caster_py.hpp"
+#include <pybind11/pytypes.h>
+#include <mpark/variant.hpp>
+#include "python_fwd.hpp"
+#include <range/v3/view/transform.hpp>
 
 #include <any>
 #include <utility>

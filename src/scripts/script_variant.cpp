@@ -6,15 +6,23 @@
 //  Created by Harry Kalodner on 4/11/18.
 //
 
+#include <blocksci/core/address_types.hpp>
+#include <blocksci/scripts/scripts_fwd.hpp>
+#include <blocksci/core/meta.hpp>
+#include <blocksci/address/address.hpp>
+#include <blocksci/core/typedefs.hpp>
 #include <blocksci/scripts/script_variant.hpp>
 #include <blocksci/chain/transaction.hpp>
 #include <blocksci/chain/input.hpp>
 #include <blocksci/chain/output.hpp>
 #include <blocksci/address/equiv_address.hpp>
+#include <range/v3/utility/optional.hpp>
+#include <range/v3/view/any_view.hpp>
 
 #include <internal/address_info.hpp>
 #include <internal/data_access.hpp>
 #include <internal/script_access.hpp>
+#include <mpark/variant.hpp>
 
 #include <cstddef>
 #include <cstdint>

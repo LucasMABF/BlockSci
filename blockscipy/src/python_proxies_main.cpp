@@ -22,8 +22,12 @@
 #include "cluster/tagged_address/tagged_address_proxy_py.hpp"
 
 #include <blocksci/chain/block.hpp>
+#include <blocksci/chain/transaction.hpp>
+#include <blocksci/chain/input.hpp>
+#include <blocksci/chain/output.hpp>
 #include <blocksci/cluster/cluster.hpp>
 #include <blocksci/address/equiv_address.hpp>
+#include <pybind11/pybind11.h>
 
 namespace py = pybind11;
 using namespace blocksci;

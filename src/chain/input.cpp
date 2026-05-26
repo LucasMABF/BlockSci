@@ -7,6 +7,10 @@
 //
 
 #define BLOCKSCI_WITHOUT_SINGLETON
+#include <blocksci/chain/input_pointer.hpp>
+#include <blocksci/chain/transaction.hpp>
+#include <blocksci/core/typedefs.hpp>
+#include <blocksci/chain/output.hpp>
 
 #include <blocksci/chain/input.hpp>
 #include <blocksci/chain/block.hpp>

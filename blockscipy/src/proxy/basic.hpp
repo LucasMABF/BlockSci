@@ -11,6 +11,7 @@
 
 #include "proxy.hpp"
 #include "proxy_create.hpp"
+#include "proxy_utils.hpp"
 #include "caster_py.hpp"
 #include "generic_sequence.hpp"
 #include "python_range_conversion.hpp"

@@ -7,6 +7,9 @@
 //
 
 #include "performance.hpp"
+#include <blocksci/chain/blockchain.hpp>
+#include <range/v3/range_for.hpp>
+#include <blocksci/chain/block.hpp>
 
 #include <algorithm>
 #include <cstdint>

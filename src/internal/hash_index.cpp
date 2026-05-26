@@ -7,16 +7,27 @@
 //
 
 #include "hash_index.hpp"
+#include <blocksci/core/address_types.hpp>
+#include <blocksci/core/meta.hpp>
 #include "column_iterator.hpp"
+#include "internal/address_info.hpp"
 
 #include <blocksci/core/bitcoin_uint256.hpp>
 
+#include <range/v3/view/any_view.hpp>
+#include <range/v3/utility/optional.hpp>
 #include <range/v3/view/transform.hpp>
 
+#include <rocksdb/options.h>
+#include <rocksdb/cache.h>
+#include <rocksdb/db.h>
+#include <rocksdb/status.h>
 #include <rocksdb/table.h>
 #include <rocksdb/filter_policy.h>
 #include <rocksdb/slice_transform.h>
 #include <rocksdb/table_properties.h>
+#include <wjfilesystem/path.h>
+#include <rocksdb/write_batch.h>
 
 #include <array>
 #include <cstddef>

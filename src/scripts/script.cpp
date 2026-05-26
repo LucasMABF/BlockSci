@@ -5,8 +5,10 @@
 //  Created by Harry Kalodner on 4/10/18.
 //
 
+#include <blocksci/address/address.hpp>
 #include <blocksci/scripts/script.hpp>
 #include <blocksci/chain/transaction.hpp>
+#include <range/v3/utility/optional.hpp>
 
 #include <internal/address_info.hpp>
 #include <internal/data_access.hpp>

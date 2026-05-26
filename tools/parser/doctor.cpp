@@ -6,9 +6,16 @@
 //
 
 #include "doctor.hpp"
+#include <blocksci/core/typedefs.hpp>
 #include "chain_index.hpp"
+#include "internal/data_configuration.hpp"
+#include "internal/chain_configuration.hpp"
+#include "parser_configuration.hpp"
+#include "parser_fwd.hpp"
 
+#include <sys/resource.h>
 #include <sys/statvfs.h>
+#include <wjfilesystem/path.h>
 
 #include <iostream>
 #include <sstream>

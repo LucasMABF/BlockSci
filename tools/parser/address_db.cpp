@@ -6,6 +6,16 @@
 //  Copyright © 2017 Harry Kalodner. All rights reserved.
 //
 #define BLOCKSCI_WITHOUT_SINGLETON
+#include <blocksci/core/raw_address.hpp>
+#include <blocksci/core/dedup_address.hpp>
+#include "internal/state.hpp"
+#include <blocksci/core/dedup_address_type.hpp>
+#include "parser_configuration.hpp"
+#include <wjfilesystem/path.h>
+#include "parser_index.hpp"
+#include <blocksci/core/raw_transaction.hpp>
+#include "internal/chain_access.hpp"
+#include <range/v3/view/subrange.hpp>
 
 #include "address_db.hpp"
 #include "raw_address_visitor.hpp"

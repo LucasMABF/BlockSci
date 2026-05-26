@@ -5,12 +5,17 @@
 //  Created by Harry Kalodner on 4/23/18.
 //
 
+#include <blocksci/core/bitcoin_uint256.hpp>
+#include <blocksci/address/address.hpp>
+#include <blocksci/core/raw_address.hpp>
 #include <blocksci/scripts/pubkey_base_script.hpp>
 #include <blocksci/scripts/bitcoin_pubkey.hpp>
 
 #include <internal/address_index.hpp>
 #include <internal/data_access.hpp>
 
+#include <range/v3/utility/optional.hpp>
+#include <range/v3/view/any_view.hpp>
 #include <range/v3/view/transform.hpp>
 
 namespace blocksci {

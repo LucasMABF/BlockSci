@@ -8,13 +8,30 @@
 
 #include "blockchain_py.hpp"
 #include "caster_py.hpp"
+#include "python_fwd.hpp"
 #include "sequence.hpp"
 
 #include <blocksci/address/address.hpp>
+#include <blocksci/chain/block.hpp>
 #include <blocksci/chain/blockchain.hpp>
 #include <blocksci/chain/access.hpp>
+#include <blocksci/core/address_types.hpp>
+#include <blocksci/core/meta.hpp>
+#include <blocksci/core/address_type_meta.hpp>
+#include <blocksci/core/typedefs.hpp>
 #include <blocksci/scripts/script_range.hpp>
 #include <blocksci/cluster/cluster.hpp>
+#include <blocksci/scripts/scripts_fwd.hpp>
+#include <mpark/variant.hpp>
+#include <range/v3/view/iota.hpp>
+#include <range/v3/view/transform.hpp>
+#include <pybind11/pybind11.h>
+#include <range/v3/range/primitives.hpp>
+#include <pybind11/attr.h>
+#include <pybind11/cast.h>
+#include <pybind11/pytypes.h>
+#include <range/v3/view/any_view.hpp>
+#include <range/v3/utility/optional.hpp>
 
 #include <cstddef>
 #include <cstdint>

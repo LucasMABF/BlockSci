@@ -3,6 +3,7 @@
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 #include "bitcoin_base58.hpp"
+#include <blocksci/core/address_types.hpp>
 
 #include <blocksci/core/bitcoin_uint256.hpp>
 

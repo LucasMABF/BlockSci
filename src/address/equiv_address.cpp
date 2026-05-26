@@ -5,6 +5,11 @@
 //  Created by Harry Kalodner on 3/13/18.
 //
 
+#include <blocksci/core/dedup_address_type.hpp>
+#include <blocksci/chain/output_pointer.hpp>
+#include <blocksci/core/typedefs.hpp>
+#include <blocksci/chain/output.hpp>
+#include <blocksci/chain/input.hpp>
 #include <blocksci/address/equiv_address.hpp>
 #include <blocksci/chain/transaction.hpp>
 #include <blocksci/chain/algorithms.hpp>
@@ -19,9 +24,13 @@
 
 #include <range/v3/action/sort.hpp>
 #include <range/v3/range/conversion.hpp>
+#include <range/v3/view/any_view.hpp>
+#include <range/v3/view/transform.hpp>
+#include <range/v3/view/join.hpp>
 
 #include <cstddef>
 #include <cstdint>
+#include <functional>
 #include <set>
 #include <sstream>
 #include <string>

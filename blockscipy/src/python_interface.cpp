@@ -6,6 +6,9 @@
 //  Copyright © 2017 Harry Kalodner. All rights reserved.
 //
 
+#include "method_types.hpp"
+#include "generic_sequence.hpp"
+#include "python_range.hpp"
 #include "sequence.hpp"
 #include "caster_py.hpp"
 #include "blocksci_range_create.hpp"
@@ -33,11 +36,23 @@
 #include "scripts/nonstandard/nonstandard_py.hpp"
 #include "scripts/witness_unknown/witness_unknown_py.hpp"
 
+#include <blocksci/chain/block.hpp>
 #include <blocksci/chain/blockchain.hpp>
+#include <blocksci/chain/transaction.hpp>
+#include <blocksci/chain/input.hpp>
+#include <blocksci/chain/output.hpp>
 #include <blocksci/cluster/cluster.hpp>
 #include <blocksci/address/equiv_address.hpp>
+#include <range/v3/utility/optional.hpp>
+#include <blocksci/core/bitcoin_uint256.hpp>
+#include <blocksci/scripts/script.hpp>
+#include <blocksci/scripts/scripts_fwd.hpp>
+#include <blocksci/scripts/script_variant.hpp>
 
+#include <pybind11/detail/common.h>
 #include <pybind11/functional.h>
+#include <pybind11/pybind11.h>
+#include <pybind11/pytypes.h>
 
 #include <any>
 

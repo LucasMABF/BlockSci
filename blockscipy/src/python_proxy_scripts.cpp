@@ -5,6 +5,7 @@
 //  Created by Harry Kalodner on 4/21/18.
 //
 
+#include "generic_proxy.hpp"
 #include "python_proxies.hpp"
 #include "python_proxies_types.hpp"
 #include "caster_py.hpp"
@@ -24,6 +25,9 @@
 #include "scripts/witness_unknown/witness_unknown_proxy_py.hpp"
 
 #include <blocksci/chain/block.hpp>
+#include <pybind11/pybind11.h>
+#include <blocksci/scripts/script_variant.hpp>
+#include <blocksci/scripts/scripts_fwd.hpp>
 
 namespace py = pybind11;
 using namespace blocksci;

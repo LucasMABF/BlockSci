@@ -5,6 +5,9 @@
 //  Created by Harry Kalodner on 4/23/18.
 //
 
+#include <blocksci/core/address_types.hpp>
+#include <blocksci/address/address.hpp>
+#include <blocksci/scripts/scripts_fwd.hpp>
 #include <blocksci/scripts/multisig_script.hpp>
 #include <blocksci/scripts/multisig_pubkey_script.hpp>
 
@@ -12,6 +15,8 @@
 #include <internal/data_access.hpp>
 #include <internal/script_access.hpp>
 
+#include <range/v3/view/any_view.hpp>
+#include <range/v3/range_for.hpp>
 #include <range/v3/view/transform.hpp>
 
 #include <cstdint>

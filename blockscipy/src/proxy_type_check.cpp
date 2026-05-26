@@ -7,10 +7,12 @@
 //
 
 #include "proxy_type_check.hpp"
+#include "python_fwd.hpp"
 
 #include <boost/core/demangle.hpp>
 
 #include <blocksci/scripts/script_variant.hpp>
+#include <blocksci/scripts/scripts_fwd.hpp>
 
 #include <stdexcept>
 #include <sstream>

@@ -6,9 +6,13 @@
 //
 
 #include "output_spend_data.hpp"
+#include <blocksci/core/address_types.hpp>
+#include <blocksci/core/meta.hpp>
+#include <blocksci/core/dedup_address_type.hpp>
 #include "script_output.hpp"
 
 #include <blocksci/core/raw_address.hpp>
+#include <mpark/variant.hpp>
 
 #include <cstddef>
 #include <cstdint>

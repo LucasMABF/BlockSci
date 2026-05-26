@@ -8,9 +8,11 @@
 
 #include "tagged_address_py.hpp"
 #include "caster_py.hpp"
+#include "python_range.hpp"
 #include "ranges_py.hpp"
 
 #include <blocksci/cluster/cluster.hpp>
+#include <pybind11/pybind11.h>
 
 namespace py = pybind11;
 using namespace blocksci;

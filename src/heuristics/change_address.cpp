@@ -6,6 +6,12 @@
 //
 
 #define BLOCKSCI_WITHOUT_SINGLETON
+#include <blocksci/chain/output.hpp>
+#include <range/v3/view/any_view.hpp>
+#include <range/v3/view/empty.hpp>
+#include <blocksci/core/address_types.hpp>
+#include <range/v3/utility/optional.hpp>
+#include <range/v3/view/single.hpp>
 
 #include <blocksci/heuristics/change_address.hpp>
 #include <blocksci/heuristics/tx_identification.hpp>

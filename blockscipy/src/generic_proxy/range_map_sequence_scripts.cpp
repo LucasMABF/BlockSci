@@ -6,10 +6,13 @@
 //
 //
 
+#include "generic_proxy.hpp"
 #include "range_map.hpp"
 #include "range_map_sequence_impl.hpp"
 
 #include <blocksci/scripts/script_variant.hpp>
+#include <pybind11/pybind11.h>
+#include <blocksci/scripts/scripts_fwd.hpp>
 
 void applyProxyMapSequenceFuncsScripts(pybind11::class_<IteratorProxy, GenericProxy> &cl) {
 	using namespace blocksci;

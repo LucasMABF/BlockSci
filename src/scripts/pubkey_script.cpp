@@ -7,6 +7,7 @@
 
 #include "bitcoin_base58.hpp"
 #include "bitcoin_segwit_addr.hpp"
+#include <blocksci/core/address_types.hpp>
 
 #include <blocksci/scripts/pubkey_script.hpp>
 

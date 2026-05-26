@@ -8,11 +8,23 @@
 
 #include "cluster_proxy_py.hpp"
 #include "cluster_properties_py.hpp"
+#include "method_tags.hpp"
 #include "proxy_apply_py.hpp"
 #include "proxy/basic.hpp"
 #include "proxy/equality.hpp"
 #include "proxy/optional.hpp"
 #include "proxy/range.hpp"
+#include <blocksci/cluster/cluster.hpp>
+#include <pybind11/cast.h>
+#include "python_fwd.hpp"
+#include <blocksci/chain/output.hpp>
+#include <pybind11/pybind11.h>
+#include <blocksci/chain/input.hpp>
+#include <blocksci/scripts/script_variant.hpp>
+#include <range/v3/view/any_view.hpp>
+#include <range/v3/view/transform.hpp>
+#include <blocksci/address/address.hpp>
+#include "proxy_py.hpp"
 
 struct AddClusterProxyMethods {
     template <typename FuncApplication>

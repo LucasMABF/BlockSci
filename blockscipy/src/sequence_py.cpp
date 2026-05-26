@@ -11,6 +11,11 @@
 #include "caster_py.hpp"
 #include "blocksci_type.hpp"
 #include "blocksci_iterator_type.hpp"
+#include <pybind11/pybind11.h>
+#include <pybind11/pytypes.h>
+#include "python_fwd.hpp"
+#include <range/v3/range_for.hpp>
+#include <mpark/variant.hpp>
 
 #include <any>
 #include <unordered_map>

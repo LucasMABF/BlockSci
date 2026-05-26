@@ -8,18 +8,26 @@
 
 #include "equiv_address_proxy_py.hpp"
 #include "equiv_address_py.hpp"
+#include "method_tags.hpp"
 #include "proxy_apply_py.hpp"
 #include "proxy/basic.hpp"
 #include "proxy/equality.hpp"
 #include "proxy/optional.hpp"
 #include "proxy/range.hpp"
+#include "python_fwd.hpp"
+#include "proxy_py.hpp"
 
+#include <blocksci/address/address.hpp>
+#include <blocksci/chain/output.hpp>
+#include <blocksci/chain/input.hpp>
 #include <blocksci/cluster/cluster.hpp>
 #include <blocksci/address/equiv_address.hpp>
+#include <blocksci/scripts/script_variant.hpp>
 
 #include <range/v3/view/transform.hpp>
 #include <range/v3/view/iota.hpp>
 #include <range/v3/view/join.hpp>
+#include <pybind11/pybind11.h>
 
 #include <cstdint>
 

@@ -8,9 +8,12 @@
 
 #include "nonstandard_py.hpp"
 #include "caster_py.hpp"
+#include "python_range.hpp"
 #include "ranges_py.hpp"
 
 #include <blocksci/scripts/nonstandard_script.hpp>
+#include <pybind11/pybind11.h>
+#include <blocksci/scripts/scripts_fwd.hpp>
 
 using namespace blocksci;
 namespace py = pybind11;

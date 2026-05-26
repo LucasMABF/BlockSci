@@ -6,11 +6,16 @@
 //
 //
 
+#include "generic_proxy.hpp"
 #include "range_map.hpp"
 #include "range_map_optional_impl.hpp"
 
 #include <blocksci/address/equiv_address.hpp>
 #include <blocksci/cluster/cluster.hpp>
+#include <pybind11/pybind11.h>
+#include <blocksci/core/address_types.hpp>
+#include <blocksci/core/bitcoin_uint256.hpp>
+#include <pybind11/pytypes.h>
 
 #include <chrono>
 #include <cstdint>

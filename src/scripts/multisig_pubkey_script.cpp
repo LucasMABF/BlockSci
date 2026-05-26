@@ -6,6 +6,7 @@
 //
 
 #include "bitcoin_base58.hpp"
+#include <blocksci/core/address_types.hpp>
 
 #include <blocksci/scripts/multisig_pubkey_script.hpp>
 

@@ -6,10 +6,13 @@
 //  Copyright © 2017 Harry Kalodner. All rights reserved.
 //
 
+#include <blocksci/core/typedefs.hpp>
 #include <blocksci/chain/transaction_range.hpp>
+#include <concepts/concepts.hpp>
 #include <internal/chain_access.hpp>
 #include <internal/data_access.hpp>
 
+#include <range/v3/iterator/concepts.hpp>
 #include <range/v3/range/concepts.hpp>
 
 #include <cstdint>

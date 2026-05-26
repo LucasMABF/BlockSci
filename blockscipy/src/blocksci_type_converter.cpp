@@ -6,9 +6,17 @@
 //
 
 #include "blocksci_type_converter.hpp"
+#include "python_fwd.hpp"
 
+#include <blocksci/address/address.hpp>
+#include <blocksci/chain/block.hpp>
 #include <blocksci/chain/block_range.hpp>
+#include <blocksci/chain/input.hpp>
+#include <blocksci/chain/input_range.hpp>
+#include <blocksci/chain/output.hpp>
+#include <blocksci/chain/output_range.hpp>
 #include <blocksci/scripts/script_variant.hpp>
+#include <range/v3/view/any_view.hpp>
 
 blocksci::AnyScript BlockSciTypeConverter::operator()(const blocksci::Address &address) {
     return address.getScript();

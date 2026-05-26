@@ -6,10 +6,12 @@
 //
 
 #include "script_view.hpp"
+#include "internal/bitcoin_script.hpp"
 
 #include <blocksci/core/bitcoin_uint256.hpp>
 
 #include <range/v3/range/conversion.hpp>
+#include <range/v3/view/subrange.hpp>
 
 #include <cstddef>
 #include <cstdint>

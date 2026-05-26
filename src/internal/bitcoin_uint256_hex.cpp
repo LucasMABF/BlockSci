@@ -4,6 +4,7 @@
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 #include "bitcoin_uint256_hex.hpp"
+#include <blocksci/core/bitcoin_uint256.hpp>
 
 #include <cctype>
 #include <string>

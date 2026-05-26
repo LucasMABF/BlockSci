@@ -7,6 +7,10 @@
 //
 
 #define BLOCKSCI_WITHOUT_SINGLETON
+#include <blocksci/core/typedefs.hpp>
+#include "internal/bitcoin_uint256_hex.hpp"
+#include "internal/script_view.hpp"
+#include "internal/bitcoin_script.hpp"
 
 #include "preproccessed_block.hpp"
 #include "chain_index.hpp"

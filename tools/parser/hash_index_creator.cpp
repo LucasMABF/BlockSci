@@ -7,10 +7,20 @@
 //
 
 #include "hash_index_creator.hpp"
+#include <blocksci/core/address_types.hpp>
+#include "internal/address_info.hpp"
+#include <blocksci/core/meta.hpp>
+#include <blocksci/core/raw_transaction.hpp>
+#include "internal/chain_access.hpp"
+#include <blocksci/core/dedup_address_type.hpp>
 #include "parser_configuration.hpp"
+#include "parser_index.hpp"
 #include "raw_address_visitor.hpp"
 
 #include <blocksci/core/raw_address.hpp>
+#include <wjfilesystem/path.h>
+#include <range/v3/view/subrange.hpp>
+#include <range/v3/utility/optional.hpp>
 
 #include <cstdint>
 #include <functional>

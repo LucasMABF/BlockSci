@@ -6,6 +6,15 @@
 //
 //
 #define BLOCKSCI_WITHOUT_SINGLETON
+#include <blocksci/core/address_types.hpp>
+#include <blocksci/core/dedup_address_type.hpp>
+#include "parser_configuration.hpp"
+#include <blocksci/core/meta.hpp>
+#include "internal/file_mapper.hpp"
+#include "script_output.hpp"
+#include <mpark/variant.hpp>
+#include "script_input.hpp"
+#include <blocksci/core/script_data.hpp>
 
 #include "address_writer.hpp"
 #include "preproccessed_block.hpp"

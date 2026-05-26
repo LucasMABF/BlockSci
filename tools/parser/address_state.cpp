@@ -7,11 +7,16 @@
 //
 
 #include "address_state.hpp"
+#include "hash_index_creator.hpp"
+#include <blocksci/core/meta.hpp>
+#include <blocksci/core/dedup_address_type.hpp>
+#include "internal/state.hpp"
 #include "parser_configuration.hpp"
 
 #include <blocksci/core/bitcoin_uint256.hpp>
 
 #include <internal/address_info.hpp>
+#include <wjfilesystem/path.h>
 
 #include <cstddef>
 #include <cstdint>

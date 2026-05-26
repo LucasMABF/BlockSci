@@ -5,6 +5,13 @@
 //  Created by Malte Möser on 3/6/20.
 //
 
+#include <blocksci/core/raw_block.hpp>
+#include <blocksci/core/raw_transaction.hpp>
+#include "internal/file_mapper.hpp"
+#include <blocksci/core/dedup_address_type.hpp>
+#include <blocksci/core/script_data.hpp>
+#include <blocksci/core/raw_address.hpp>
+#include <blocksci/core/address_types.hpp>
 #include "internal/hash.hpp"
 #include <blocksci/address.hpp>
 #include <blocksci/core/dedup_address.hpp>
@@ -20,6 +27,7 @@
 #include <internal/hash_index.hpp>
 #include <internal/script_access.hpp>
 
+#include <range/v3/range_for.hpp>
 #include <range/v3/utility/optional.hpp>
 
 #include <clipp.h>

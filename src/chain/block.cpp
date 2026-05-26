@@ -6,10 +6,15 @@
 //  Copyright © 2017 Harry Kalodner. All rights reserved.
 //
 
+#include <blocksci/core/raw_block.hpp>
+#include <blocksci/core/typedefs.hpp>
+#include <blocksci/core/address_types.hpp>
+#include <blocksci/blocksci_export.h>
 #include <blocksci/chain/block.hpp>
 #include <blocksci/chain/input.hpp>
 #include <blocksci/chain/output.hpp>
 #include <blocksci/address/address.hpp>
+#include <range/v3/utility/optional.hpp>
 
 #include <internal/chain_access.hpp>
 #include <internal/data_access.hpp>

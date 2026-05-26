@@ -7,6 +7,12 @@
 //
 
 #define BLOCKSCI_WITHOUT_SINGLETON
+#include <blocksci/chain/block_range.hpp>
+#include <blocksci/core/address_types.hpp>
+#include <blocksci/chain/blockchain.hpp>
+#include <blocksci/address/address.hpp>
+#include <range/v3/range_for.hpp>
+#include <blocksci/chain/algorithms.hpp>
 
 #include <blocksci/blocksci.hpp>
 #include <range/v3/view/slice.hpp>

@@ -5,9 +5,20 @@
 //  Created by Malte Möser on 4/27/20.
 //
 
+#include <blocksci/chain/output.hpp>
+#include <blocksci/chain/input.hpp>
+#include <blocksci/chain/algorithms.hpp>
+#include <blocksci/chain/blockchain.hpp>
+#include <blocksci/chain/block.hpp>
+#include <blocksci/chain/block_range.hpp>
+#include <blocksci/chain/transaction_range.hpp>
+#include <blocksci/chain/input_range.hpp>
+#include <blocksci/chain/output_range.hpp>
+#include <blocksci/core/address_types.hpp>
 #include "unit_test.h"
 
 #include <range/v3/range/conversion.hpp>
+#include <gtest/gtest.h>
 
 #include <cstdint>
 #include <functional>

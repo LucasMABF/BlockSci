@@ -5,6 +5,7 @@
 //  Created by Harry Kalodner on 10/22/18.
 //
 
+#include <blocksci/core/address_types.hpp>
 #include <blocksci/scripts/witness_unknown_script.hpp>
 
 #include <internal/address_info.hpp>
@@ -12,6 +13,8 @@
 #include <internal/script_access.hpp>
 #include <internal/script_view.hpp>
 
+#include <range/v3/utility/optional.hpp>
+#include <range/v3/view/any_view.hpp>
 #include <range/v3/view/split.hpp>
 
 #include <cstdint>

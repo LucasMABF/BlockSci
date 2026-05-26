@@ -10,11 +10,24 @@
 #include "python_fwd.hpp"
 #include "sequence.hpp"
 
+#include <blocksci/address/address.hpp>
+#include <blocksci/address/equiv_address.hpp>
+#include <blocksci/chain/block.hpp>
+#include <blocksci/chain/transaction.hpp>
+#include <blocksci/chain/input.hpp>
+#include <blocksci/chain/output.hpp>
+#include <blocksci/core/address_types.hpp>
+#include <blocksci/core/bitcoin_uint256.hpp>
 #include <blocksci/scripts/script_variant.hpp>
 #include <blocksci/cluster/cluster.hpp>
+#include <blocksci/scripts/scripts_fwd.hpp>
 
+#include <pybind11/detail/common.h>
+#include <pybind11/detail/type_caster_base.h>
+#include <pybind11/detail/typeid.h>
 #include <pybind11/pybind11.h>
 #include <pybind11/numpy.h>
+#include <pybind11/pytypes.h>
 
 #include <range/v3/utility/optional.hpp>
 
@@ -26,6 +39,7 @@
 #include <typeindex>
 #include <typeinfo>
 #include <unordered_map>
+#include <pytypedefs.h>
 
 using namespace blocksci;
 namespace py = pybind11;

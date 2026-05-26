@@ -7,7 +7,10 @@
 //
 
 #include "nonstandard_proxy_py.hpp"
+#include "method_tags.hpp"
+#include "generic_proxy.hpp"
 #include "nonstandard_py.hpp"
+#include "proxy_py.hpp"
 #include "scripts/address_py.hpp"
 #include "proxy_apply_py.hpp"
 #include "proxy/basic.hpp"
@@ -19,6 +22,7 @@
 #include <blocksci/chain/block.hpp>
 #include <blocksci/cluster/cluster.hpp>
 #include <blocksci/scripts/nonstandard_script.hpp>
+#include <blocksci/scripts/scripts_fwd.hpp>
 
 struct AddNonstandardMethods {
     template <typename FuncApplication>

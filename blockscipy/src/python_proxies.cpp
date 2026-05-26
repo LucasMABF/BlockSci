@@ -6,6 +6,8 @@
 //
 
 #include "python_proxies.hpp"
+#include "python_fwd.hpp"
+#include "generic_proxy.hpp"
 #include "python_proxies_types.hpp"
 #include "proxy.hpp"
 #include "caster_py.hpp"
@@ -15,6 +17,8 @@
 #include "method_types.hpp"
 
 #include <blocksci/chain/block.hpp>
+#include <pybind11/pybind11.h>
+#include <pybind11/pytypes.h>
 
 namespace py = pybind11;
 using namespace blocksci;

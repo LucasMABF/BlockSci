@@ -7,6 +7,8 @@
 //
 
 #define BLOCKSCI_WITHOUT_SINGLETON
+#include <blocksci/core/address_types.hpp>
+#include <blocksci/core/meta.hpp>
 
 #include "address_info.hpp"
 

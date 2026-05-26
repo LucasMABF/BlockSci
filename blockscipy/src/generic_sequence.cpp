@@ -8,6 +8,9 @@
 #include "generic_sequence.hpp"
 #include "blocksci_iterator_type.hpp"
 #include "blocksci_range_type.hpp"
+#include "python_fwd.hpp"
+#include <mpark/variant.hpp>
+#include <range/v3/view/transform.hpp>
 
 #include <any>
 #include <utility>

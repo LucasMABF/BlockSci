@@ -7,11 +7,13 @@
 //
 
 #include "tagged_address_proxy_py.hpp"
+#include "method_tags.hpp"
 #include "proxy_apply_py.hpp"
 #include "proxy/basic.hpp"
 #include "proxy/equality.hpp"
 #include "proxy/optional.hpp"
 #include "proxy/range.hpp"
+#include "proxy_py.hpp"
 
 #include <blocksci/cluster/cluster.hpp>
 

@@ -7,6 +7,22 @@
 //
 
 #define BLOCKSCI_WITHOUT_SINGLETON
+#include <blocksci/core/typedefs.hpp>
+#include "internal/bitcoin_uint256_hex.hpp"
+#include "parser_fwd.hpp"
+#include "parser_configuration.hpp"
+#include "internal/bitcoin_script.hpp"
+#include <blocksci/core/raw_block.hpp>
+#include "internal/dedup_address_info.hpp"
+#include "internal/address_info.hpp"
+#include "utxo.hpp"
+#include <blocksci/core/inout.hpp>
+#include "internal/file_mapper.hpp"
+#include <mio/mmap.hpp>
+#include "internal/chain_access.hpp"
+#include "internal/progress_bar.hpp"
+#include <boost/lockfree/policies.hpp>
+#include <bits/chrono.h>
 
 #include "block_processor.hpp"
 #include "script_input.hpp"

@@ -8,9 +8,11 @@
 
 #include "address_output_range.hpp"
 #include "address_index.hpp"
+#include <blocksci/core/address_types.hpp>
 
 #include <blocksci/core/inout_pointer.hpp>
 #include <blocksci/core/raw_address.hpp>
+#include <range/v3/iterator/default_sentinel.hpp>
 
 #include <rocksdb/db.h>
 

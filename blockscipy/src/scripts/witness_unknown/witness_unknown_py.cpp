@@ -8,9 +8,12 @@
 
 #include "witness_unknown_py.hpp"
 #include "caster_py.hpp"
+#include "python_range.hpp"
 #include "ranges_py.hpp"
 
+#include <blocksci/scripts/scripts_fwd.hpp>
 #include <blocksci/scripts/witness_unknown_script.hpp>
+#include <pybind11/pybind11.h>
 
 using namespace blocksci;
 namespace py = pybind11;

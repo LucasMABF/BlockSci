@@ -7,10 +7,12 @@
 //
 
 #include "optional.hpp"
+#include "generic_proxy.hpp"
 #include "optional_map.hpp"
 #include "proxy.hpp"
 #include "proxy_utils.hpp"
 #include "caster_py.hpp"
+#include <pybind11/pybind11.h>
 
 #include <utility>
 

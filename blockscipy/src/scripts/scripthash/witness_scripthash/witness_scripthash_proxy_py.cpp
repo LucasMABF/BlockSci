@@ -7,6 +7,8 @@
 //
 
 #include "witness_scripthash_proxy_py.hpp"
+#include "proxy_py.hpp"
+#include "generic_proxy.hpp"
 #include "scripts/scripthash/scripthash_proxy_impl.hpp"
 #include "scripts/address_py.hpp"
 #include "proxy_apply_py.hpp"
@@ -18,6 +20,7 @@
 #include <blocksci/chain/block.hpp>
 #include <blocksci/cluster/cluster.hpp>
 #include <blocksci/scripts/scripthash_script.hpp>
+#include <blocksci/scripts/scripts_fwd.hpp>
 
 void addWitnessScriptHashProxyMethods(AllProxyClasses<blocksci::script::WitnessScriptHash, ProxyAddress> &cls) {
 	cls.applyToAll(AddProxyMethods{});

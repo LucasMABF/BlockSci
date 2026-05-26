@@ -7,6 +7,14 @@
 //
 
 #define BLOCKSCI_WITHOUT_SINGLETON
+#include <wjfilesystem/path.h>
+#include <bitcoinapi/types.h>
+#include <blocksci/core/typedefs.hpp>
+#include <blocksci/core/bitcoin_uint256.hpp>
+#include <bitcoinapi/exception.h>
+#include <signal.h>
+#include "internal/data_configuration.hpp"
+#include "internal/chain_configuration.hpp"
 
 #include "file_writer.hpp"
 

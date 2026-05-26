@@ -6,6 +6,10 @@
 //  Copyright © 2017 Harry Kalodner. All rights reserved.
 //
 
+#include <blocksci/chain/block_range.hpp>
+#include <blocksci/core/typedefs.hpp>
+#include "internal/data_configuration.hpp"
+#include <blocksci/core/address_types.hpp>
 #include <blocksci/chain/blockchain.hpp>
 #include <blocksci/chain/output.hpp>
 #include <blocksci/address/address.hpp>

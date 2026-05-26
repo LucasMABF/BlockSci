@@ -7,8 +7,10 @@
 //
 
 #include "chain_configuration.hpp"
+#include <blocksci/core/typedefs.hpp>
 
 #include <nlohmann/json.hpp>
+#include <nlohmann/json_fwd.hpp>
 
 #include <initializer_list>
 #include <limits>

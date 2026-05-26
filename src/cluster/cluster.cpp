@@ -6,6 +6,12 @@
 //
 //
 
+#include <blocksci/core/dedup_address_type.hpp>
+#include <blocksci/core/address_types.hpp>
+#include <blocksci/core/meta.hpp>
+#include <blocksci/chain/range_util.hpp>
+#include <blocksci/chain/input.hpp>
+#include <blocksci/core/typedefs.hpp>
 #include <blocksci/cluster/cluster.hpp>
 #include <blocksci/cluster/cluster_manager.hpp>
 
@@ -23,8 +29,15 @@
 #include <internal/script_access.hpp>
 
 #include <range/v3/iterator/operations.hpp>
+#include <range/v3/numeric/accumulate.hpp>
 #include <range/v3/range/conversion.hpp>
+#include <range/v3/view/filter.hpp>
+#include <range/v3/view/any_view.hpp>
+#include <range/v3/utility/optional.hpp>
+#include <range/v3/range_for.hpp>
 #include <range/v3/view/join.hpp>
+#include <range/v3/view/subrange.hpp>
+#include <range/v3/view/transform.hpp>
 
 #include <cstddef>
 #include <cstdint>

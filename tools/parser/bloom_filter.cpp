@@ -17,6 +17,7 @@
 #include <fstream>
 #include <array>
 #include <cmath>
+#include <ios>
 #include <stdexcept>
 #include <string>
 

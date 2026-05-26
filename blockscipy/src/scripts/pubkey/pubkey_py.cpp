@@ -8,6 +8,7 @@
 
 #include "pubkey_py.hpp"
 #include "caster_py.hpp"
+#include "python_range.hpp"
 #include "ranges_py.hpp"
 
 #include <blocksci/chain/input_range.hpp>
@@ -16,6 +17,8 @@
 #include <blocksci/cluster/cluster.hpp>
 #include <blocksci/scripts/pubkey_script.hpp>
 #include <blocksci/scripts/multisig_pubkey_script.hpp>
+#include <pybind11/pybind11.h>
+#include <blocksci/scripts/scripts_fwd.hpp>
 
 using namespace blocksci;
 namespace py = pybind11;

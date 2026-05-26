@@ -7,6 +7,9 @@
 //
 
 #include "witness_unknown_proxy_py.hpp"
+#include "method_tags.hpp"
+#include "proxy_py.hpp"
+#include "generic_proxy.hpp"
 #include "witness_unknown_py.hpp"
 #include "scripts/address_py.hpp"
 #include "proxy_apply_py.hpp"
@@ -17,13 +20,18 @@
 
 #include <blocksci/chain/block.hpp>
 #include <blocksci/cluster/cluster.hpp>
+#include <blocksci/scripts/scripts_fwd.hpp>
 #include <blocksci/scripts/witness_unknown_script.hpp>
 
 #include <range/v3/range/conversion.hpp>
 #include <range/v3/range_for.hpp>
+#include <range/v3/utility/optional.hpp>
+#include <pybind11/pytypes.h>
+#include <range/v3/view/transform.hpp>
 
 #include <cstdint>
 #include <string>
+#include <vector>
 
 using namespace blocksci;
 namespace py = pybind11;

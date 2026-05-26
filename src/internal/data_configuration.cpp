@@ -7,8 +7,12 @@
 //
 
 #include "data_configuration.hpp"
+#include <blocksci/core/typedefs.hpp>
+#include "internal/chain_configuration.hpp"
 
 #include <nlohmann/json.hpp>
+#include <nlohmann/json_fwd.hpp>
+#include <wjfilesystem/path.h>
 
 #include <cstdint>
 #include <fstream>

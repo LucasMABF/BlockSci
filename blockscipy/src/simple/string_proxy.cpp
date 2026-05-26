@@ -6,6 +6,7 @@
 //
 //
 
+#include "proxy_py.hpp"
 #include "simple_proxies.hpp"
 #include "proxy/range.hpp"
 #include "proxy/equality.hpp"

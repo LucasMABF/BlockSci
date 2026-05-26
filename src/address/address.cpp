@@ -7,6 +7,26 @@
 //
 
 #define BLOCKSCI_WITHOUT_SINGLETON
+#include <range/v3/view/any_view.hpp>
+#include <blocksci/chain/output_pointer.hpp>
+#include <blocksci/core/inout_pointer.hpp>
+#include <blocksci/chain/output.hpp>
+#include <blocksci/chain/input.hpp>
+#include <blocksci/chain/transaction.hpp>
+#include <range/v3/utility/optional.hpp>
+#include <range/v3/range_for.hpp>
+#include <range/v3/view/facade.hpp>
+#include <range/v3/detail/range_access.hpp>
+#include <range/v3/range/access.hpp>
+#include <range/v3/iterator/default_sentinel.hpp>
+#include "internal/address_info.hpp"
+#include <blocksci/scripts/script.hpp>
+#include <blocksci/core/address_types.hpp>
+#include <blocksci/core/bitcoin_uint256.hpp>
+#include <tuple>
+#include <blocksci/scripts/scripts_fwd.hpp>
+#include <blocksci/core/dedup_address_type.hpp>
+#include <blocksci/core/typedefs.hpp>
 
 #include <blocksci/address/address.hpp>
 #include <blocksci/address/equiv_address.hpp>

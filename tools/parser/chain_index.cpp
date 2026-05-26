@@ -7,6 +7,13 @@
 //
 
 #define BLOCKSCI_WITHOUT_SINGLETON
+#include <blocksci/core/bitcoin_uint256.hpp>
+#include "parser_fwd.hpp"
+#include <blocksci/core/typedefs.hpp>
+#include "internal/bitcoin_uint256_hex.hpp"
+#include <bits/chrono.h>
+#include <tuple>
+#include <bitcoinapi/exception.h>
 
 #include "chain_index.hpp"
 #include "parser_configuration.hpp"

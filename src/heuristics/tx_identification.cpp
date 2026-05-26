@@ -5,6 +5,10 @@
 //  Created by Harry Kalodner on 12/1/17.
 //
 
+#include <blocksci/address/address.hpp>
+#include <blocksci/core/address_types.hpp>
+#include <blocksci/scripts/scripts_fwd.hpp>
+#include <blocksci/core/hash_combine.hpp>
 #include <blocksci/heuristics/tx_identification.hpp>
 #include <blocksci/chain/transaction.hpp>
 #include <blocksci/chain/input.hpp>
@@ -12,6 +16,7 @@
 #include <blocksci/scripts/script_variant.hpp>
 
 #include <range/v3/range_for.hpp>
+#include <range/v3/utility/optional.hpp>
 
 #include <algorithm>
 #include <cstddef>

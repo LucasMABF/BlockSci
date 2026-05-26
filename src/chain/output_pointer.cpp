@@ -6,6 +6,7 @@
 //
 //
 
+#include <blocksci/chain/input_pointer.hpp>
 #include <blocksci/chain/output_pointer.hpp>
 #include <blocksci/chain/transaction.hpp>
 #include <blocksci/chain/output.hpp>

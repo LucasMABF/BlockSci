@@ -6,6 +6,10 @@
 //  Copyright © 2017 Harry Kalodner. All rights reserved.
 //
 
+#include <blocksci/chain/block_range.hpp>
+#include <blocksci/core/typedefs.hpp>
+#include <blocksci/chain/block.hpp>
+#include <blocksci/chain/transaction.hpp>
 #include <blocksci/chain/blockchain.hpp>
 
 #include <range/v3/action/push_back.hpp>
@@ -15,6 +19,7 @@
 #include <algorithm>
 #include <cstdint>
 #include <functional>
+#include <iterator>
 #include <vector>
 
 namespace blocksci {

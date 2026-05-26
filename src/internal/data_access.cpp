@@ -8,6 +8,7 @@
 
 #include "data_access.hpp"
 #include "chain_access.hpp"
+#include "internal/data_configuration.hpp"
 #include "script_access.hpp"
 #include "address_index.hpp"
 #include "hash_index.hpp"

@@ -9,6 +9,8 @@
 #include "proxy_functions_impl.hpp"
 
 #include <blocksci/scripts/script_variant.hpp>
+#include <pybind11/pybind11.h>
+#include <blocksci/scripts/scripts_fwd.hpp>
 
 void addProxyFunctionsScripts(pybind11::module &m, pybind11::module &pm) {
 	using namespace blocksci;

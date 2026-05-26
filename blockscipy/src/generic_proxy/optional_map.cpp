@@ -7,10 +7,20 @@
 //
 
 #include "optional_map.hpp"
+#include "generic_proxy.hpp"
 #include "proxy.hpp"
 #include "proxy_utils.hpp"
 
 #include <blocksci/chain/block.hpp>
+#include <range/v3/utility/optional.hpp>
+#include <pybind11/pybind11.h>
+#include <blocksci/chain/transaction.hpp>
+#include <blocksci/chain/input.hpp>
+#include <blocksci/chain/output.hpp>
+#include <blocksci/scripts/script_variant.hpp>
+#include <blocksci/core/address_types.hpp>
+#include <blocksci/core/bitcoin_uint256.hpp>
+#include <pybind11/pytypes.h>
 
 #include <chrono>
 #include <cstdint>

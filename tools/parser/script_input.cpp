@@ -7,6 +7,15 @@
 //
 
 #define BLOCKSCI_WITHOUT_SINGLETON
+#include "internal/script_view.hpp"
+#include <blocksci/core/address_types.hpp>
+#include <mpark/variant.hpp>
+#include "address_state.hpp"
+#include <blocksci/core/raw_address.hpp>
+#include "script_output.hpp"
+#include "internal/bitcoin_script.hpp"
+#include <range/v3/view/subrange.hpp>
+#include <blocksci/scripts/bitcoin_pubkey.hpp>
 
 #include "script_input.hpp"
 #include "preproccessed_block.hpp"

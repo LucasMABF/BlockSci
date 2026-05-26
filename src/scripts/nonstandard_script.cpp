@@ -5,7 +5,9 @@
 //  Created by Harry Kalodner on 4/23/18.
 //
 
+#include <blocksci/core/address_types.hpp>
 #include <blocksci/scripts/nonstandard_script.hpp>
+#include <range/v3/utility/optional.hpp>
 
 #include <internal/address_info.hpp>
 #include <internal/data_access.hpp>

@@ -7,6 +7,15 @@
 //
 
 #define BLOCKSCI_WITHOUT_SINGLETON
+#include <nlohmann/json_fwd.hpp>
+#include <unistd.h>
+#include <blocksci/core/raw_block.hpp>
+#include "parser_fwd.hpp"
+#include <blocksci/core/typedefs.hpp>
+#include "internal/chain_access.hpp"
+#include "internal/script_access.hpp"
+#include "internal/chain_configuration.hpp"
+#include "file_writer.hpp"
 
 #include "config.hpp"
 #include "parser_configuration.hpp"

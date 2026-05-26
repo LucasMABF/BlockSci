@@ -5,6 +5,8 @@
 //  Created by Harry Kalodner on 12/1/17.
 //
 
+#include <blocksci/chain/transaction.hpp>
+#include <blocksci/chain/block_range.hpp>
 #include <blocksci/heuristics/blockchain_heuristics.hpp>
 #include <blocksci/heuristics/tx_identification.hpp>
 #include <blocksci/chain/blockchain.hpp>

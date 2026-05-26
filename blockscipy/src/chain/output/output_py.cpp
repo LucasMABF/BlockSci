@@ -7,14 +7,17 @@
 
 #include "output_py.hpp"
 #include "output_properties_py.hpp"
+#include "python_range.hpp"
 #include "self_apply_py.hpp"
 #include "ranges_py.hpp"
 #include "caster_py.hpp"
 
 #include <pybind11/operators.h>
+#include <pybind11/pybind11.h>
 
 #include <blocksci/chain/access.hpp>
 #include <blocksci/chain/block.hpp>
+#include <blocksci/chain/output.hpp>
 
 namespace py = pybind11;
 

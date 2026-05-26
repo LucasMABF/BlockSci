@@ -7,6 +7,12 @@
 //
 
 #define BLOCKSCI_WITHOUT_SINGLETON
+#include <blocksci/core/typedefs.hpp>
+#include <blocksci/core/address_types.hpp>
+#include <range/v3/utility/optional.hpp>
+#include <blocksci/chain/output_pointer.hpp>
+#include <blocksci/chain/input_pointer.hpp>
+#include <range/v3/range_for.hpp>
 
 #include <blocksci/chain/transaction.hpp>
 #include <blocksci/chain/algorithms.hpp>

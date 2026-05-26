@@ -7,7 +7,10 @@
 //
 
 #include "parser_configuration.hpp"
+#include "parser_fwd.hpp"
+#include "internal/chain_configuration.hpp"
 #include <internal/hash.hpp>
+#include <nlohmann/json_fwd.hpp>
 
 #ifdef BLOCKSCI_RPC_PARSER
 #include <bitcoinapi/bitcoinapi.h>

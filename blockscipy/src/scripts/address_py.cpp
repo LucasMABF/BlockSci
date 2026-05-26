@@ -8,6 +8,7 @@
 
 #include "address_py.hpp"
 #include "caster_py.hpp"
+#include "python_range.hpp"
 #include "ranges_py.hpp"
 
 #include <blocksci/chain/algorithms.hpp>
@@ -15,8 +16,13 @@
 #include <blocksci/chain/block.hpp>
 #include <blocksci/address/equiv_address.hpp>
 #include <blocksci/cluster/cluster.hpp>
+#include <blocksci/core/address_types.hpp>
+#include <blocksci/scripts/script.hpp>
+#include <blocksci/scripts/script_variant.hpp>
 
 #include <pybind11/operators.h>
+#include <pybind11/pybind11.h>
+#include <pybind11/pytypes.h>
 
 #include <range/v3/view/transform.hpp>
 

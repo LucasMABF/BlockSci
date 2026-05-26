@@ -6,6 +6,7 @@
 //  Copyright © 2017 Harry Kalodner. All rights reserved.
 //
 
+#include <blocksci/chain/blockchain.hpp>
 #include <blocksci/blocksci.hpp>
 #include <blocksci/chain/algorithms.hpp>
 #include <blocksci/chain/transaction.hpp>
@@ -16,6 +17,7 @@
 #include <blocksci/heuristics/taint.hpp>
 
 #include <range/v3/all.hpp>
+#include <range/v3/range_for.hpp>
 
 #include <cstdint>
 #include <numeric>

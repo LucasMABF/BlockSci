@@ -6,8 +6,13 @@
 //
 //
 
+#include "generic_proxy.hpp"
 #include "range_map.hpp"
 #include "range_map_sequence_impl.hpp"
+#include <pybind11/pybind11.h>
+#include <blocksci/core/address_types.hpp>
+#include <blocksci/core/bitcoin_uint256.hpp>
+#include <pybind11/pytypes.h>
 
 #include <chrono>
 #include <cstdint>

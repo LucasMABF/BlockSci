@@ -10,9 +10,18 @@
 #include "proxy_create.hpp"
 #include "proxy_utils.hpp"
 
+#include <blocksci/chain/output.hpp>
 #include <blocksci/heuristics.hpp>
 #include <blocksci/chain/blockchain.hpp>
 #include <blocksci/chain/transaction.hpp>
+#include <pybind11/pybind11.h>
+#include <blocksci/heuristics/tx_identification.hpp>
+#include <pybind11/pytypes.h>
+#include <blocksci/heuristics/change_address.hpp>
+#include <pybind11/gil.h>
+#include <pybind11/cast.h>
+#include <blocksci/heuristics/taint.hpp>
+#include <range/v3/view/any_view.hpp>
 
 #include <cstddef>
 #include <cstdint>

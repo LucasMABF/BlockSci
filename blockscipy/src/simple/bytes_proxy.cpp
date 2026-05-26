@@ -6,6 +6,8 @@
 //
 //
 
+#include "method_tags.hpp"
+#include "proxy_py.hpp"
 #include "simple_proxies.hpp"
 #include "proxy_apply_py.hpp"
 #include "proxy/range.hpp"
@@ -15,6 +17,7 @@
 #include <blocksci/chain/block.hpp>
 #include <blocksci/cluster/cluster.hpp>
 #include <blocksci/address/equiv_address.hpp>
+#include <pybind11/pytypes.h>
 
 #include <string>
 

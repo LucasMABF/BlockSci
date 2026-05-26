@@ -7,6 +7,7 @@
 //
 
 #define BLOCKSCI_WITHOUT_SINGLETON
+#include <functional>
 
 #include "basic_types.hpp"
 

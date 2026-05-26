@@ -8,6 +8,9 @@
 
 #include "address_proxy_py.hpp"
 #include "address_py.hpp"
+#include "proxy.hpp"
+#include "method_tags.hpp"
+#include "generic_proxy.hpp"
 #include "proxy_apply_py.hpp"
 #include "proxy/basic.hpp"
 #include "proxy/comparison.hpp"
@@ -15,10 +18,24 @@
 #include "proxy/optional.hpp"
 #include "proxy/range.hpp"
 #include "caster_py.hpp"
+#include "python_fwd.hpp"
+#include "proxy_py.hpp"
 
 #include <blocksci/address/equiv_address.hpp>
 #include <blocksci/chain/block.hpp>
+#include <blocksci/chain/output.hpp>
+#include <blocksci/chain/input.hpp>
+#include <blocksci/chain/transaction.hpp>
 #include <blocksci/cluster/cluster.hpp>
+#include <blocksci/core/address_types.hpp>
+#include <range/v3/utility/optional.hpp>
+#include <blocksci/scripts/scripts_fwd.hpp>
+#include <blocksci/core/meta.hpp>
+#include <blocksci/core/address_type_meta.hpp>
+#include <mpark/variant.hpp>
+#include <blocksci/scripts/script_variant.hpp>
+#include <pybind11/pybind11.h>
+#include <range/v3/iterator/operations.hpp>
 
 #include <cstddef>
 #include <cstdint>

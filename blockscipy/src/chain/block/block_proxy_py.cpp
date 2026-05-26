@@ -8,11 +8,20 @@
 
 #include "block_proxy_py.hpp"
 #include "block_properties_py.hpp"
+#include "method_tags.hpp"
 #include "proxy_apply_py.hpp"
 #include "proxy/basic.hpp"
 #include "proxy/equality.hpp"
 #include "proxy/optional.hpp"
 #include "proxy/range.hpp"
+#include <blocksci/chain/block.hpp>
+#include "python_fwd.hpp"
+#include <blocksci/chain/transaction.hpp>
+#include <range/v3/view/any_view.hpp>
+#include <blocksci/chain/input.hpp>
+#include <blocksci/chain/algorithms.hpp>
+#include <blocksci/chain/output.hpp>
+#include "proxy_py.hpp"
 
 
 struct AddBlockProxyMethods {

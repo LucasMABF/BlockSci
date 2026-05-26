@@ -7,6 +7,9 @@
 
 #include "blocksci_type.hpp"
 #include "caster_py.hpp"
+#include <pybind11/pytypes.h>
+#include <blocksci/scripts/script_variant.hpp>
+#include <mpark/variant.hpp>
 
 #include <any>
 #include <chrono>

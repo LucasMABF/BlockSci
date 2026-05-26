@@ -8,12 +8,15 @@
 
 #include "input_proxy_py.hpp"
 #include "input_properties_py.hpp"
+#include "method_tags.hpp"
 #include "proxy_apply_py.hpp"
 #include "proxy/basic.hpp"
 #include "proxy/equality.hpp"
 #include "proxy/comparison.hpp"
 #include "proxy/optional.hpp"
 #include "proxy/range.hpp"
+#include <blocksci/chain/input.hpp>
+#include "proxy_py.hpp"
 
 
 struct AddInputProxyMethods {

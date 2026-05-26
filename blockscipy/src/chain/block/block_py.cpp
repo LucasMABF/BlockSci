@@ -9,13 +9,22 @@
 #include "block_py.hpp"
 #include "block_properties_py.hpp"
 #include "caster_py.hpp"
+#include "python_range.hpp"
 #include "ranges_py.hpp"
 
 #include "self_apply_py.hpp"
 
 #include <blocksci/chain/access.hpp>
+#include <blocksci/core/bitcoin_uint256.hpp>
+#include <blocksci/chain/block.hpp>
+#include <range/v3/range/primitives.hpp>
 
+#include <pybind11/cast.h>
+#include <pybind11/detail/common.h>
+#include <pybind11/attr.h>
 #include <pybind11/operators.h>
+#include <pybind11/pybind11.h>
+#include <pybind11/pytypes.h>
 
 #include <stdexcept>
 #include <vector>

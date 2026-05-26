@@ -7,6 +7,8 @@
 //
 
 #include "tx_proxy_py.hpp"
+#include "method_tags.hpp"
+#include "proxy_py.hpp"
 #include "tx_properties_py.hpp"
 #include "proxy_apply_py.hpp"
 #include "proxy/basic.hpp"
@@ -14,6 +16,7 @@
 #include "proxy/comparison.hpp"
 #include "proxy/optional.hpp"
 #include "proxy/range.hpp"
+#include <blocksci/chain/transaction.hpp>
 
 struct AddProxyTransactionMethods {
     template <typename FuncApplication>

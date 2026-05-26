@@ -5,6 +5,7 @@
 //  Created by Harry Kalodner on 4/23/18.
 //
 
+#include <blocksci/core/address_types.hpp>
 #include <blocksci/scripts/nulldata_script.hpp>
 
 #include <internal/address_info.hpp>

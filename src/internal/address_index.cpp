@@ -7,6 +7,16 @@
 //
 
 #define BLOCKSCI_WITHOUT_SINGLETON
+#include <wjfilesystem/path.h>
+#include <rocksdb/options.h>
+#include <rocksdb/db.h>
+#include <blocksci/core/meta.hpp>
+#include <blocksci/core/address_types.hpp>
+#include <rocksdb/status.h>
+#include <range/v3/view/any_view.hpp>
+#include <blocksci/core/dedup_address_type.hpp>
+#include <rocksdb/write_batch.h>
+#include <rocksdb/slice.h>
 
 #include "address_index.hpp"
 #include "address_info.hpp"

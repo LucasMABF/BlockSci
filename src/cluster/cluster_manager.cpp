@@ -6,6 +6,13 @@
 //
 //
 
+#include <blocksci/address/address.hpp>
+#include <blocksci/core/dedup_address_type.hpp>
+#include <blocksci/chain/transaction.hpp>
+#include <blocksci/core/address_types.hpp>
+#include <blocksci/scripts/scripts_fwd.hpp>
+#include <blocksci/chain/block_range.hpp>
+#include <blocksci/chain/output.hpp>
 #include <blocksci/cluster/cluster_manager.hpp>
 #include <blocksci/cluster/cluster.hpp>
 
@@ -27,8 +34,11 @@
 
 #include <wjfilesystem/path.h>
 
+#include <range/v3/view/any_view.hpp>
+#include <range/v3/utility/optional.hpp>
 #include <range/v3/view/iota.hpp>
 #include <range/v3/range_for.hpp>
+#include <range/v3/view/transform.hpp>
 
 #include <algorithm>
 #include <cstddef>
@@ -36,6 +46,7 @@
 #include <fstream>
 #include <functional>
 #include <future>
+#include <ios>
 #include <map>
 #include <memory>
 #include <initializer_list>

@@ -11,8 +11,11 @@
 #include "blocksci_type.hpp"
 #include "blocksci_iterator_type.hpp"
 #include "blocksci_range_type.hpp"
+#include "python_fwd.hpp"
 
+#include <range/v3/utility/optional.hpp>
 #include <range/v3/view/single.hpp>
+#include <mpark/variant.hpp>
 
 #include <any>
 #include <functional>

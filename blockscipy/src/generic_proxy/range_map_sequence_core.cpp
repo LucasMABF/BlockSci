@@ -6,12 +6,18 @@
 //
 //
 
+#include "generic_proxy.hpp"
 #include "range_map.hpp"
 #include "range_map_sequence_impl.hpp"
 
 #include <blocksci/address/equiv_address.hpp>
+#include <blocksci/chain/transaction.hpp>
+#include <blocksci/chain/input.hpp>
+#include <blocksci/chain/output.hpp>
 #include <blocksci/cluster/cluster.hpp>
 #include <blocksci/chain/block.hpp>
+#include <pybind11/pybind11.h>
+#include <blocksci/scripts/script_variant.hpp>
 
 void applyProxyMapSequenceFuncsCore(pybind11::class_<IteratorProxy, GenericProxy> &cl) {
 	using namespace blocksci;

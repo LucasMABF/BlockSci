@@ -8,9 +8,12 @@
 
 #include "bitcoin_base58.hpp"
 #include "bitcoin_segwit_addr.hpp"
+#include <blocksci/scripts/scripts_fwd.hpp>
+#include <blocksci/core/address_types.hpp>
 
 #include <blocksci/scripts/scripthash_script.hpp>
 #include <blocksci/scripts/script_variant.hpp>
+#include <range/v3/utility/optional.hpp>
 
 #include <internal/address_info.hpp>
 #include <internal/data_access.hpp>

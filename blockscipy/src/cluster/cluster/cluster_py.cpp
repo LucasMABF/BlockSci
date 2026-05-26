@@ -8,12 +8,17 @@
 
 #include "cluster_py.hpp"
 #include "cluster_properties_py.hpp"
+#include "python_range.hpp"
 #include "ranges_py.hpp"
 #include "caster_py.hpp"
 #include "proxy_utils.hpp"
 #include "self_apply_py.hpp"
+#include "sequence.hpp"
 
+#include <blocksci/address/address.hpp>
+#include <blocksci/cluster/cluster.hpp>
 #include <blocksci/cluster/cluster_manager.hpp>
+#include <blocksci/core/typedefs.hpp>
 #include <blocksci/heuristics/change_address.hpp>
 
 #include <blocksci/chain/blockchain.hpp>
@@ -21,8 +26,10 @@
 
 #include <range/v3/range_for.hpp>
 
+#include <pybind11/cast.h>
 #include <pybind11/iostream.h>
 #include <pybind11/operators.h>
+#include <pybind11/pybind11.h>
 
 #include <cstdint>
 #include <iostream>

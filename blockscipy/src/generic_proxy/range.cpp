@@ -7,6 +7,8 @@
 //
 
 #include "range.hpp"
+#include "generic_proxy.hpp"
+#include "blocksci_type.hpp"
 #include "range_map.hpp"
 #include "proxy.hpp"
 #include "proxy_utils.hpp"
@@ -15,6 +17,10 @@
 #include <range/v3/distance.hpp>
 #include <range/v3/algorithm/any_of.hpp>
 #include <range/v3/algorithm/all_of.hpp>
+#include <pybind11/pybind11.h>
+#include <range/v3/iterator/operations.hpp>
+#include <pybind11/pytypes.h>
+#include <mpark/variant.hpp>
 
 #include <cstdint>
 #include <utility>

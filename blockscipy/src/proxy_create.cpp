@@ -6,6 +6,10 @@
 //
 
 #include "proxy_create.hpp"
+#include "proxy.hpp"
+#include <blocksci/scripts/script_variant.hpp>
+#include <blocksci/scripts/scripts_fwd.hpp>
+#include "proxy_type_check.hpp"
 
 #include <boost/core/demangle.hpp>
 
