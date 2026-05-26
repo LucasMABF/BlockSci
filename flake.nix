@@ -15,7 +15,20 @@
     flake-utils.lib.eachSystem [ "x86_64-linux" ] (
       system:
       let
-        pkgs = import nixpkgs { inherit system; };
+        pkgs = import nixpkgs {
+          inherit system;
+          overlays = [
+            (final: prev: {
+              libjson-rpc-cpp = prev.libjson-rpc-cpp.overrideAttrs (old: {
+                postPatch = (old.postPatch or "") + ''
+                  substituteInPlace CMakeLists.txt \
+                    --replace-fail 'option(WITH_COVERAGE "Build with code coverage flags" ON)' \
+                                   'option(WITH_COVERAGE "Build with code coverage flags" OFF)'
+                '';
+              });
+            })
+          ];
+        };
         pythonRuntimeDeps =
           ps: with ps; [
             dateparser
