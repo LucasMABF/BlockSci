@@ -2,3 +2,5 @@ Checks: >
   -*,
   misc-include-cleaner
 HeaderFilterRegex: '.*'
+CheckOptions:
+  misc-include-cleaner.UnusedIncludes: 'false'

@@ -41,8 +41,8 @@ public:
     
     ~ParserIndexCreator() {
         if (!tornDown) {
-            blocksci::ChainAccess chain{config, false, 0};
-            blocksci::ScriptAccess scripts{config};
+            blocksci::ChainAccess chain{config.dataConfig.chainDirectory(), 0, false};
+            blocksci::ScriptAccess scripts{config.dataConfig.scriptsDirectory()};
             blocksci::State updateState{chain, scripts};
             complete(updateState);
         }
