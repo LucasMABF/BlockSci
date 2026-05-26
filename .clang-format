@@ -1,0 +1,13 @@
+BasedOnStyle: LLVM
+ColumnLimit: 120
+AllowShortFunctionsOnASingleLine: None
+NamespaceIndentation: All
+Standard: c++17
+
+IncludeBlocks: Regroup
+IncludeCategories:
+  - { Regex: '^".*"$',        Priority: 1 }
+  - { Regex: '^<blocksci/',   Priority: 2 }
+  - { Regex: '^<range/v3/',   Priority: 3 }
+  - { Regex: '^<.*/.*>$',     Priority: 4 }
+  - { Regex: '^<[^/.]+>$',    Priority: 5 }

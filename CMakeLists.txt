@@ -7,6 +7,8 @@ set(BlockSci_VERSION 0.7.0)
 
 include(GNUInstallDirs)
 
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
 option(BLOCKSCI_NATIVE_ARCH "Tune the build for the host CPU (-march=native; impure, non-portable)" OFF)
 
 add_subdirectory(external)

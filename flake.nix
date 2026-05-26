@@ -145,6 +145,7 @@
               python3
               python3Packages.pip
               python3Packages.scikit-build-core
+              clang-tools
               ninja
             ]
             ++ pythonRuntimeDeps pkgs.python3Packages;
