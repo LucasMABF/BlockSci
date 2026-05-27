@@ -12,22 +12,20 @@
 
 #include <blocksci/address/equiv_address.hpp>
 #include <blocksci/cluster/cluster.hpp>
-#include <pybind11/pybind11.h>
 #include <blocksci/scripts/scripts_fwd.hpp>
 
+#include <pybind11/pybind11.h>
 
 void applyProxyMapOptionalFuncsScripts(pybind11::class_<IteratorProxy, GenericProxy> &cl) {
-	using namespace blocksci;
-	cl
-	.def("_map_optional", mapOptional<script::Pubkey>)
-	.def("_map_optional", mapOptional<script::PubkeyHash>)
-	.def("_map_optional", mapOptional<script::WitnessPubkeyHash>)
-	.def("_map_optional", mapOptional<script::MultisigPubkey>)
-	.def("_map_optional", mapOptional<script::Multisig>)
-	.def("_map_optional", mapOptional<script::ScriptHash>)
-	.def("_map_optional", mapOptional<script::WitnessScriptHash>)
-	.def("_map_optional", mapOptional<script::OpReturn>)
-	.def("_map_optional", mapOptional<script::Nonstandard>)
-	.def("_map_optional", mapOptional<script::WitnessUnknown>)
-	;
+  using namespace blocksci;
+  cl.def("_map_optional", mapOptional<script::Pubkey>)
+      .def("_map_optional", mapOptional<script::PubkeyHash>)
+      .def("_map_optional", mapOptional<script::WitnessPubkeyHash>)
+      .def("_map_optional", mapOptional<script::MultisigPubkey>)
+      .def("_map_optional", mapOptional<script::Multisig>)
+      .def("_map_optional", mapOptional<script::ScriptHash>)
+      .def("_map_optional", mapOptional<script::WitnessScriptHash>)
+      .def("_map_optional", mapOptional<script::OpReturn>)
+      .def("_map_optional", mapOptional<script::Nonstandard>)
+      .def("_map_optional", mapOptional<script::WitnessUnknown>);
 }

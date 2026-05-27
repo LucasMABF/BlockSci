@@ -6,11 +6,13 @@
 //
 
 #include "utxo_address_state.hpp"
+
 #include "output_spend_data.hpp"
-#include <blocksci/core/inout_pointer.hpp>
-#include <blocksci/core/address_types.hpp>
-#include <blocksci/core/meta.hpp>
 #include "script_output.hpp"
+
+#include <blocksci/core/address_types.hpp>
+#include <blocksci/core/inout_pointer.hpp>
+#include <blocksci/core/meta.hpp>
 
 #include <mpark/variant.hpp>
 #include <wjfilesystem/path.h>
@@ -21,43 +23,41 @@
 #include <string>
 
 void UTXOAddressState::addOutput(const AnySpendData &spendData, const blocksci::InoutPointer &pointer) {
-    mpark::visit([&](const auto &spendData) { this->addOutput(spendData, pointer); }, spendData.wrapped);
+  mpark::visit([&](const auto &spendData) { this->addOutput(spendData, pointer); }, spendData.wrapped);
 }
 
-template<blocksci::AddressType::Enum type>
-struct SpendOutputFunctor {
-    static SpendDataType f(const blocksci::InoutPointer &pointer, UTXOAddressState &state) {
-        return state.spendOutput<type>(pointer);
-    }
+template <blocksci::AddressType::Enum type> struct SpendOutputFunctor {
+  static SpendDataType f(const blocksci::InoutPointer &pointer, UTXOAddressState &state) {
+    return state.spendOutput<type>(pointer);
+  }
 };
 
 static auto spendOutputTable = blocksci::make_dynamic_table<blocksci::AddressType, SpendOutputFunctor>();
 
 AnySpendData UTXOAddressState::spendOutput(const blocksci::InoutPointer &pointer, blocksci::AddressType::Enum type) {
-    auto index = static_cast<size_t>(type);
-    if (index >= blocksci::AddressType::size)
-    {
-        throw std::invalid_argument("address type enum values is not valid");
-    }
-    return AnySpendData{spendOutputTable.at(index)(pointer, *this)};
+  auto index = static_cast<size_t>(type);
+  if (index >= blocksci::AddressType::size) {
+    throw std::invalid_argument("address type enum values is not valid");
+  }
+  return AnySpendData{spendOutputTable.at(index)(pointer, *this)};
 }
 
 void UTXOAddressState::unserialize(const std::string &path) {
-    blocksci::for_each(addressTypeStates, [&](auto &addressTypeState) {
-        std::stringstream ss;
-        ss << addressName(addressTypeState.type);
-        ss << ".dat";
-        auto fullPath = filesystem::path{path} / ss.str();
-        addressTypeState.unserialize(fullPath.str());
-    });
+  blocksci::for_each(addressTypeStates, [&](auto &addressTypeState) {
+    std::stringstream ss;
+    ss << addressName(addressTypeState.type);
+    ss << ".dat";
+    auto fullPath = filesystem::path{path} / ss.str();
+    addressTypeState.unserialize(fullPath.str());
+  });
 }
 
 void UTXOAddressState::serialize(const std::string &path) {
-    blocksci::for_each(addressTypeStates, [&](auto &addressTypeState) {
-        std::stringstream ss;
-        ss << addressName(addressTypeState.type);
-        ss << ".dat";
-        auto fullPath = filesystem::path{path} / ss.str();
-        addressTypeState.serialize(fullPath.str());
-    });
+  blocksci::for_each(addressTypeStates, [&](auto &addressTypeState) {
+    std::stringstream ss;
+    ss << addressName(addressTypeState.type);
+    ss << ".dat";
+    auto fullPath = filesystem::path{path} / ss.str();
+    addressTypeState.serialize(fullPath.str());
+  });
 }

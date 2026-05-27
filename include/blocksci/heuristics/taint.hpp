@@ -9,19 +9,23 @@
 #define taint_hpp
 
 #include <blocksci/blocksci_export.h>
-#include <blocksci/core/typedefs.hpp>
 #include <blocksci/chain/chain_fwd.hpp>
+#include <blocksci/core/typedefs.hpp>
 
 #include <cstdint>
 #include <utility>
 #include <vector>
 
-namespace blocksci { namespace heuristics {
-    using SimpleTaint = std::pair<int64_t, int64_t>; // (tainted value, untainted value)
+namespace blocksci {
+  namespace heuristics {
+    using SimpleTaint = std::pair<int64_t, int64_t>;            // (tainted value, untainted value)
     using ComplexTaint = std::vector<std::pair<int64_t, bool>>; // [(value, isTainted), (value, isTainted), ...]
-    
-    std::vector<std::pair<Output, SimpleTaint>> BLOCKSCI_EXPORT getPoisonTainted(std::vector<Output> &outputs, BlockHeight maxBlockHeight, bool taintFee);
-    std::vector<std::pair<Output, SimpleTaint>> BLOCKSCI_EXPORT getHaircutTainted(std::vector<Output> &outputs, BlockHeight maxBlockHeight, bool taintFee);
-}}
+
+    std::vector<std::pair<Output, SimpleTaint>>
+        BLOCKSCI_EXPORT getPoisonTainted(std::vector<Output> &outputs, BlockHeight maxBlockHeight, bool taintFee);
+    std::vector<std::pair<Output, SimpleTaint>>
+        BLOCKSCI_EXPORT getHaircutTainted(std::vector<Output> &outputs, BlockHeight maxBlockHeight, bool taintFee);
+  } // namespace heuristics
+} // namespace blocksci
 
 #endif /* taint_hpp */

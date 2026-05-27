@@ -9,8 +9,8 @@
 #define address_fwd_h
 
 namespace blocksci {
-    class Address;
-    class EquivAddress;
-}
+  class Address;
+  class EquivAddress;
+} // namespace blocksci
 
 #endif /* address_fwd_h */

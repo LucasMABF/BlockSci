@@ -14,5 +14,4 @@ struct method_tag_type {};
 static constexpr property_tag_type property_tag = property_tag_type{};
 static constexpr method_tag_type method_tag = method_tag_type{};
 
-
 #endif // method_tags_h

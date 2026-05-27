@@ -19,63 +19,65 @@
 #include <thread>
 
 namespace blocksci {
-    struct State;
+  struct State;
 }
 
-template <typename IndexType>
-class ParserIndexCreator {
+template <typename IndexType> class ParserIndexCreator {
 private:
-    const ParserConfigurationBase &config;
-    std::future<void> updateFuture;
-    std::future<void> teardownFuture;
-    std::atomic<bool> launchingUpdate;
-    std::atomic<bool> tornDown;
-    IndexType index;
-    
+  const ParserConfigurationBase &config;
+  std::future<void> updateFuture;
+  std::future<void> teardownFuture;
+  std::atomic<bool> launchingUpdate;
+  std::atomic<bool> tornDown;
+  IndexType index;
+
 public:
-    ParserIndexCreator(const ParserConfigurationBase &config_, const std::string &path) : config(config_), updateFuture{std::async(std::launch::async, [&] {})}, launchingUpdate(false), tornDown(false), index(config, path) {}
-    ParserIndexCreator(const ParserIndexCreator &) = delete;
-    ParserIndexCreator &operator=(const ParserIndexCreator &) = delete;
-    ParserIndexCreator(ParserIndexCreator &&) = delete;
-    ParserIndexCreator &operator=(ParserIndexCreator &&) = delete;
-    
-    ~ParserIndexCreator() {
-        if (!tornDown) {
-            blocksci::ChainAccess chain{config.dataConfig.chainDirectory(), 0, false};
-            blocksci::ScriptAccess scripts{config.dataConfig.scriptsDirectory()};
-            blocksci::State updateState{chain, scripts};
-            complete(updateState);
-        }
-        teardownFuture.get();
+  ParserIndexCreator(const ParserConfigurationBase &config_, const std::string &path)
+      : config(config_), updateFuture{std::async(std::launch::async, [&] {})}, launchingUpdate(false), tornDown(false),
+        index(config, path) {
+  }
+  ParserIndexCreator(const ParserIndexCreator &) = delete;
+  ParserIndexCreator &operator=(const ParserIndexCreator &) = delete;
+  ParserIndexCreator(ParserIndexCreator &&) = delete;
+  ParserIndexCreator &operator=(ParserIndexCreator &&) = delete;
+
+  ~ParserIndexCreator() {
+    if (!tornDown) {
+      blocksci::ChainAccess chain{config.dataConfig.chainDirectory(), 0, false};
+      blocksci::ScriptAccess scripts{config.dataConfig.scriptsDirectory()};
+      blocksci::State updateState{chain, scripts};
+      complete(updateState);
     }
-    
-    void update(blocksci::State state) {
-        using namespace std::chrono_literals;
-        
-        if (updateFuture.wait_for(0ms) == std::future_status::ready) {
-            updateFuture.get();
-            launchingUpdate = true;
-            updateFuture = std::async(std::launch::async, [this, state] {
-                index.runUpdate(state);
-                launchingUpdate = false;
-            });
-        }
+    teardownFuture.get();
+  }
+
+  void update(blocksci::State state) {
+    using namespace std::chrono_literals;
+
+    if (updateFuture.wait_for(0ms) == std::future_status::ready) {
+      updateFuture.get();
+      launchingUpdate = true;
+      updateFuture = std::async(std::launch::async, [this, state] {
+        index.runUpdate(state);
+        launchingUpdate = false;
+      });
     }
-    
-    void complete(blocksci::State state) {
-        using namespace std::chrono_literals;
-        assert(!tornDown);
-        tornDown = true;
-        teardownFuture = std::async(std::launch::async, [&, state] {
-            while (launchingUpdate) {
-                std::this_thread::sleep_for(100ms);
-            }
-            if (updateFuture.valid()) {
-                updateFuture.get();
-            }
-            index.runUpdate(state);
-        });
-    }
+  }
+
+  void complete(blocksci::State state) {
+    using namespace std::chrono_literals;
+    assert(!tornDown);
+    tornDown = true;
+    teardownFuture = std::async(std::launch::async, [&, state] {
+      while (launchingUpdate) {
+        std::this_thread::sleep_for(100ms);
+      }
+      if (updateFuture.valid()) {
+        updateFuture.get();
+      }
+      index.runUpdate(state);
+    });
+  }
 };
 
 #endif /* parser_index_creator_hpp */

@@ -8,22 +8,22 @@
 #ifndef blocksci_fwd_h
 #define blocksci_fwd_h
 
-#include <blocksci/chain/chain_fwd.hpp>
 #include <blocksci/address/address_fwd.hpp>
-#include <blocksci/scripts/scripts_fwd.hpp>
+#include <blocksci/chain/chain_fwd.hpp>
 #include <blocksci/cluster/cluster_fwd.hpp>
+#include <blocksci/scripts/scripts_fwd.hpp>
 
 #include <cstdint>
 
 namespace blocksci {
-    using TxIndex = uint32_t;
-    
-    struct DataConfiguration;
-    class DataAccess;
-    class uint256;
-    class uint160;
-    class HashIndex;
-    struct State;
-}
+  using TxIndex = uint32_t;
+
+  struct DataConfiguration;
+  class DataAccess;
+  class uint256;
+  class uint160;
+  class HashIndex;
+  struct State;
+} // namespace blocksci
 
 #endif /* blocksci_fwd_h */

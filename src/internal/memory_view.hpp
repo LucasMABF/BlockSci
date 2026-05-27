@@ -11,10 +11,10 @@
 #include <cstddef>
 
 namespace blocksci {
-    struct MemoryView {
-        const char *data;
-        size_t size;
-    };
+  struct MemoryView {
+    const char *data;
+    size_t size;
+  };
 } // namespace blocksci
 
 #endif /* memory_view_h */

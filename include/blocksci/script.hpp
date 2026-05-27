@@ -16,5 +16,4 @@
 #include <blocksci/scripts/script_variant.hpp>
 #include <blocksci/scripts/scripthash_script.hpp>
 
-
 #endif /* script_h */

@@ -20,41 +20,41 @@
 #include <cstdint>
 
 namespace blocksci {
-    class ScriptAccess;
+  class ScriptAccess;
 }
 
-template<blocksci::AddressType::Enum type>
-struct SpendData {
-    static constexpr auto address_v = type;
-    
-    SpendData() = default;
-    explicit SpendData(const ScriptOutput<type> &) {}
-    SpendData(const blocksci::RawAddress &, const blocksci::ScriptAccess &) {}
+template <blocksci::AddressType::Enum type> struct SpendData {
+  static constexpr auto address_v = type;
+
+  SpendData() = default;
+  explicit SpendData(const ScriptOutput<type> &) {
+  }
+  SpendData(const blocksci::RawAddress &, const blocksci::ScriptAccess &) {
+  }
 };
 
-template<>
-struct SpendData<blocksci::AddressType::Enum::MULTISIG> {
-    static constexpr auto address_v = blocksci::AddressType::Enum::MULTISIG;
-    
-    uint32_t addressCount;
-    std::array<blocksci::RawPubkey, 16> addresses;
-    
-    SpendData() = default;
-    explicit SpendData(const ScriptOutput<blocksci::AddressType::Enum::MULTISIG> &output);
-    SpendData(const blocksci::RawAddress &address, const blocksci::ScriptAccess &scripts);
+template <> struct SpendData<blocksci::AddressType::Enum::MULTISIG> {
+  static constexpr auto address_v = blocksci::AddressType::Enum::MULTISIG;
+
+  uint32_t addressCount;
+  std::array<blocksci::RawPubkey, 16> addresses;
+
+  SpendData() = default;
+  explicit SpendData(const ScriptOutput<blocksci::AddressType::Enum::MULTISIG> &output);
+  SpendData(const blocksci::RawAddress &address, const blocksci::ScriptAccess &scripts);
 };
 
 using SpendDataType = blocksci::to_variadic_t<blocksci::to_address_tuple_t<SpendData>, mpark::variant>;
 
 class AnySpendData {
 public:
-    SpendDataType wrapped;
-    
-    explicit AnySpendData(const SpendDataType &var) : wrapped(var) {}
-    
-    explicit AnySpendData(const AnyScriptOutput &scriptOutput);
-    AnySpendData(const blocksci::RawAddress &address, const blocksci::ScriptAccess &scripts);
-};
+  SpendDataType wrapped;
 
+  explicit AnySpendData(const SpendDataType &var) : wrapped(var) {
+  }
+
+  explicit AnySpendData(const AnyScriptOutput &scriptOutput);
+  AnySpendData(const blocksci::RawAddress &address, const blocksci::ScriptAccess &scripts);
+};
 
 #endif /* output_spend_data_hpp */

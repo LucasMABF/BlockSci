@@ -17,9 +17,8 @@
 #include <tuple>
 
 namespace blocksci {
-    template <template<AddressType::Enum> class K>
-    using to_address_tuple_t = apply_template_t<AddressType::Enum, K, AddressType::all>;
+  template <template <AddressType::Enum> class K>
+  using to_address_tuple_t = apply_template_t<AddressType::Enum, K, AddressType::all>;
 }
-
 
 #endif /* blocksci_address_type_meta_hpp */

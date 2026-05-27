@@ -5,19 +5,21 @@
 //  Created by Malte Möser on 4/27/20.
 //
 
-#include <blocksci/chain/output.hpp>
-#include <blocksci/chain/input.hpp>
-#include <blocksci/chain/algorithms.hpp>
-#include <blocksci/chain/blockchain.hpp>
-#include <blocksci/chain/block.hpp>
-#include <blocksci/chain/block_range.hpp>
-#include <blocksci/chain/transaction_range.hpp>
-#include <blocksci/chain/input_range.hpp>
-#include <blocksci/chain/output_range.hpp>
-#include <blocksci/core/address_types.hpp>
 #include "unit_test.h"
 
+#include <blocksci/chain/algorithms.hpp>
+#include <blocksci/chain/block.hpp>
+#include <blocksci/chain/block_range.hpp>
+#include <blocksci/chain/blockchain.hpp>
+#include <blocksci/chain/input.hpp>
+#include <blocksci/chain/input_range.hpp>
+#include <blocksci/chain/output.hpp>
+#include <blocksci/chain/output_range.hpp>
+#include <blocksci/chain/transaction_range.hpp>
+#include <blocksci/core/address_types.hpp>
+
 #include <range/v3/range/conversion.hpp>
+
 #include <gtest/gtest.h>
 
 #include <cstdint>
@@ -27,47 +29,45 @@
 
 namespace blocksci {
 
-class AlgorithmsTest : public BlockSciTest {
+  class AlgorithmsTest : public BlockSciTest {
 
-public:
-
+  public:
     /**
      Iterates over all outputs on the chain and returns them if boolFunc(output) returns true.
      */
-    std::vector<Output> filterOutputsOnChain(std::function<bool (Output)> boolFunc) {
-        std::vector<Output> outs;
-        for(auto block : chain) {
-            for(auto tx : block) {
-                for(auto output : tx.outputs()) {
-                    if(boolFunc(output)) {
-                        outs.push_back(output);
-                    }
-                }
+    std::vector<Output> filterOutputsOnChain(std::function<bool(Output)> boolFunc) {
+      std::vector<Output> outs;
+      for (auto block : chain) {
+        for (auto tx : block) {
+          for (auto output : tx.outputs()) {
+            if (boolFunc(output)) {
+              outs.push_back(output);
             }
+          }
         }
-        return outs;
+      }
+      return outs;
     }
 
     /**
      Iterates over all inputs on the chain and returns them if boolFunc(input) returns true.
      */
-    std::vector<Input> filterInputsOnChain(std::function<bool (Input)> boolFunc) {
-        std::vector<Input> ins;
-        for(auto block : chain) {
-            for(auto tx : block) {
-                for(auto input : tx.inputs()) {
-                    if(boolFunc(input)) {
-                        ins.push_back(input);
-                    }
-                }
+    std::vector<Input> filterInputsOnChain(std::function<bool(Input)> boolFunc) {
+      std::vector<Input> ins;
+      for (auto block : chain) {
+        for (auto tx : block) {
+          for (auto input : tx.inputs()) {
+            if (boolFunc(input)) {
+              ins.push_back(input);
             }
+          }
         }
-        return ins;
+      }
+      return ins;
     }
-};
+  };
 
-
-TEST_F(AlgorithmsTest, CppConceptIsBlockchain) {
+  TEST_F(AlgorithmsTest, CppConceptIsBlockchain) {
     ASSERT_TRUE(isBlockchain<Blockchain>);
     ASSERT_FALSE(isBlockchain<Block>);
     ASSERT_FALSE(isBlockchain<BlockRange>);
@@ -77,9 +77,9 @@ TEST_F(AlgorithmsTest, CppConceptIsBlockchain) {
     ASSERT_FALSE(isBlockchain<InputRange>);
     ASSERT_FALSE(isBlockchain<Output>);
     ASSERT_FALSE(isBlockchain<OutputRange>);
-}
+  }
 
-TEST_F(AlgorithmsTest, CppConceptIsTx) {
+  TEST_F(AlgorithmsTest, CppConceptIsTx) {
     ASSERT_FALSE(isTx<Blockchain>);
     ASSERT_FALSE(isTx<Block>);
     ASSERT_FALSE(isTx<BlockRange>);
@@ -89,138 +89,138 @@ TEST_F(AlgorithmsTest, CppConceptIsTx) {
     ASSERT_FALSE(isTx<InputRange>);
     ASSERT_FALSE(isTx<Output>);
     ASSERT_FALSE(isTx<OutputRange>);
-}
+  }
 
-TEST_F(AlgorithmsTest, CppConceptIsBlockRange) {
+  TEST_F(AlgorithmsTest, CppConceptIsBlockRange) {
     ASSERT_TRUE(isBlockRange<Blockchain>);
     ASSERT_FALSE(isBlockRange<Block>);
     ASSERT_TRUE(isBlockRange<BlockRange>);
     ASSERT_FALSE(isBlockRange<TransactionRange>);
     ASSERT_FALSE(isBlockRange<InputRange>);
     ASSERT_FALSE(isBlockRange<OutputRange>);
-}
+  }
 
-TEST_F(AlgorithmsTest, CppConceptIsInputRange) {
+  TEST_F(AlgorithmsTest, CppConceptIsInputRange) {
     ASSERT_FALSE(isInputRange<Blockchain>);
     ASSERT_FALSE(isInputRange<Block>);
     ASSERT_FALSE(isInputRange<BlockRange>);
     ASSERT_FALSE(isInputRange<TransactionRange>);
     ASSERT_TRUE(isInputRange<InputRange>);
     ASSERT_FALSE(isInputRange<OutputRange>);
-}
+  }
 
-TEST_F(AlgorithmsTest, TxesFromChain) {
+  TEST_F(AlgorithmsTest, TxesFromChain) {
     std::vector<Transaction> transactions;
-    for(auto block : chain) {
-        for(auto tx : block) {
-            transactions.push_back(tx);
-        }
+    for (auto block : chain) {
+      for (auto tx : block) {
+        transactions.push_back(tx);
+      }
     }
     EXPECT_TRUE(transactions.size() > 0);
 
     auto algo_txes = txes(chain) | ranges::to<std::vector>();
 
     ASSERT_EQ(transactions, algo_txes);
-}
+  }
 
-TEST_F(AlgorithmsTest, TxesFromBlock) {
+  TEST_F(AlgorithmsTest, TxesFromBlock) {
     std::vector<Transaction> transactions;
     auto block = chain[123];
-    for(auto tx : block) {
-        transactions.push_back(tx);
+    for (auto tx : block) {
+      transactions.push_back(tx);
     }
     EXPECT_TRUE(transactions.size() > 0);
 
     auto algo_txes = txes(block) | ranges::to<std::vector>();
 
     ASSERT_EQ(transactions, algo_txes);
-}
+  }
 
-TEST_F(AlgorithmsTest, InputsFromBlock) {
+  TEST_F(AlgorithmsTest, InputsFromBlock) {
     std::vector<Input> ins;
     auto block = chain[123];
-    for(auto tx : block) {
-        for(auto input : tx.inputs()) {
-            ins.push_back(input);
-        }
+    for (auto tx : block) {
+      for (auto input : tx.inputs()) {
+        ins.push_back(input);
+      }
     }
     EXPECT_TRUE(ins.size() > 0);
 
     auto algo_inputs = inputs(block) | ranges::to<std::vector>();
 
     ASSERT_EQ(ins, algo_inputs);
-}
+  }
 
-TEST_F(AlgorithmsTest, InputsFromTransaction) {
+  TEST_F(AlgorithmsTest, InputsFromTransaction) {
     std::vector<Input> ins;
     auto tx = chain[123][1];
-    for(auto input : tx.inputs()) {
-        ins.push_back(input);
+    for (auto input : tx.inputs()) {
+      ins.push_back(input);
     }
     EXPECT_TRUE(ins.size() > 0);
 
     auto algo_inputs = inputs(tx) | ranges::to<std::vector>();
 
     ASSERT_EQ(ins, algo_inputs);
-}
+  }
 
-TEST_F(AlgorithmsTest, InputsFromInputRange) {
+  TEST_F(AlgorithmsTest, InputsFromInputRange) {
     std::vector<Input> ins;
     auto tx = chain[123][1];
-    for(auto input : tx.inputs()) {
-        ins.push_back(input);
+    for (auto input : tx.inputs()) {
+      ins.push_back(input);
     }
     EXPECT_TRUE(ins.size() > 0);
 
     auto algo_inputs = inputs(tx.inputs()) | ranges::to<std::vector>();
 
     ASSERT_EQ(ins, algo_inputs);
-}
+  }
 
-TEST_F(AlgorithmsTest, OutputsFromBlock) {
+  TEST_F(AlgorithmsTest, OutputsFromBlock) {
     std::vector<Output> outs;
     auto block = chain[123];
-    for(auto tx : block) {
-        for(auto output : tx.outputs()) {
-            outs.push_back(output);
-        }
+    for (auto tx : block) {
+      for (auto output : tx.outputs()) {
+        outs.push_back(output);
+      }
     }
     EXPECT_TRUE(outs.size() > 0);
 
     auto algo_outputs = outputs(block) | ranges::to<std::vector>();
 
     ASSERT_EQ(outs, algo_outputs);
-}
+  }
 
-TEST_F(AlgorithmsTest, OutputsFromTransaction) {
+  TEST_F(AlgorithmsTest, OutputsFromTransaction) {
     std::vector<Output> outs;
     auto tx = chain[123][1];
-    for(auto output : tx.outputs()) {
-        outs.push_back(output);
+    for (auto output : tx.outputs()) {
+      outs.push_back(output);
     }
     EXPECT_TRUE(outs.size() > 0);
 
     auto algo_outputs = outputs(tx) | ranges::to<std::vector>();
 
     ASSERT_EQ(outs, algo_outputs);
-}
+  }
 
-TEST_F(AlgorithmsTest, OutputsFromOutputRange) {
+  TEST_F(AlgorithmsTest, OutputsFromOutputRange) {
     std::vector<Output> outs;
     auto tx = chain[123][1];
-    for(auto output : tx.outputs()) {
-        outs.push_back(output);
+    for (auto output : tx.outputs()) {
+      outs.push_back(output);
     }
     EXPECT_TRUE(outs.size() > 0);
 
     auto algo_outputs = outputs(tx.outputs()) | ranges::to<std::vector>();
 
     ASSERT_EQ(outs, algo_outputs);
-}
+  }
 
-// Tests that outputsUnspent returns only unspent outputs
-TEST_F(AlgorithmsTest, OutputsUnspent) {
-    auto filterFunc = [](Output output){return !output.isSpent();};
+  // Tests that outputsUnspent returns only unspent outputs
+  TEST_F(AlgorithmsTest, OutputsUnspent) {
+    auto filterFunc = [](Output output) { return !output.isSpent(); };
     auto outs = filterOutputsOnChain(filterFunc);
 
     EXPECT_TRUE(outs.size() > 0);
@@ -228,11 +228,11 @@ TEST_F(AlgorithmsTest, OutputsUnspent) {
     auto algo_outputs = outputsUnspent(chain) | ranges::to<std::vector>();
 
     ASSERT_EQ(outs, algo_outputs);
-}
+  }
 
-//
-TEST_F(AlgorithmsTest, OutputsSpentBeforeHeight) {
-    auto filterFunc = [](Output output){return output.isSpent() && output.getSpendingTx()->getBlockHeight() < 160;};
+  //
+  TEST_F(AlgorithmsTest, OutputsSpentBeforeHeight) {
+    auto filterFunc = [](Output output) { return output.isSpent() && output.getSpendingTx()->getBlockHeight() < 160; };
     auto outs = filterOutputsOnChain(filterFunc);
 
     EXPECT_TRUE(outs.size() > 0);
@@ -241,10 +241,10 @@ TEST_F(AlgorithmsTest, OutputsSpentBeforeHeight) {
 
     ASSERT_EQ(outs.size(), algo_outputs.size());
     ASSERT_EQ(outs, algo_outputs);
-}
+  }
 
-TEST_F(AlgorithmsTest, OutputsSpentAfterHeight) {
-    auto filterFunc = [](Output output){return output.isSpent() && output.getSpendingTx()->getBlockHeight() >= 160;};
+  TEST_F(AlgorithmsTest, OutputsSpentAfterHeight) {
+    auto filterFunc = [](Output output) { return output.isSpent() && output.getSpendingTx()->getBlockHeight() >= 160; };
     auto outs = filterOutputsOnChain(filterFunc);
 
     EXPECT_TRUE(outs.size() > 0);
@@ -253,10 +253,10 @@ TEST_F(AlgorithmsTest, OutputsSpentAfterHeight) {
 
     ASSERT_EQ(outs.size(), algo_outputs.size());
     ASSERT_EQ(outs, algo_outputs);
-}
+  }
 
-TEST_F(AlgorithmsTest, InputsCreatedBeforeHeight) {
-    auto filterFunc = [](Input input){return input.getSpentTx().getBlockHeight() < 160;};
+  TEST_F(AlgorithmsTest, InputsCreatedBeforeHeight) {
+    auto filterFunc = [](Input input) { return input.getSpentTx().getBlockHeight() < 160; };
     auto ins = filterInputsOnChain(filterFunc);
 
     EXPECT_TRUE(ins.size() > 0);
@@ -265,10 +265,10 @@ TEST_F(AlgorithmsTest, InputsCreatedBeforeHeight) {
 
     ASSERT_EQ(ins.size(), algo_inputs.size());
     ASSERT_EQ(ins, algo_inputs);
-}
+  }
 
-TEST_F(AlgorithmsTest, InputsCreatedAfterHeight) {
-    auto filterFunc = [](Input input){return input.getSpentTx().getBlockHeight() >= 160;};
+  TEST_F(AlgorithmsTest, InputsCreatedAfterHeight) {
+    auto filterFunc = [](Input input) { return input.getSpentTx().getBlockHeight() >= 160; };
     auto ins = filterInputsOnChain(filterFunc);
 
     EXPECT_TRUE(ins.size() > 0);
@@ -277,10 +277,12 @@ TEST_F(AlgorithmsTest, InputsCreatedAfterHeight) {
 
     ASSERT_EQ(ins.size(), algo_inputs.size());
     ASSERT_EQ(ins, algo_inputs);
-}
+  }
 
-TEST_F(AlgorithmsTest, OutputsSpentWithinRelativeHeight) {
-    auto filterFunc = [](Output output){return output.isSpent() && (output.getSpendingTx()->getBlockHeight() - output.block().height()) < 10;};
+  TEST_F(AlgorithmsTest, OutputsSpentWithinRelativeHeight) {
+    auto filterFunc = [](Output output) {
+      return output.isSpent() && (output.getSpendingTx()->getBlockHeight() - output.block().height()) < 10;
+    };
     auto outs = filterOutputsOnChain(filterFunc);
 
     EXPECT_TRUE(outs.size() > 0);
@@ -289,10 +291,12 @@ TEST_F(AlgorithmsTest, OutputsSpentWithinRelativeHeight) {
 
     ASSERT_EQ(outs.size(), algo_outputs.size());
     ASSERT_EQ(outs, algo_outputs);
-}
+  }
 
-TEST_F(AlgorithmsTest, OutputsSpentOutsideRelativeHeight) {
-    auto filterFunc = [](Output output){return output.isSpent() && (output.getSpendingTx()->getBlockHeight() - output.block().height()) >= 10;};
+  TEST_F(AlgorithmsTest, OutputsSpentOutsideRelativeHeight) {
+    auto filterFunc = [](Output output) {
+      return output.isSpent() && (output.getSpendingTx()->getBlockHeight() - output.block().height()) >= 10;
+    };
     auto outs = filterOutputsOnChain(filterFunc);
 
     EXPECT_TRUE(outs.size() > 0);
@@ -301,10 +305,10 @@ TEST_F(AlgorithmsTest, OutputsSpentOutsideRelativeHeight) {
 
     ASSERT_EQ(outs.size(), algo_outputs.size());
     ASSERT_EQ(outs, algo_outputs);
-}
+  }
 
-TEST_F(AlgorithmsTest, InputsCreatedWithinRelativeHeight) {
-    auto filterFunc = [](Input input){return input.blockHeight - input.getSpentTx().getBlockHeight() < 10;};
+  TEST_F(AlgorithmsTest, InputsCreatedWithinRelativeHeight) {
+    auto filterFunc = [](Input input) { return input.blockHeight - input.getSpentTx().getBlockHeight() < 10; };
     auto ins = filterInputsOnChain(filterFunc);
 
     EXPECT_TRUE(ins.size() > 0);
@@ -313,10 +317,10 @@ TEST_F(AlgorithmsTest, InputsCreatedWithinRelativeHeight) {
 
     ASSERT_EQ(ins.size(), algo_inputs.size());
     ASSERT_EQ(ins, algo_inputs);
-}
+  }
 
-TEST_F(AlgorithmsTest, InputsCreatedOutsideRelativeHeight) {
-    auto filterFunc = [](Input input){return input.blockHeight - input.getSpentTx().getBlockHeight() >= 10;};
+  TEST_F(AlgorithmsTest, InputsCreatedOutsideRelativeHeight) {
+    auto filterFunc = [](Input input) { return input.blockHeight - input.getSpentTx().getBlockHeight() >= 10; };
     auto ins = filterInputsOnChain(filterFunc);
 
     EXPECT_TRUE(ins.size() > 0);
@@ -325,10 +329,10 @@ TEST_F(AlgorithmsTest, InputsCreatedOutsideRelativeHeight) {
 
     ASSERT_EQ(ins.size(), algo_inputs.size());
     ASSERT_EQ(ins, algo_inputs);
-}
+  }
 
-TEST_F(AlgorithmsTest, OutputsOfType) {
-    auto filterFunc = [](Output output){return output.getType() == AddressType::PUBKEYHASH;};
+  TEST_F(AlgorithmsTest, OutputsOfType) {
+    auto filterFunc = [](Output output) { return output.getType() == AddressType::PUBKEYHASH; };
     auto outs = filterOutputsOnChain(filterFunc);
 
     EXPECT_TRUE(outs.size() > 0);
@@ -337,10 +341,10 @@ TEST_F(AlgorithmsTest, OutputsOfType) {
 
     ASSERT_EQ(outs.size(), algo_outputs.size());
     ASSERT_EQ(outs, algo_outputs);
-}
+  }
 
-TEST_F(AlgorithmsTest, InputsOfType) {
-    auto filterFunc = [](Input input){return input.getType() == AddressType::SCRIPTHASH;};
+  TEST_F(AlgorithmsTest, InputsOfType) {
+    auto filterFunc = [](Input input) { return input.getType() == AddressType::SCRIPTHASH; };
     auto ins = filterInputsOnChain(filterFunc);
 
     EXPECT_TRUE(ins.size() > 0);
@@ -349,85 +353,84 @@ TEST_F(AlgorithmsTest, InputsOfType) {
 
     ASSERT_EQ(ins.size(), algo_inputs.size());
     ASSERT_EQ(ins, algo_inputs);
-}
+  }
 
-TEST_F(AlgorithmsTest, InputCount) {
+  TEST_F(AlgorithmsTest, InputCount) {
     uint64_t count = 0;
-    for(auto block : chain) {
-        for(auto tx : block) {
-            count += tx.inputCount();
-        }
+    for (auto block : chain) {
+      for (auto tx : block) {
+        count += tx.inputCount();
+      }
     }
     EXPECT_TRUE(count > 0);
 
     auto algo_count = inputCount(chain);
 
     ASSERT_EQ(count, algo_count);
-}
+  }
 
-TEST_F(AlgorithmsTest, OutputCount) {
+  TEST_F(AlgorithmsTest, OutputCount) {
     uint64_t count = 0;
-    for(auto block : chain) {
-        for(auto tx : block) {
-            count += tx.outputCount();
-        }
+    for (auto block : chain) {
+      for (auto tx : block) {
+        count += tx.outputCount();
+      }
     }
     EXPECT_TRUE(count > 0);
 
     auto algo_count = outputCount(chain);
 
     ASSERT_EQ(count, algo_count);
-}
+  }
 
-TEST_F(AlgorithmsTest, TotalInputValue) {
+  TEST_F(AlgorithmsTest, TotalInputValue) {
     int64_t amount = 0;
-    for(auto block : chain) {
-        for(auto tx : block) {
-            for(auto input : tx.inputs()) {
-                amount += input.getValue();
-            }
+    for (auto block : chain) {
+      for (auto tx : block) {
+        for (auto input : tx.inputs()) {
+          amount += input.getValue();
         }
+      }
     }
     EXPECT_TRUE(amount > 0);
 
     auto algo_amount = totalInputValue(chain);
 
     ASSERT_EQ(amount, algo_amount);
-}
+  }
 
-TEST_F(AlgorithmsTest, TotalOutputValue) {
+  TEST_F(AlgorithmsTest, TotalOutputValue) {
     int64_t amount = 0;
-    for(auto block : chain) {
-        for(auto tx : block) {
-            for(auto output : tx.outputs()) {
-                amount += output.getValue();
-            }
+    for (auto block : chain) {
+      for (auto tx : block) {
+        for (auto output : tx.outputs()) {
+          amount += output.getValue();
         }
+      }
     }
     EXPECT_TRUE(amount > 0);
 
     auto algo_amount = totalOutputValue(chain);
 
     ASSERT_EQ(amount, algo_amount);
-}
+  }
 
-TEST_F(AlgorithmsTest, Fee) {
-    for(auto block : chain) {
-        for(auto tx : block) {
-            ASSERT_EQ(fee(tx), tx.fee());
-        }
+  TEST_F(AlgorithmsTest, Fee) {
+    for (auto block : chain) {
+      for (auto tx : block) {
+        ASSERT_EQ(fee(tx), tx.fee());
+      }
     }
-}
+  }
 
-
-TEST_F(AlgorithmsTest, FeeLessThan) {
+  TEST_F(AlgorithmsTest, FeeLessThan) {
     std::vector<Transaction> txes;
-    for(auto block : chain) {
-        for(auto tx : block) {
-            if(tx.fee() < 1) {
-                txes.push_back(tx);
-            }
+    for (auto block : chain) {
+      for (auto tx : block) {
+        if (tx.fee() < 1) {
+          txes.push_back(tx);
         }
+      }
     }
     EXPECT_TRUE(txes.size() > 0);
 
@@ -435,16 +438,16 @@ TEST_F(AlgorithmsTest, FeeLessThan) {
 
     ASSERT_EQ(txes.size(), algo_txes.size());
     ASSERT_EQ(txes, algo_txes);
-}
+  }
 
-TEST_F(AlgorithmsTest, FeeGreaterThan) {
+  TEST_F(AlgorithmsTest, FeeGreaterThan) {
     std::vector<Transaction> txes;
-    for(auto block : chain) {
-        for(auto tx : block) {
-            if(tx.fee() >= 1) {
-                txes.push_back(tx);
-            }
+    for (auto block : chain) {
+      for (auto tx : block) {
+        if (tx.fee() >= 1) {
+          txes.push_back(tx);
         }
+      }
     }
     EXPECT_TRUE(txes.size() > 0);
 
@@ -452,14 +455,14 @@ TEST_F(AlgorithmsTest, FeeGreaterThan) {
 
     ASSERT_EQ(txes.size(), algo_txes.size());
     ASSERT_EQ(txes, algo_txes);
-}
+  }
 
-TEST_F(AlgorithmsTest, Fees) {
+  TEST_F(AlgorithmsTest, Fees) {
     std::vector<int64_t> txFees;
-    for(auto block : chain) {
-        for(auto tx : block) {
-            txFees.push_back(tx.fee());
-        }
+    for (auto block : chain) {
+      for (auto tx : block) {
+        txFees.push_back(tx.fee());
+      }
     }
     EXPECT_TRUE(txFees.size() > 0);
 
@@ -467,21 +470,20 @@ TEST_F(AlgorithmsTest, Fees) {
 
     ASSERT_EQ(txFees.size(), algo_fees.size());
     ASSERT_EQ(txFees, algo_fees);
-}
+  }
 
-TEST_F(AlgorithmsTest, TotalFees) {
+  TEST_F(AlgorithmsTest, TotalFees) {
     int64_t amount = 0;
-    for(auto block : chain) {
-        for(auto tx : block) {
-            amount += tx.fee();
-        }
+    for (auto block : chain) {
+      for (auto tx : block) {
+        amount += tx.fee();
+      }
     }
     EXPECT_TRUE(amount > 0);
 
     auto algo_amount = totalFee(chain);
 
     ASSERT_EQ(amount, algo_amount);
-}
+  }
 
-}  // namespace blocksci
-
+} // namespace blocksci

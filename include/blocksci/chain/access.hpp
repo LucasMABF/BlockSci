@@ -9,46 +9,47 @@
 #ifndef blocksci_access_hpp
 #define blocksci_access_hpp
 
+#include <blocksci/address/address.hpp>
 #include <blocksci/blocksci_export.h>
 #include <blocksci/chain/transaction.hpp>
-#include <blocksci/address/address.hpp>
 
 #include <cstdint>
 #include <string>
 #include <vector>
 
 namespace blocksci {
-    struct DataConfiguration;
-    class DataAccess;
+  struct DataConfiguration;
+  class DataAccess;
 
-    /** Wrapper class that manages all data access for a blockchain */
-    class BLOCKSCI_EXPORT Access {
-        DataAccess *access;
-    public:
-        Access(DataAccess *access_) : access(access_) {}
+  /** Wrapper class that manages all data access for a blockchain */
+  class BLOCKSCI_EXPORT Access {
+    DataAccess *access;
 
-        Transaction txWithIndex(uint32_t index) const {
-            return Transaction{index, *access};
-        }
+  public:
+    Access(DataAccess *access_) : access(access_) {
+    }
 
-        Transaction txWithHash(const std::string &hash) const {
-            return Transaction{hash, *access};
-        }
+    Transaction txWithIndex(uint32_t index) const {
+      return Transaction{index, *access};
+    }
 
-        Address addressFromIndex(uint32_t index, AddressType::Enum type) const {
-            return Address{index, type, *access};
-        }
+    Transaction txWithHash(const std::string &hash) const {
+      return Transaction{hash, *access};
+    }
 
-        ranges::optional<Address> addressFromString(const std::string &addressString) const {
-            return getAddressFromString(addressString, *access);
-        }
+    Address addressFromIndex(uint32_t index, AddressType::Enum type) const {
+      return Address{index, type, *access};
+    }
 
-        std::vector<Address> addressesWithPrefix(const std::string &prefix) const {
-            return getAddressesWithPrefix(prefix, *access);
-        }
-    };
-    
+    ranges::optional<Address> addressFromString(const std::string &addressString) const {
+      return getAddressFromString(addressString, *access);
+    }
+
+    std::vector<Address> addressesWithPrefix(const std::string &prefix) const {
+      return getAddressesWithPrefix(prefix, *access);
+    }
+  };
+
 } // namespace blocksci
-
 
 #endif /* blocksci_access_hpp */

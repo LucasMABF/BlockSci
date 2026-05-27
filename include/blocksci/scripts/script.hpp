@@ -9,8 +9,8 @@
 #ifndef script_hpp
 #define script_hpp
 
-#include <blocksci/core/script_data.hpp>
 #include <blocksci/address/address.hpp>
+#include <blocksci/core/script_data.hpp>
 
 #include <cstddef>
 #include <cstdint>
@@ -19,55 +19,58 @@
 #include <limits>
 
 namespace blocksci {
-    struct DataConfiguration;
-    class DataAccess;
-    
-    class BLOCKSCI_EXPORT ScriptBase : public Address  {
-        const ScriptDataBase *rawData;
-        
-    protected:
-        const ScriptDataBase *getData() const {
-            return rawData;
-        }
-    public:
-        ScriptBase() = default;
-        ScriptBase(uint32_t scriptNum_, AddressType::Enum type_, DataAccess &access_, const ScriptDataBase *rawData_) : Address(scriptNum_, type_, access_), rawData(rawData_) {}
-        
-        explicit ScriptBase(const Address &address);
-        
-        void visitPointers(const std::function<void(const Address &)> &) const {}
+  struct DataConfiguration;
+  class DataAccess;
 
-        uint32_t getFirstTxIndex() const {
-            return rawData->txFirstSeen;
-        }
-        
-        ranges::optional<uint32_t> getTxRevealedIndex() const {
-            auto txRevealedIndex = rawData->txFirstSpent;
-            if (txRevealedIndex != std::numeric_limits<uint32_t>::max()) {
-                return txRevealedIndex;
-            } else {
-                return ranges::nullopt;
-            }
-        }
+  class BLOCKSCI_EXPORT ScriptBase : public Address {
+    const ScriptDataBase *rawData;
 
-        bool hasBeenSpent() const {
-            return getTxRevealedIndex().has_value();
-        }
-        
-        Transaction getFirstTransaction() const;
-        ranges::optional<Transaction> getTransactionRevealed() const;
-    };
+  protected:
+    const ScriptDataBase *getData() const {
+      return rawData;
+    }
+
+  public:
+    ScriptBase() = default;
+    ScriptBase(uint32_t scriptNum_, AddressType::Enum type_, DataAccess &access_, const ScriptDataBase *rawData_)
+        : Address(scriptNum_, type_, access_), rawData(rawData_) {
+    }
+
+    explicit ScriptBase(const Address &address);
+
+    void visitPointers(const std::function<void(const Address &)> &) const {
+    }
+
+    uint32_t getFirstTxIndex() const {
+      return rawData->txFirstSeen;
+    }
+
+    ranges::optional<uint32_t> getTxRevealedIndex() const {
+      auto txRevealedIndex = rawData->txFirstSpent;
+      if (txRevealedIndex != std::numeric_limits<uint32_t>::max()) {
+        return txRevealedIndex;
+      } else {
+        return ranges::nullopt;
+      }
+    }
+
+    bool hasBeenSpent() const {
+      return getTxRevealedIndex().has_value();
+    }
+
+    Transaction getFirstTransaction() const;
+    ranges::optional<Transaction> getTransactionRevealed() const;
+  };
 } // namespace blocksci
 
 namespace std {
-    template <>
-    struct hash<blocksci::ScriptBase> {
-        typedef blocksci::ScriptBase argument_type;
-        typedef size_t  result_type;
-        result_type operator()(const blocksci::ScriptBase &b) const {
-            return std::hash<blocksci::Address>{}(b);
-        }
-    };
-}
+  template <> struct hash<blocksci::ScriptBase> {
+    typedef blocksci::ScriptBase argument_type;
+    typedef size_t result_type;
+    result_type operator()(const blocksci::ScriptBase &b) const {
+      return std::hash<blocksci::Address>{}(b);
+    }
+  };
+} // namespace std
 
 #endif /* script_hpp */

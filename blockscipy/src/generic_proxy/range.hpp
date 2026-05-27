@@ -5,7 +5,6 @@
 //  Created by Harry Kalodner on 11/1/18.
 //
 
-
 #ifndef generic_proxy_range_hpp
 #define generic_proxy_range_hpp
 
@@ -15,6 +14,5 @@
 
 void applyProxyIteratorFuncs(pybind11::class_<IteratorProxy, GenericProxy> &cl, pybind11::module &m);
 void applyProxyRangeFuncs(pybind11::class_<RangeProxy, IteratorProxy> &cl);
-
 
 #endif /* generic_proxy_range_hpp */

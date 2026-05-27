@@ -7,65 +7,60 @@
 //
 
 #include "proxy_type_check.hpp"
-#include "python_fwd.hpp"
 
-#include <boost/core/demangle.hpp>
+#include "python_fwd.hpp"
 
 #include <blocksci/scripts/script_variant.hpp>
 #include <blocksci/scripts/scripts_fwd.hpp>
 
-#include <stdexcept>
+#include <boost/core/demangle.hpp>
+
 #include <sstream>
+#include <stdexcept>
 #include <string>
 #include <typeinfo>
 
 using namespace blocksci;
 
 namespace {
-	bool kindAccept(ProxyType a, ProxyType b) {
-		return
-			(a == b) ||
-			(a == ProxyType::Optional && b == ProxyType::Simple) ||
-			(a == ProxyType::Iterator && b == ProxyType::Range);
-	}
+  bool kindAccept(ProxyType a, ProxyType b) {
+    return (a == b) || (a == ProxyType::Optional && b == ProxyType::Simple) ||
+           (a == ProxyType::Iterator && b == ProxyType::Range);
+  }
 
-	bool isScriptType(const std::type_info &type) {
-		return
-			type == typeid(script::Pubkey) ||
-			type == typeid(script::PubkeyHash) ||
-			type == typeid(script::WitnessPubkeyHash) ||
-			type == typeid(script::MultisigPubkey) ||
-			type == typeid(script::Multisig) ||
-			type == typeid(script::ScriptHash) ||
-			type == typeid(script::WitnessScriptHash) ||
-			type == typeid(script::OpReturn) ||
-			type == typeid(script::Nonstandard) ||
-			type == typeid(script::WitnessUnknown);
-	}
-}
+  bool isScriptType(const std::type_info &type) {
+    return type == typeid(script::Pubkey) || type == typeid(script::PubkeyHash) ||
+           type == typeid(script::WitnessPubkeyHash) || type == typeid(script::MultisigPubkey) ||
+           type == typeid(script::Multisig) || type == typeid(script::ScriptHash) ||
+           type == typeid(script::WitnessScriptHash) || type == typeid(script::OpReturn) ||
+           type == typeid(script::Nonstandard) || type == typeid(script::WitnessUnknown);
+  }
+} // namespace
 
 void ProxyTypeInfo::checkAccept(const ProxyTypeInfo &other) const {
-	if (kindAccept(kind, other.kind)) {
-		if (baseType == nullptr || other.baseType == nullptr || *baseType == *other.baseType) {
-			return;
-		}
+  if (kindAccept(kind, other.kind)) {
+    if (baseType == nullptr || other.baseType == nullptr || *baseType == *other.baseType) {
+      return;
+    }
 
-		if (*baseType == typeid(AnyScript) && isScriptType(*other.baseType)) {
-			return;
-		}
-	}
+    if (*baseType == typeid(AnyScript) && isScriptType(*other.baseType)) {
+      return;
+    }
+  }
 
-	std::stringstream ss;
-	ss << "Proxy type error: " << boost::core::demangle(type->name()) << " does not accept " << boost::core::demangle(other.type->name());
-	throw std::runtime_error(ss.str());
+  std::stringstream ss;
+  ss << "Proxy type error: " << boost::core::demangle(type->name()) << " does not accept "
+     << boost::core::demangle(other.type->name());
+  throw std::runtime_error(ss.str());
 }
 
 void ProxyTypeInfo::checkMatch(const ProxyTypeInfo &other) const {
-	if (type == nullptr || other.type == nullptr || *type == *other.type) {
-		return;
-	}
+  if (type == nullptr || other.type == nullptr || *type == *other.type) {
+    return;
+  }
 
-	std::stringstream ss;
-	ss << "Proxy type error: " << boost::core::demangle(other.type->name()) << " does not match " << boost::core::demangle(type->name());
-	throw std::runtime_error(ss.str());
+  std::stringstream ss;
+  ss << "Proxy type error: " << boost::core::demangle(other.type->name()) << " does not match "
+     << boost::core::demangle(type->name());
+  throw std::runtime_error(ss.str());
 }

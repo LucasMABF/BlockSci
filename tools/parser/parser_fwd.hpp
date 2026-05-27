@@ -13,22 +13,20 @@
 #include <blocksci/core/address_types.hpp>
 
 #ifdef BLOCKSCI_FILE_PARSER
-struct FileTag{};
+struct FileTag {};
 struct ChainDiskConfiguration;
 #endif
 
 #ifdef BLOCKSCI_RPC_PARSER
-struct RPCTag{};
+struct RPCTag {};
 #endif
 
-template <typename ParseType>
-struct BlockInfo;
+template <typename ParseType> struct BlockInfo;
 
 struct RawOutputPointer;
 struct UTXO;
 
-template<typename Key, typename Value>
-class SerializableMap;
+template <typename Key, typename Value> class SerializableMap;
 
 class UTXOState;
 class UTXOScriptState;
@@ -44,29 +42,23 @@ struct RawInput;
 struct RawOutput;
 struct WitnessStackItem;
 
-template<blocksci::AddressType::Enum>
-struct ScriptOutput;
+template <blocksci::AddressType::Enum> struct ScriptOutput;
 
 class AnyScriptOutput;
 
-template<blocksci::AddressType::Enum>
-struct ScriptInput;
+template <blocksci::AddressType::Enum> struct ScriptInput;
 
 class AnyScriptInput;
 
-template<blocksci::AddressType::Enum>
-struct ScriptOutputData;
+template <blocksci::AddressType::Enum> struct ScriptOutputData;
 
-template<blocksci::AddressType::Enum>
-struct ScriptInputData;
+template <blocksci::AddressType::Enum> struct ScriptInputData;
 
-template<blocksci::AddressType::Enum>
-struct SpendData;
+template <blocksci::AddressType::Enum> struct SpendData;
 
 class AnySpendData;
 
 struct ParserConfigurationBase;
-template <typename ParseType>
-struct ParserConfiguration;
+template <typename ParseType> struct ParserConfiguration;
 
 #endif /* parser_fwd_hpp */

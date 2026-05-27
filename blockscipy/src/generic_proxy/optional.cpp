@@ -7,24 +7,21 @@
 //
 
 #include "optional.hpp"
+
+#include "caster_py.hpp"
 #include "generic_proxy.hpp"
 #include "optional_map.hpp"
 #include "proxy.hpp"
 #include "proxy_utils.hpp"
-#include "caster_py.hpp"
+
 #include <pybind11/pybind11.h>
 
 #include <utility>
 
 void addOptionalProxyMethods(pybind11::class_<OptionalProxy, RangeProxy> &cl, pybind11::module &) {
-	addOptionalProxyMapMethods(cl);
-	
-	cl
-	.def("has_value", [](OptionalProxy &p) -> Proxy<bool> {
-		return liftGeneric(p, [](auto && val) {
-			return std::forward<decltype(val)>(val).has_value();
-		});
-	})
-	;
-}
+  addOptionalProxyMapMethods(cl);
 
+  cl.def("has_value", [](OptionalProxy &p) -> Proxy<bool> {
+    return liftGeneric(p, [](auto &&val) { return std::forward<decltype(val)>(val).has_value(); });
+  });
+}

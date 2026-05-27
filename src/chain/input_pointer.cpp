@@ -13,14 +13,14 @@
 #include <string>
 
 namespace blocksci {
-    std::string InputPointer::toString() const {
-        std::stringstream ss;
-        ss << "InputPointer(tx_index=" << txNum << ", input_index=" << inoutNum << ")";
-        return ss.str();
-    }
+  std::string InputPointer::toString() const {
+    std::stringstream ss;
+    ss << "InputPointer(tx_index=" << txNum << ", input_index=" << inoutNum << ")";
+    return ss.str();
+  }
 } // namespace blocksci
 
 std::ostream &operator<<(std::ostream &os, const blocksci::InputPointer &pointer) {
-    os << pointer.toString();
-    return os;
+  os << pointer.toString();
+  return os;
 }

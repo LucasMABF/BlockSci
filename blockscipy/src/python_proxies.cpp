@@ -6,17 +6,19 @@
 //
 
 #include "python_proxies.hpp"
-#include "python_fwd.hpp"
-#include "generic_proxy.hpp"
-#include "python_proxies_types.hpp"
-#include "proxy.hpp"
+
 #include "caster_py.hpp"
-#include "proxy/proxy_functions.hpp"
-#include "generic_proxy/range.hpp"
+#include "generic_proxy.hpp"
 #include "generic_proxy/optional.hpp"
+#include "generic_proxy/range.hpp"
 #include "method_types.hpp"
+#include "proxy.hpp"
+#include "proxy/proxy_functions.hpp"
+#include "python_fwd.hpp"
+#include "python_proxies_types.hpp"
 
 #include <blocksci/chain/block.hpp>
+
 #include <pybind11/pybind11.h>
 #include <pybind11/pytypes.h>
 
@@ -24,70 +26,56 @@ namespace py = pybind11;
 using namespace blocksci;
 
 void setupProxies(py::module &m) {
-	auto proxyMod = m.def_submodule("proxy");
+  auto proxyMod = m.def_submodule("proxy");
 
-    py::enum_<ProxyType>(proxyMod, "proxy_type", py::arithmetic(), "Enumeration of all proxy types")
-    .value("simple", ProxyType::Simple)
-    .value("optional", ProxyType::Optional)
-    .value("iterator", ProxyType::Iterator)
-    .value("range", ProxyType::Range)
-    .def("__str__", [](ProxyType val) {
+  py::enum_<ProxyType>(proxyMod, "proxy_type", py::arithmetic(), "Enumeration of all proxy types")
+      .value("simple", ProxyType::Simple)
+      .value("optional", ProxyType::Optional)
+      .value("iterator", ProxyType::Iterator)
+      .value("range", ProxyType::Range)
+      .def("__str__", [](ProxyType val) {
         switch (val) {
-            case ProxyType::Simple:
-                return "Simple";
-            case ProxyType::Optional:
-                return "Optional";
-            case ProxyType::Iterator:
-                return "Iterator";
-            case ProxyType::Range:
-                return "Range";
-            default:
-                return "Unknown Proxy Type";
+        case ProxyType::Simple:
+          return "Simple";
+        case ProxyType::Optional:
+          return "Optional";
+        case ProxyType::Iterator:
+          return "Iterator";
+        case ProxyType::Range:
+          return "Range";
+        default:
+          return "Unknown Proxy Type";
         }
-    })
-    ;
+      });
 
-    py::class_<GenericProxy> proxyCl(proxyMod, "Proxy");
+  py::class_<GenericProxy> proxyCl(proxyMod, "Proxy");
 
-    py::class_<IteratorProxy, GenericProxy> proxyIteratorCl(proxyMod, "IteratorProxy");
-    proxyIteratorCl
-    .def_property_readonly_static("ptype", [](pybind11::object &) -> ProxyType {
-        return ProxyType::Iterator;
-    })
-    ;
+  py::class_<IteratorProxy, GenericProxy> proxyIteratorCl(proxyMod, "IteratorProxy");
+  proxyIteratorCl.def_property_readonly_static("ptype",
+                                               [](pybind11::object &) -> ProxyType { return ProxyType::Iterator; });
 
-    py::class_<RangeProxy, IteratorProxy> proxyRangeCl(proxyMod, "RangeProxy");
-    proxyRangeCl
-    .def_property_readonly_static("ptype", [](pybind11::object &) -> ProxyType {
-        return ProxyType::Range;
-    })
-    ;
+  py::class_<RangeProxy, IteratorProxy> proxyRangeCl(proxyMod, "RangeProxy");
+  proxyRangeCl.def_property_readonly_static("ptype", [](pybind11::object &) -> ProxyType { return ProxyType::Range; });
 
-    py::class_<OptionalProxy, RangeProxy> proxyOptionalCl(proxyMod, "OptionalProxy");
-    proxyOptionalCl
-    .def_property_readonly_static("ptype", [](pybind11::object &) -> ProxyType {
-        return ProxyType::Optional;
-    })
-    ;
+  py::class_<OptionalProxy, RangeProxy> proxyOptionalCl(proxyMod, "OptionalProxy");
+  proxyOptionalCl.def_property_readonly_static("ptype",
+                                               [](pybind11::object &) -> ProxyType { return ProxyType::Optional; });
 
-    py::class_<SimpleProxy, OptionalProxy> proxySimpleCl(proxyMod, "SimpleProxy");
-    proxySimpleCl
-    .def_property_readonly_static("ptype", [](pybind11::object &) -> ProxyType {
-        return ProxyType::Simple;
-    })
-    ;
+  py::class_<SimpleProxy, OptionalProxy> proxySimpleCl(proxyMod, "SimpleProxy");
+  proxySimpleCl.def_property_readonly_static("ptype",
+                                             [](pybind11::object &) -> ProxyType { return ProxyType::Simple; });
 
-    MainProxies mainProxies(proxyMod);
-    ScriptProxies scriptProxies(proxyMod);
-    OtherProxies otherProxies(proxyMod);
+  MainProxies mainProxies(proxyMod);
+  ScriptProxies scriptProxies(proxyMod);
+  OtherProxies otherProxies(proxyMod);
 
-    defineProxyFunctions(m, proxyMod);
+  defineProxyFunctions(m, proxyMod);
 
-    addOptionalProxyMethods(proxyOptionalCl, m);
-    applyProxyIteratorFuncs(proxyIteratorCl, m);
-    applyProxyRangeFuncs(proxyRangeCl);
+  addOptionalProxyMethods(proxyOptionalCl, m);
+  applyProxyIteratorFuncs(proxyIteratorCl, m);
+  applyProxyRangeFuncs(proxyRangeCl);
 
-    setupMainProxies(mainProxies);
-    setupScriptProxies(scriptProxies);
-    setupOtherProxies(otherProxies);
+  setupMainProxies(mainProxies);
+  setupScriptProxies(scriptProxies);
+  setupOtherProxies(otherProxies);
 }

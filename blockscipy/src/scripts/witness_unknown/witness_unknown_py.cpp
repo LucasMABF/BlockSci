@@ -7,24 +7,23 @@
 //
 
 #include "witness_unknown_py.hpp"
+
 #include "caster_py.hpp"
 #include "python_range.hpp"
 #include "ranges_py.hpp"
 
 #include <blocksci/scripts/scripts_fwd.hpp>
 #include <blocksci/scripts/witness_unknown_script.hpp>
+
 #include <pybind11/pybind11.h>
 
 using namespace blocksci;
 namespace py = pybind11;
 
 void init_witness_unknown(py::class_<script::WitnessUnknown> &cl) {
-    cl
-    .def("__repr__", &script::WitnessUnknown::toString)
-    .def("__str__", &script::WitnessUnknown::toPrettyString)
-    ;
+  cl.def("__repr__", &script::WitnessUnknown::toString).def("__str__", &script::WitnessUnknown::toPrettyString);
 }
 
 void addWitnessUnknownRangeMethods(RangeClasses<script::WitnessUnknown> &classes) {
-	addAllRangeMethods(classes);
+  addAllRangeMethods(classes);
 }

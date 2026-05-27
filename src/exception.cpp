@@ -8,6 +8,6 @@
 #include <blocksci/exception.hpp>
 
 namespace blocksci {
-    InvalidAddressException::~InvalidAddressException() = default;
-    
+  InvalidAddressException::~InvalidAddressException() = default;
+
 } // namespace blocksci

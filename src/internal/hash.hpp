@@ -9,29 +9,29 @@
 #ifndef hash_hpp
 #define hash_hpp
 
-#include <cstdint>
 #include <cstddef>
+#include <cstdint>
 
 namespace blocksci {
-    class uint256;
-    class uint160;
-}
+  class uint256;
+  class uint160;
+} // namespace blocksci
 
 struct evp_md_ctx_st;
 typedef struct evp_md_ctx_st EVP_MD_CTX;
 
 class Sha256Stream {
 private:
-    EVP_MD_CTX *ctx;
+  EVP_MD_CTX *ctx;
 
 public:
-    Sha256Stream();
-    ~Sha256Stream();
-    Sha256Stream(const Sha256Stream &) = delete;
-    Sha256Stream &operator=(const Sha256Stream &) = delete;
+  Sha256Stream();
+  ~Sha256Stream();
+  Sha256Stream(const Sha256Stream &) = delete;
+  Sha256Stream &operator=(const Sha256Stream &) = delete;
 
-    void update(const void *data, size_t len);
-    blocksci::uint256 finalize();
+  void update(const void *data, size_t len);
+  blocksci::uint256 finalize();
 };
 
 blocksci::uint256 sha256(const uint8_t *data, size_t len);

@@ -7,24 +7,23 @@
 //
 
 #include "multisig_py.hpp"
+
 #include "caster_py.hpp"
 #include "python_range.hpp"
 #include "ranges_py.hpp"
 
 #include <blocksci/scripts/multisig_script.hpp>
-#include <pybind11/pybind11.h>
 #include <blocksci/scripts/scripts_fwd.hpp>
+
+#include <pybind11/pybind11.h>
 
 using namespace blocksci;
 namespace py = pybind11;
 
 void init_multisig(py::class_<script::Multisig> &cl) {
-    cl
-    .def("__repr__", &script::Multisig::toString)
-    .def("__str__", &script::Multisig::toPrettyString)
-    ;
+  cl.def("__repr__", &script::Multisig::toString).def("__str__", &script::Multisig::toPrettyString);
 }
 
 void addMultisigRangeMethods(RangeClasses<script::Multisig> &classes) {
-	addAllRangeMethods(classes);
+  addAllRangeMethods(classes);
 }

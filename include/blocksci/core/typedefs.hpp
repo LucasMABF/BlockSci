@@ -11,7 +11,7 @@
 #include <blocksci/blocksci_export.h>
 
 namespace blocksci {
-    using BlockHeight = int;
+  using BlockHeight = int;
 } // namespace blocksci
 
 #endif /* blocksci_typedefs_hpp */

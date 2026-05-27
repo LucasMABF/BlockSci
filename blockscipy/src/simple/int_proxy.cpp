@@ -6,30 +6,30 @@
 //
 //
 
-#include "proxy_py.hpp"
-#include "simple_proxies.hpp"
-#include "proxy/range.hpp"
-#include "proxy/equality.hpp"
-#include "proxy/comparison.hpp"
 #include "proxy/arithmetic.hpp"
 #include "proxy/arithmetic_range.hpp"
 #include "proxy/basic.hpp"
+#include "proxy/comparison.hpp"
+#include "proxy/equality.hpp"
 #include "proxy/optional.hpp"
 #include "proxy/optional_arithmetic.hpp"
+#include "proxy/range.hpp"
+#include "proxy_py.hpp"
+#include "simple_proxies.hpp"
 
+#include <blocksci/address/equiv_address.hpp>
 #include <blocksci/chain/block.hpp>
 #include <blocksci/cluster/cluster.hpp>
-#include <blocksci/address/equiv_address.hpp>
 
 #include <cstdint>
 
 void addIntProxyMethods(AllProxyClasses<int64_t> &cls) {
-	cls.applyToAll(AddProxyMethods{});
-	addProxyEqualityMethods(cls.base);
-	addProxyComparisonMethods(cls.base);
-	addProxyArithMethods(cls.base);
-	addProxyOptionalMethods(cls.optional);
-	addProxyEqualityMethods(cls.optional);
-	addProxyOptionalArithMethods(cls.optional);
-	addProxyArithRangeMethods(cls.sequence);
+  cls.applyToAll(AddProxyMethods{});
+  addProxyEqualityMethods(cls.base);
+  addProxyComparisonMethods(cls.base);
+  addProxyArithMethods(cls.base);
+  addProxyOptionalMethods(cls.optional);
+  addProxyEqualityMethods(cls.optional);
+  addProxyOptionalArithMethods(cls.optional);
+  addProxyArithRangeMethods(cls.sequence);
 }

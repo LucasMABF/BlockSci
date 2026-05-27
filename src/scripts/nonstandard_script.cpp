@@ -7,6 +7,7 @@
 
 #include <blocksci/core/address_types.hpp>
 #include <blocksci/scripts/nonstandard_script.hpp>
+
 #include <range/v3/utility/optional.hpp>
 
 #include <internal/address_info.hpp>
@@ -20,42 +21,44 @@
 
 namespace blocksci {
 
-    ScriptAddress<AddressType::NONSTANDARD>::ScriptAddress(uint32_t addressNum_, DataAccess &access_) : ScriptAddress(addressNum_, access_.getScripts().getScriptData<dedupType(addressType)>(addressNum_), access_) {}
-    
-    ranges::optional<CScriptView> ScriptAddress<AddressType::NONSTANDARD>::getInputScript() const {
-        if (rawInputData != nullptr) {
-            return CScriptView{rawInputData->scriptData.begin(), rawInputData->scriptData.end()};
-        } else {
-            return ranges::nullopt;
-        }
-    }
-    
-    CScriptView ScriptAddress<AddressType::NONSTANDARD>::getOutputScript() const {
-        return {getData()->scriptData.begin(), getData()->scriptData.end()};
-    }
+  ScriptAddress<AddressType::NONSTANDARD>::ScriptAddress(uint32_t addressNum_, DataAccess &access_)
+      : ScriptAddress(addressNum_, access_.getScripts().getScriptData<dedupType(addressType)>(addressNum_), access_) {
+  }
 
-    std::string ScriptAddress<AddressType::NONSTANDARD>::inputString() const {
-        auto inputScript = getInputScript();
-        if (inputScript) {
-            return ScriptToAsmStr(*inputScript);
-        } else {
-            return "No input script";
-        }
+  ranges::optional<CScriptView> ScriptAddress<AddressType::NONSTANDARD>::getInputScript() const {
+    if (rawInputData != nullptr) {
+      return CScriptView{rawInputData->scriptData.begin(), rawInputData->scriptData.end()};
+    } else {
+      return ranges::nullopt;
     }
-    
-    std::string ScriptAddress<AddressType::NONSTANDARD>::outputString() const {
-        return ScriptToAsmStr(getOutputScript());
+  }
+
+  CScriptView ScriptAddress<AddressType::NONSTANDARD>::getOutputScript() const {
+    return {getData()->scriptData.begin(), getData()->scriptData.end()};
+  }
+
+  std::string ScriptAddress<AddressType::NONSTANDARD>::inputString() const {
+    auto inputScript = getInputScript();
+    if (inputScript) {
+      return ScriptToAsmStr(*inputScript);
+    } else {
+      return "No input script";
     }
-    
-    std::string ScriptAddress<AddressType::NONSTANDARD>::toString() const {
-        std::stringstream ss;
-        ss << "NonStandardAddress()";
-        return ss.str();
-    }
-    
-    std::string ScriptAddress<AddressType::NONSTANDARD>::toPrettyString() const {
-        std::stringstream ss;
-        ss << "NonStandardAddress(" << inputString() << ", " << outputString() << ")";
-        return ss.str();
-    }
+  }
+
+  std::string ScriptAddress<AddressType::NONSTANDARD>::outputString() const {
+    return ScriptToAsmStr(getOutputScript());
+  }
+
+  std::string ScriptAddress<AddressType::NONSTANDARD>::toString() const {
+    std::stringstream ss;
+    ss << "NonStandardAddress()";
+    return ss.str();
+  }
+
+  std::string ScriptAddress<AddressType::NONSTANDARD>::toPrettyString() const {
+    std::stringstream ss;
+    ss << "NonStandardAddress(" << inputString() << ", " << outputString() << ")";
+    return ss.str();
+  }
 } // namespace blocksci

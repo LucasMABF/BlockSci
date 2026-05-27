@@ -16,27 +16,24 @@
 #include <range/v3/view/transform.hpp>
 
 #include <cstdint>
-// 
+//
 
 namespace blocksci {
-    
-    template <AddressType::Enum type>
-    using ScriptRange = ranges::any_view<ScriptAddress<type>, ranges::category::random_access | ranges::category::sized>;
-    using ScriptRangeVariant = to_variadic_t<to_address_tuple_t<ScriptRange>, mpark::variant>;
-    
-    uint32_t BLOCKSCI_EXPORT getScriptCount(AddressType::Enum type, blocksci::DataAccess &access);
 
-    template <AddressType::Enum type>
-    ScriptRange<type> BLOCKSCI_EXPORT scriptsRange(DataAccess &access) {
-        auto scriptCount = getScriptCount(type, access);
-        return ranges::views::ints(uint32_t{1}, scriptCount + 1) | ranges::views::transform([&](uint32_t scriptNum) {
-            return ScriptAddress<type>(scriptNum, access);
-        });
-    }
-    
-    ScriptRangeVariant BLOCKSCI_EXPORT scriptsRange(AddressType::Enum type, DataAccess &access);
+  template <AddressType::Enum type>
+  using ScriptRange = ranges::any_view<ScriptAddress<type>, ranges::category::random_access | ranges::category::sized>;
+  using ScriptRangeVariant = to_variadic_t<to_address_tuple_t<ScriptRange>, mpark::variant>;
 
-    
-}
+  uint32_t BLOCKSCI_EXPORT getScriptCount(AddressType::Enum type, blocksci::DataAccess &access);
+
+  template <AddressType::Enum type> ScriptRange<type> BLOCKSCI_EXPORT scriptsRange(DataAccess &access) {
+    auto scriptCount = getScriptCount(type, access);
+    return ranges::views::ints(uint32_t{1}, scriptCount + 1) |
+           ranges::views::transform([&](uint32_t scriptNum) { return ScriptAddress<type>(scriptNum, access); });
+  }
+
+  ScriptRangeVariant BLOCKSCI_EXPORT scriptsRange(AddressType::Enum type, DataAccess &access);
+
+} // namespace blocksci
 
 #endif /* script_range_h */
