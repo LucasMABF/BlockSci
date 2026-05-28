@@ -9,34 +9,51 @@ import re
 import Crypto.Cipher.ARC4
 
 OP_RETURN_SERVICES = {
-    "OA": "Open Assets", "id": "Blockstack",
-    "S1": "Stampery", "S2": "Stampery",
-    "S3": "Stampery", "S4": "Stampery", "S5": "Stampery",
-    "Factom!!": "Factom", "FACTOM00": "Factom", "Fa": "Factom", "FA": "Factom",
+    "OA": "Open Assets",
+    "id": "Blockstack",
+    "S1": "Stampery",
+    "S2": "Stampery",
+    "S3": "Stampery",
+    "S4": "Stampery",
+    "S5": "Stampery",
+    "Factom!!": "Factom",
+    "FACTOM00": "Factom",
+    "Fa": "Factom",
+    "FA": "Factom",
     "ORIGMY": "OriginalMy",
     "ProveBit": "ProveBit",
     "UNicDC": "University of Nicosia",
     "DOCPROOF": "Proof of Existence",
-    "omni": "Omni Layer", "ASCRIBESPOOL": "Ascribe",
-    "CC": "Colu", "MG": "Monegraph",
-    "SB.D": "SB.D", "BITPROOF": "Bitproof",
-    "KC": "KC", "BS": "BlockSign", "OC": "UnknownOC",
-    "CryptoTests-": "Crypto Copyright", "CryptoProof-": "Crypto Copyright",
+    "omni": "Omni Layer",
+    "ASCRIBESPOOL": "Ascribe",
+    "CC": "Colu",
+    "MG": "Monegraph",
+    "SB.D": "SB.D",
+    "BITPROOF": "Bitproof",
+    "KC": "KC",
+    "BS": "BlockSign",
+    "OC": "UnknownOC",
+    "CryptoTests-": "Crypto Copyright",
+    "CryptoProof-": "Crypto Copyright",
     "LaPreuve": "LaPreuve",
-    "RMBd": "Remembr", "RMBe": "Remembr",
+    "RMBd": "Remembr",
+    "RMBe": "Remembr",
     "Mined by 1hash.com": "1hash",
-    "FluxST": "FluxST", "CP110400": "CP1", "KMD": "Komodo", "OKT": "OKT"
+    "FluxST": "FluxST",
+    "CP110400": "CP1",
+    "KMD": "Komodo",
+    "OKT": "OKT",
 }
 
 BYTE_PREFIXES = {
-    b'g\x01\xdd6\x15&]+': "UnknownBytePrefix",
-    binascii.unhexlify(b'5888'): "Blockstack",
-    binascii.unhexlify(b'5808'): "Blockstack",
-    binascii.unhexlify(b'455720'): "Eternity Wall",
-    binascii.unhexlify(b'53504b'): "Coinspark",
-    binascii.unhexlify(b'4f43'): "Openchain",
-    b'STAMPD##': "stampd",
-    b'CNTRPRTY': "Counterparty"
+    b"g\x01\xdd6\x15&]+": "UnknownBytePrefix",
+    binascii.unhexlify(b"5888"): "Blockstack",
+    binascii.unhexlify(b"5808"): "Blockstack",
+    binascii.unhexlify(b"455720"): "Eternity Wall",
+    binascii.unhexlify(b"53504b"): "Coinspark",
+    binascii.unhexlify(b"4f43"): "Openchain",
+    b"STAMPD##": "stampd",
+    b"CNTRPRTY": "Counterparty",
 }
 EXACT_STRING_MATCHES = [
     "http://www.blockcypher.com/",
@@ -46,13 +63,13 @@ EXACT_STRING_MATCHES = [
     "XX",
     "XY",
     "XW",
-    "SS"
+    "SS",
 ]
 EXACT_BYTE_MATCHES = [
-    b'\xb3\x87\xfc~\xf6K3\xcf\x01\x82\xec\xf8\xea\xb2\x065\x8cz\xc7\xb5\xa9\xd1$\x1a\x11\xd4Sb\xda\x9af\xa2\xb9l\xb6\xb6\x9b\xd7\xa6a',
+    b"\xb3\x87\xfc~\xf6K3\xcf\x01\x82\xec\xf8\xea\xb2\x065\x8cz\xc7\xb5\xa9\xd1$\x1a\x11\xd4Sb\xda\x9af\xa2\xb9l\xb6\xb6\x9b\xd7\xa6a",
     b"\xe3\xb0\xc4B\x98\xfc\x1c\x14\x9a\xfb\xf4\xc8\x99o\xb9$'\xaeA\xe4d\x9b\x93L\xa4\x95\x99\x1bxR\xb8U",
-    b'\xfc\xf4=\xa2D\x99GZ\x96\x00#1\xb8\x97\xc8\xf3#+(\xe5z\xfd\xcb?}y\x91\xbfv\xc8\xf0\xb6\x05\x81\xa2\x89\x9d\x80\x9f\xa9',
-    b'*K\x94V\x827C\xfe\xc9\xc0\x7fv:\x9f\x0c\xa3@~\xba\xb2\xfa\xca\xe4\x0e\xbbm\x83\xc8\xf5k\x0b\xbf\x94\xcbn\xe7\xb0\x9a$\r'
+    b"\xfc\xf4=\xa2D\x99GZ\x96\x00#1\xb8\x97\xc8\xf3#+(\xe5z\xfd\xcb?}y\x91\xbfv\xc8\xf0\xb6\x05\x81\xa2\x89\x9d\x80\x9f\xa9",
+    b"*K\x94V\x827C\xfe\xc9\xc0\x7fv:\x9f\x0c\xa3@~\xba\xb2\xfa\xca\xe4\x0e\xbbm\x83\xc8\xf5k\x0b\xbf\x94\xcbn\xe7\xb0\x9a$\r",
 ]
 
 # address_matches = {
@@ -103,6 +120,6 @@ def label_application(tx):
     elif tx.ins:
         first_vin_txid = binascii.unhexlify(str(tx.ins[0].spent_tx.hash))
         decoded = Crypto.Cipher.ARC4.new(first_vin_txid).decrypt(data)
-        if decoded.startswith(b'CNTRPRTY'):
+        if decoded.startswith(b"CNTRPRTY"):
             return "Counterparty"
     return "Unknown"

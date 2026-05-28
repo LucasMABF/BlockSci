@@ -37,7 +37,7 @@ def test_positive_locktime(chain, json_data):
 def test_non_max_nsequence_no(chain, json_data):
     tx = chain.tx_with_hash(json_data["nsequence-fffffffe-tx"])
     inpt = tx.inputs[0]
-    assert inpt.sequence_num == 2 ** 32 - 2
+    assert inpt.sequence_num == 2**32 - 2
 
 
 def test_op_return(chain, json_data):

@@ -1,5 +1,3 @@
-
-
 def chain_length(chain):
     return len(chain)
 
@@ -18,7 +16,7 @@ def chain_slice(chain):
     lengths = []
 
     for i in range(len(start_ranges)):
-        rng = chain[start_ranges[i]:end_ranges[i]]
+        rng = chain[start_ranges[i] : end_ranges[i]]
         lengths.append(len(rng))
 
 

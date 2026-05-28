@@ -39,6 +39,7 @@ def output_regression(tx, regtest):
         print(out.tx_index, file=regtest)
         print(out.value, file=regtest)
 
+
 def test_output_input_mapping(chain):
     for block in chain:
         for tx in block:

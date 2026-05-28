@@ -3,8 +3,13 @@ import pytest
 
 def compute_fee_naive(chain):
     return sum(
-        [sum(txin.value for txin in tx.inputs) - sum(txout.value for txout in tx.outputs) for block in chain for tx in
-         block if not tx.is_coinbase])
+        [
+            sum(txin.value for txin in tx.inputs) - sum(txout.value for txout in tx.outputs)
+            for block in chain
+            for tx in block
+            if not tx.is_coinbase
+        ]
+    )
 
 
 def compute_fee_builtin(chain):

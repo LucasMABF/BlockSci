@@ -4,7 +4,7 @@ import requests
 
 class BlockchainInfoData:
     def __init__(self, api_key, cache_blocks=False, cache_txs=False):
-        self.base_url = 'https://blockchain.info/'
+        self.base_url = "https://blockchain.info/"
         self.api_key = api_key
         self.cache_blocks = cache_blocks
         self.cache_txs = cache_txs
@@ -15,7 +15,7 @@ class BlockchainInfoData:
         if block_hash in self.block_cache:
             return self.block_cache[block_hash]
 
-        url = self.base_url + 'rawblock/' + block_hash + "?api_code=" + self.api_key
+        url = self.base_url + "rawblock/" + block_hash + "?api_code=" + self.api_key
         r = requests.get(url)
         r.raise_for_status()
 
@@ -28,7 +28,7 @@ class BlockchainInfoData:
         if tx_hash in self.tx_cache:
             return self.tx_cache[tx_hash]
 
-        url = self.base_url + 'rawtx/' + tx_hash + "?api_code=" + self.api_key
+        url = self.base_url + "rawtx/" + tx_hash + "?api_code=" + self.api_key
         r = requests.get(url)
         r.raise_for_status()
 
@@ -41,7 +41,7 @@ class BlockchainInfoData:
         data = self.block_data(block_hash)
 
         if "received_time" in data:
-            return pd.to_datetime(data["received_time"], unit='s')
+            return pd.to_datetime(data["received_time"], unit="s")
         else:
             return None
 
@@ -49,7 +49,7 @@ class BlockchainInfoData:
         data = self.block_data(block_hash)
         arrival_times = {}
         for tx in data["tx"]:
-            arrival_times[tx["hash"]] = pd.to_datetime(tx["time"], unit='s')
+            arrival_times[tx["hash"]] = pd.to_datetime(tx["time"], unit="s")
         return arrival_times
 
     def tx_arrival_time(self, tx_hash):

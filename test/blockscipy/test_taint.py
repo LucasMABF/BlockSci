@@ -21,9 +21,7 @@ class TestTaint:
     def test_ridiculous_max_block_height(self, chain, json_data):
         out_1 = chain.tx_with_hash(json_data["taint-split-tx-1"]).outputs[0]
 
-        result = blocksci.heuristics.poison_tainted_outputs(
-            [out_1], taint_fee=False, max_block_height=999999999
-        )
+        result = blocksci.heuristics.poison_tainted_outputs([out_1], taint_fee=False, max_block_height=999999999)
         assert len(result) > 0
 
 
@@ -62,9 +60,7 @@ class TestPoison:
         assert total_untainted_value(result) == 0
 
         # taint two outputs until the end
-        result = blocksci.heuristics.poison_tainted_outputs(
-            [out_1, out_2], taint_fee=False
-        )
+        result = blocksci.heuristics.poison_tainted_outputs([out_1, out_2], taint_fee=False)
         assert len(result) == 1
         assert Coin(15 - 6 * FEE) == total_output_value(result)
         assert Coin(15 - 6 * FEE) == total_tainted_value(result)
@@ -117,9 +113,7 @@ class TestPoison:
         assert total_untainted_value(result) == 0
 
         # taint two outputs until the end
-        result = blocksci.heuristics.poison_tainted_outputs(
-            [out_1, out_2], taint_fee=True
-        )
+        result = blocksci.heuristics.poison_tainted_outputs([out_1, out_2], taint_fee=True)
         assert len(result) == 3
         assert Coin(15 + 50 - 3 * FEE) == total_output_value(result)
         assert Coin(15 + 50 - 3 * FEE) == total_tainted_value(result)
@@ -127,9 +121,7 @@ class TestPoison:
 
     def test_poison_mapping(self, chain, json_data):
         out = chain.tx_with_hash(json_data["taint-mapping-fund-tx-2"]).outputs[0]
-        result = blocksci.heuristics.poison_tainted_outputs(
-            [out], max_block_height=out.tx.block_height + 1
-        )
+        result = blocksci.heuristics.poison_tainted_outputs([out], max_block_height=out.tx.block_height + 1)
         assert len(result) == 4
         assert Coin(35) == total_output_value(result)
         assert Coin(35) == total_tainted_value(result)
@@ -146,9 +138,7 @@ class TestHaircut:
         )
         assert len(result) == 1
         assert Coin(3 - 3 * FEE) == total_output_value(result)
-        assert Coin(
-            1 - FEE - ((1 - FEE) / (3 - 2 * FEE) * FEE)
-        ) - 1 == total_tainted_value(
+        assert Coin(1 - FEE - ((1 - FEE) / (3 - 2 * FEE) * FEE)) - 1 == total_tainted_value(
             result
         )  # -1 for rounding error
         assert total_untainted_value(result) != 0
@@ -202,9 +192,7 @@ class TestHaircut:
         assert total_untainted_value(result) != 0
 
         # taint two outputs until the end
-        result = blocksci.heuristics.haircut_tainted_outputs(
-            [out_1, out_2], taint_fee=True
-        )
+        result = blocksci.heuristics.haircut_tainted_outputs([out_1, out_2], taint_fee=True)
         assert len(result) == 3
         assert Coin(15 + 50 - 3 * FEE) == total_output_value(result)
         assert Coin(9 - FEE) == total_tainted_value(result)
@@ -212,9 +200,7 @@ class TestHaircut:
 
     def test_haircut_mapping(self, chain, json_data):
         out = chain.tx_with_hash(json_data["taint-mapping-fund-tx-2"]).outputs[0]
-        result = blocksci.heuristics.haircut_tainted_outputs(
-            [out], max_block_height=out.tx.block_height + 1
-        )
+        result = blocksci.heuristics.haircut_tainted_outputs([out], max_block_height=out.tx.block_height + 1)
         assert len(result) == 4
         assert Coin(35) == total_output_value(result)
         assert Coin(4) == total_tainted_value(result)

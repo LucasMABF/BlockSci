@@ -3,11 +3,7 @@ import shutil
 import subprocess
 import time
 
-chains = {
-    "btc": "bitcoin_regtest",
-    "bch": "bitcoin_cash_regtest",
-    "ltc": "litecoin_regtest"
-}
+chains = {"btc": "bitcoin_regtest", "bch": "bitcoin_cash_regtest", "ltc": "litecoin_regtest"}
 
 for _ in range(100):
     for chain_name in chains:
@@ -35,7 +31,7 @@ for _ in range(100):
         check_integrity_cmd = ["blocksci_check_integrity", config]
 
         subprocess.run(create_config_cmd, check=True, stdout=subprocess.DEVNULL)
-        subprocess.run(parse_cmd, check=True) #, stdout=subprocess.DEVNULL)
+        subprocess.run(parse_cmd, check=True)  # , stdout=subprocess.DEVNULL)
 
         check_file = chain_dir + "/checksums.txt"
         with open(check_file, "w") as f:
@@ -60,4 +56,3 @@ for _ in range(100):
             shutil.rmtree(chain_dir)
 
         time.sleep(2)
-

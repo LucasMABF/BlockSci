@@ -7,9 +7,7 @@ def test_power_of_ten_change(chain, json_data):
         txid = json_data[f"change-ten-{i}-tx"]
         tx = chain.tx_with_hash(txid)
         result = blocksci.heuristics.change.power_of_ten_value(8 - i, tx).to_list()
-        assert len(
-            result
-        ) == 1, f"Incorrect number of outputs identified with {i} digits"
+        assert len(result) == 1, f"Incorrect number of outputs identified with {i} digits"
 
         idx = json_data[f"change-ten-{i}-position"]
         assert idx == list(result)[0].index, "Incorrect index of change output"
@@ -19,10 +17,7 @@ def test_peeling_chain_change(chain, json_data):
     for i in range(3, 8):
         txid = json_data[f"peeling-chain-{i}-tx"]
         tx = chain.tx_with_hash(txid)
-        heuristic = (
-            blocksci.heuristics.change.peeling_chain
-            and blocksci.heuristics.change.spent
-        )
+        heuristic = blocksci.heuristics.change.peeling_chain and blocksci.heuristics.change.spent
         result = heuristic(tx).to_list()
         assert len(result) == 1
 
@@ -111,9 +106,7 @@ def test_unique_change(chain, json_data):
         txid = json_data[f"change-client-behavior-tx-{i}"]
         tx = chain.tx_with_hash(txid)
 
-        result = blocksci.heuristics.change.client_change_address_behavior.unique_change(
-            tx
-        ).to_list()
+        result = blocksci.heuristics.change.client_change_address_behavior.unique_change(tx).to_list()
         assert len(result) == 1
 
 
@@ -199,7 +192,6 @@ def test_union(chain):
 def test_intersection(chain):
     for h1 in heuristics:
         for h2 in heuristics:
-
             hintersect = h1 & h2
 
             for tx in chain.blocks[100:].txes:
@@ -214,7 +206,6 @@ def test_intersection(chain):
 def test_diff(chain):
     for h1 in heuristics:
         for h2 in heuristics:
-
             hdiff1 = h1 - h2
             hdiff2 = h2 - h1
 

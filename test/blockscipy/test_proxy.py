@@ -107,13 +107,9 @@ def test_any(chain, json_data):
 
 def test_where_block_height(chain):
     assert set(range(120)) == set(chain.blocks.where(lambda b: b.height < 120).height)
+    assert set(range(120, 140)) == set(chain.blocks.where(lambda b: (b.height >= 120) & (b.height < 140)).height)
     assert set(range(120, 140)) == set(
-        chain.blocks.where(lambda b: (b.height >= 120) & (b.height < 140)).height
-    )
-    assert set(range(120, 140)) == set(
-        chain.blocks.where(lambda b: b.height >= 120)
-        .where(lambda b: b.height < 140)
-        .height
+        chain.blocks.where(lambda b: b.height >= 120).where(lambda b: b.height < 140).height
     )
 
 
@@ -130,8 +126,7 @@ def test_where_address(chain):
     a1 = chain.blocks[1].txes[0].outputs[0].address
 
     proxy_txes = chain.blocks.txes.where(
-        lambda tx: tx.inputs.address.any(lambda a: a == a1)
-        | tx.outputs.address.any(lambda b: b == a1)
+        lambda tx: tx.inputs.address.any(lambda a: a == a1) | tx.outputs.address.any(lambda b: b == a1)
     )
 
     assert set(a1.txes) == set(proxy_txes)
@@ -157,12 +152,17 @@ def test_size(chain, regtest):
     check_iterator_range(chain[121].txes.inputs, regtest)
     check_iterator_range(chain[121].txes.outputs, regtest)
 
+
 def test_nested_select(chain):
     txes1 = chain.blocks.txes.where(
-        lambda tx: tx.outputs.where(lambda o: o.is_spent)
-        .any(lambda o: o.spending_tx.map(lambda t: t.fee_per_byte()).or_value(0) > o.tx.fee_per_byte())).to_list()
+        lambda tx: tx.outputs.where(lambda o: o.is_spent).any(
+            lambda o: o.spending_tx.map(lambda t: t.fee_per_byte()).or_value(0) > o.tx.fee_per_byte()
+        )
+    ).to_list()
     txes2 = chain.blocks.txes.where(
-        lambda tx: tx.outputs.where(lambda o: o.is_spent)
-        .any(lambda o: o.spending_tx.select(lambda t: t.fee_per_byte()).or_value(0) > o.tx.fee_per_byte())).to_list()
+        lambda tx: tx.outputs.where(lambda o: o.is_spent).any(
+            lambda o: o.spending_tx.select(lambda t: t.fee_per_byte()).or_value(0) > o.tx.fee_per_byte()
+        )
+    ).to_list()
     assert txes1
     assert txes1 == txes2

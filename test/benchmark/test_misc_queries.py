@@ -19,13 +19,14 @@ def max_fee(chain):
 
 
 def locktime_change(chain):
-    heuristic = (blocksci.heuristics.change.spent & blocksci.heuristics.change.locktime)
+    heuristic = blocksci.heuristics.change.spent & blocksci.heuristics.change.locktime
     return chain.blocks.txes.where(lambda tx: heuristic(tx).size == 1).size
 
 
 def zero_conf(chain):
     return chain.blocks.txes.outputs.where(
-        lambda o: o.spending_tx.map(lambda t: t.block_height).or_value(999999) == o.tx.block_height).size
+        lambda o: o.spending_tx.map(lambda t: t.block_height).or_value(999999) == o.tx.block_height
+    ).size
 
 
 def satoshi_dice_outputs(chain):
