@@ -35,7 +35,10 @@ class CurrencyConverter:
 
         self.supported_currencies = self._get_supported_currencies()
         if currency not in self.supported_currencies:
-            raise ValueError(f"Currency {currency} is not supported. Please use one of the following options: {self.supported_currencies}.")
+            raise ValueError(
+                f"Currency {currency} is not supported. "
+                f"Please use one of the following options: {self.supported_currencies}."
+            )
 
         self.data = self._get_data()
 
@@ -46,7 +49,11 @@ class CurrencyConverter:
 
     def _get_data(self):
         base_url = 'https://api.coindesk.com/v1/bpi/historical/close.json'
-        r = requests.get(f'{base_url}?index=USD&currency={self.currency}&start={max(self.COINDESK_START, self.start)}&end={max(self.COINDESK_START, self.end)}')
+        r = requests.get(
+            f'{base_url}?index=USD&currency={self.currency}'
+            f'&start={max(self.COINDESK_START, self.start)}'
+            f'&end={max(self.COINDESK_START, self.end)}'
+        )
         r.raise_for_status()
         return r.json()['bpi']
 

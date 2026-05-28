@@ -75,9 +75,9 @@ def test_chain_size_txes_outputs(chain, benchmark):
     benchmark(size_txes_outputs, chain)
 
 
-def size_txes_outputs(chain):
+def size_blocks_outputs(chain):
     assert chain.blocks.outputs.size
 
 
 def test_chain_size_blocks_outputs(chain, benchmark):
-    benchmark(size_txes_outputs, chain)
+    benchmark(size_blocks_outputs, chain)

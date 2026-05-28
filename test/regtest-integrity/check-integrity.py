@@ -45,7 +45,7 @@ for _ in range(100):
 
         files_are_same = True
         with open(check_file) as check, open(reference_file) as ref:
-            for check_line, ref_line in zip(check, ref):
+            for check_line, ref_line in zip(check, ref, strict=True):
                 if check_line != ref_line:
                     print("Checksums are different!")
                     print(f"Reference: {ref_line}")

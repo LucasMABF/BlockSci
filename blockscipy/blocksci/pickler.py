@@ -1,7 +1,7 @@
 import pickle
 from collections import namedtuple
 
-from ._blocksci import *
+from ._blocksci import Address, Block, EquivAddress, Input, Output, Tx
 
 # Simple class representing a record in our database.
 MemoRecord = namedtuple("MemoRecord", "key, task")

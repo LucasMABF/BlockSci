@@ -38,61 +38,61 @@ class Coin:
         return round(self.val, 8)
 
     def __eq__(self, other):
-        if type(other) == Coin:
+        if type(other) is Coin:
             return self.satoshi() == other.satoshi()
         else:
             return self.satoshi() == other
 
     def __ne__(self, other):
-        if type(other) == Coin:
+        if type(other) is Coin:
             return self.satoshi() != other.satoshi()
         else:
             return self.satoshi() != other
 
     def __le__(self, other):
-        if type(other) == Coin:
+        if type(other) is Coin:
             return self.satoshi() <= other.satoshi()
         else:
             return self.satoshi() <= other
 
     def __ge__(self, other):
-        if type(other) == Coin:
+        if type(other) is Coin:
             return self.satoshi() >= other.satoshi()
         else:
             return self.satoshi() >= other
 
     def __lt__(self, other):
-        if type(other) == Coin:
+        if type(other) is Coin:
             return self.satoshi() < other.satoshi()
         else:
             return self.satoshi() < other
 
     def __gt__(self, other):
-        if type(other) == Coin:
+        if type(other) is Coin:
             return self.satoshi() > other.satoshi()
         else:
             return self.satoshi() > other
 
     def __add__(self, other):
-        if type(other) == Coin:
+        if type(other) is Coin:
             return self.satoshi() + other.satoshi()
         else:
             return self.satoshi() + other
 
     def __sub__(self, other):
-        if type(other) == Coin:
+        if type(other) is Coin:
             return self.satoshi() - other.satoshi()
         else:
             return self.satoshi() - other
 
     def __mul__(self, other):
-        if type(other) == Coin:
+        if type(other) is Coin:
             return self.satoshi() * other.satoshi()
         else:
             return self.satoshi() * other
 
     def __div__(self, other):
-        if type(other) == Coin:
+        if type(other) is Coin:
             return self.satoshi() / other.satoshi()
         else:
             return self.satoshi() / other

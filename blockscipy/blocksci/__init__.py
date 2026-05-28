@@ -4,18 +4,17 @@ BlockSci enables fast and expressive analysis of Bitcoin’s and many
 other blockchains.
 """
 
+# ruff: noqa: F403, F405
+
 import copy
 import heapq
-import importlib
 import inspect
 import io
 import logging
 import operator
 import os
 import re
-import subprocess
 import sys
-import tempfile
 import time
 from functools import reduce
 
@@ -29,7 +28,7 @@ from ._blocksci import *
 from ._blocksci import _traverse
 from .blockchain_info import *
 from .currency import *
-from .opreturn import label_application
+from .opreturn import label_application as label_application
 from .pickler import *
 
 VERSION = "0.7.0"
@@ -54,18 +53,27 @@ disk_info = os.statvfs("/")
 free_space = (disk_info.f_frsize * disk_info.f_bavail) // (1024**3)
 if free_space < 20:
     logger = logging.getLogger()
-    logger.warning(f"Warning: You only have {free_space}GB of free disk space left. Running out of disk space may crash the parser and corrupt the BlockSci data files.")
+    logger.warning(
+        f"Warning: You only have {free_space}GB of free disk space left. "
+        "Running out of disk space may crash the parser and corrupt the BlockSci data files."
+    )
 
 # UTC time zone is recommended
 if time.tzname != ('UTC', 'UTC'):
     logger = logging.getLogger()
-    logger.warning("Warning: Your system is set to a timezone other than UTC, leading to inconsistencies between datetime objects (which are adjusted to your local timezone) and datetime64 timestamps returned by iterators and ranges, or the fluent interface (which use UTC).")
+    logger.warning(
+        "Warning: Your system is set to a timezone other than UTC, leading to inconsistencies "
+        "between datetime objects (which are adjusted to your local timezone) and datetime64 "
+        "timestamps returned by iterators and ranges, or the fluent interface (which use UTC)."
+    )
 
 
 
-def mapreduce_block_ranges(chain, map_func, reduce_func, init=MISSING_PARAM, start=None, end=None, cpu_count=psutil.cpu_count()):
+def mapreduce_block_ranges(chain, map_func, reduce_func, init=MISSING_PARAM, start=None, end=None, cpu_count=None):
     """Initialized multithreaded map reduce function over a stream of block ranges
     """
+    if cpu_count is None:
+        cpu_count = psutil.cpu_count()
     if start is None:
         start = 0
         if end is None:
@@ -102,7 +110,7 @@ def mapreduce_block_ranges(chain, map_func, reduce_func, init=MISSING_PARAM, sta
         return reduce(reduce_func, results, init)
 
 
-def mapreduce_blocks(chain, map_func, reduce_func, init=MISSING_PARAM, start=None, end=None, cpu_count=psutil.cpu_count()):
+def mapreduce_blocks(chain, map_func, reduce_func, init=MISSING_PARAM, start=None, end=None, cpu_count=None):
     """Initialized multithreaded map reduce function over a stream of blocks
     """
     def map_range_func(blocks):
@@ -125,7 +133,7 @@ def mapreduce_blocks(chain, map_func, reduce_func, init=MISSING_PARAM, start=Non
     )
 
 
-def mapreduce_txes(chain, map_func, reduce_func, init=MISSING_PARAM, start=None, end=None, cpu_count=psutil.cpu_count()):
+def mapreduce_txes(chain, map_func, reduce_func, init=MISSING_PARAM, start=None, end=None, cpu_count=None):
     """Initialized multithreaded map reduce function over a stream of transactions
     """
     def map_range_func(blocks):
@@ -151,7 +159,7 @@ def mapreduce_txes(chain, map_func, reduce_func, init=MISSING_PARAM, start=None,
     )
 
 
-def map_blocks(self, block_func, start=None, end=None, cpu_count=psutil.cpu_count()):
+def map_blocks(self, block_func, start=None, end=None, cpu_count=None):
     """Runs the given function over each block in range and returns a list of the results
     """
     def map_func(blocks):
@@ -173,7 +181,7 @@ def map_blocks(self, block_func, start=None, end=None, cpu_count=psutil.cpu_coun
 
 
 def filter_blocks(
-    self, filter_func, start=None, end=None, cpu_count=psutil.cpu_count()
+    self, filter_func, start=None, end=None, cpu_count=None
 ):
     """Return all blocks in range which match the given criteria
     """
@@ -191,7 +199,7 @@ def filter_blocks(
 
 
 def filter_blocks_legacy(
-    self, filter_func, start=None, end=None, cpu_count=psutil.cpu_count()
+    self, filter_func, start=None, end=None, cpu_count=None
 ):
     """Return all blocks in range which match the given criteria
     """
@@ -208,7 +216,7 @@ def filter_blocks_legacy(
     )
 
 
-def filter_txes(self, filter_func, start=None, end=None, cpu_count=psutil.cpu_count()):
+def filter_txes(self, filter_func, start=None, end=None, cpu_count=None):
     """Return all transactions in range which match the given criteria
     """
 
@@ -225,7 +233,7 @@ def filter_txes(self, filter_func, start=None, end=None, cpu_count=psutil.cpu_co
 
 
 def filter_txes_legacy(
-    self, filter_func, start=None, end=None, cpu_count=psutil.cpu_count()
+    self, filter_func, start=None, end=None, cpu_count=None
 ):
     """Return all transactions in range which match the given criteria
     """
@@ -303,11 +311,23 @@ def new_init(self, loc, max_block=0):
 
     if os.path.exists(ec2_instance_path):
         if not os.path.exists(tx_heated_path):
-            print("Note: this appears to be a fresh instance. Transaction data has not yet been cached locally. Most queries might be slow. Caching is currently ongoing in the background, and usually takes 20 minutes.")
+            print(
+                "Note: this appears to be a fresh instance. Transaction data has not yet been cached locally. "
+                "Most queries might be slow. Caching is currently ongoing in the background, "
+                "and usually takes 20 minutes."
+            )
         elif not os.path.exists(scripts_heated_path):
-            print("Note: this appears to be a fresh instance. Script data has not yet been cached locally. Some queries might be slow. Caching is currently ongoing in the background, and usually takes 1.5 hours.")
+            print(
+                "Note: this appears to be a fresh instance. Script data has not yet been cached locally. "
+                "Some queries might be slow. Caching is currently ongoing in the background, "
+                "and usually takes 1.5 hours."
+            )
         elif not os.path.exists(index_heated_path):
-            print("Note: this appears to be a fresh instance. Index data has not yet been cached locally. A few queries might be slow. Caching is currently ongoing in the background, and usually takes 3.5 hours.")
+            print(
+                "Note: this appears to be a fresh instance. Index data has not yet been cached locally. "
+                "A few queries might be slow. Caching is currently ongoing in the background, "
+                "and usually takes 3.5 hours."
+            )
 
 
 def most_valuable_addresses(self, nlargest=100):
@@ -422,11 +442,11 @@ def setup_sequence_proxy_map_funcs():
         getattr(proxy, cl).any = range_any_func
         getattr(proxy, cl).all = range_all_func
 
-non_copying_methods = set(["ptype", "iterator_proxy", "range_proxy", "optional_proxy", "output_type_name", "_pybind11_conduit_v1_"])
+non_copying_methods = {"ptype", "iterator_proxy", "range_proxy", "optional_proxy", "output_type_name", "_pybind11_conduit_v1_"}
 
 def _get_core_functions_methods(obj):
     return (attr for attr in obj.__dict__ if
-            not attr[:2] == '__' and attr not in non_copying_methods and
+            attr[:2] != '__' and attr not in non_copying_methods and
             not isinstance(getattr(obj, attr, None), property))
 
 
@@ -436,7 +456,7 @@ def _get_core_properties_methods(obj):
 
 def _get_functions_methods(obj):
     return (attr for attr in dir(obj) if
-            not attr[:2] == '__' and attr not in non_copying_methods and
+            attr[:2] != '__' and attr not in non_copying_methods and
             not isinstance(getattr(obj, attr, None), property))
 
 

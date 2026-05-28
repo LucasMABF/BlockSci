@@ -40,8 +40,6 @@ extensions = [
     'sphinx.ext.githubpages',
 ]
 
-from blocksci import *
-
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
 
@@ -184,7 +182,6 @@ intersphinx_mapping = {'https://docs.python.org/3': None, 'https://docs.scipy.or
 
 def process_signature(app, what: str, name: str, obj, options, signature, return_annotation):
     if signature:
-        parts = []
         raw_parts = signature[1:-1].split(',')
         first_split = raw_parts[0].split(":")
         if first_split[0].strip() == "self":

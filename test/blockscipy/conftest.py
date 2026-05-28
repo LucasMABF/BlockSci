@@ -26,11 +26,10 @@ def pytest_generate_tests(metafunc):
 
 def pytest_runtest_call(item):
     markers = [x.name for x in item.iter_markers()]
-    if markers:
-        if item.funcargs["chain_name"] not in markers:
-            pytest.skip(
-                "Skipping test for chain {}".format(item.funcargs["chain_name"])
-            )
+    if markers and item.funcargs["chain_name"] not in markers:
+        pytest.skip(
+            "Skipping test for chain {}".format(item.funcargs["chain_name"])
+        )
 
 
 @pytest.fixture(scope="session")
