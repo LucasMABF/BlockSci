@@ -21,7 +21,7 @@ def reward(height):
     return Coin(50) if height < 150 else Coin(25 - 10)
 
 
-class Coin(object):
+class Coin:
     COIN = 1e8
 
     def __init__(self, val):
@@ -98,7 +98,7 @@ class Coin(object):
             return self.satoshi() / other
 
     def __str__(self):
-        return "Coin[{}]".format(self.satoshi())
+        return f"Coin[{self.satoshi()}]"
 
     def __repr__(self):
-        return "Coin[{}]".format(self.satoshi())
+        return f"Coin[{self.satoshi()}]"

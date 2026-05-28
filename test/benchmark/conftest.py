@@ -1,6 +1,7 @@
-import pytest
-import subprocess
 import os
+import subprocess
+
+import pytest
 
 
 def pytest_addoption(parser):
@@ -45,7 +46,7 @@ def chain(tmpdir_factory, chain_name, config):
         "bitcoin_regtest",
         chain_dir,
         "--disk",
-        "{}/../files/{}/regtest/".format(self_dir, chain_name)
+        f"{self_dir}/../files/{chain_name}/regtest/"
     ]
     parse_cmd = ["blocksci_parser", chain_dir + "/config.json", "update"]
 

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """BlockSci Module
 
 Label op return data as related to a specific application
@@ -6,6 +5,7 @@ Label op return data as related to a specific application
 
 import binascii
 import re
+
 import Crypto.Cipher.ARC4
 
 OP_RETURN_SERVICES = {
@@ -56,7 +56,7 @@ EXACT_BYTE_MATCHES = [
 ]
 
 # address_matches = {
-#     Address(155316552, address_type.pubkeyhash):"Chainpoint", # 12m3EH1kCFWc9WvHmtLoby17xuYnSdNVYR 
+#     Address(155316552, address_type.pubkeyhash):"Chainpoint", # 12m3EH1kCFWc9WvHmtLoby17xuYnSdNVYR
 #     Address(89427334, address_type.pubkeyhash):"Base64DataAddress1",
 #     Address(156665979, address_type.pubkeyhash):"Base64DataAddress2",
 #     Address(182075165, address_type.pubkeyhash):"Base64DataAddress3",

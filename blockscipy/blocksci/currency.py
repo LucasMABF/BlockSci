@@ -1,6 +1,7 @@
 import datetime
-import requests
+
 import pandas as pd
+import requests
 
 try:
     from IPython.core.display import display
@@ -11,7 +12,7 @@ except ImportError:
         print('Exchange rates are provided by CoinDesk (https://www.coindesk.com/price/).')
 
 
-class CurrencyConverter(object):
+class CurrencyConverter:
     """
     Imports Bitcoin exchange rates in a variety of currencies using the Coindesk API available at https://www.coindesk.com/price/.
     """
@@ -34,7 +35,7 @@ class CurrencyConverter(object):
 
         self.supported_currencies = self._get_supported_currencies()
         if currency not in self.supported_currencies:
-            raise ValueError("Currency {} is not supported. Please use one of the following options: {}.".format(currency, self.supported_currencies))
+            raise ValueError(f"Currency {currency} is not supported. Please use one of the following options: {self.supported_currencies}.")
 
         self.data = self._get_data()
 
@@ -45,14 +46,14 @@ class CurrencyConverter(object):
 
     def _get_data(self):
         base_url = 'https://api.coindesk.com/v1/bpi/historical/close.json'
-        r = requests.get('{}?index=USD&currency={}&start={}&end={}'.format(base_url, self.currency, max(self.COINDESK_START, self.start), max(self.COINDESK_START, self.end)))
+        r = requests.get(f'{base_url}?index=USD&currency={self.currency}&start={max(self.COINDESK_START, self.start)}&end={max(self.COINDESK_START, self.end)}')
         r.raise_for_status()
         return r.json()['bpi']
 
     def validate_date(self, date):
         newdate = pd.to_datetime(date).date()
         if newdate < self.min_start or newdate > self.max_end:
-            raise ValueError("Date must be between {} and {}.".format(self.min_start, self.max_end))
+            raise ValueError(f"Date must be between {self.min_start} and {self.max_end}.")
         return newdate
 
     def exchangerate(self, date):

@@ -1,4 +1,5 @@
 import blocksci
+
 from util import sorted_tx_list
 
 
@@ -57,8 +58,8 @@ def test_clustering_no_change(chain, json_data, regtest, tmpdir_factory):
         chain.address_from_string(json_data["merge-addr-1"])
     )
 
-    assert 3 == len(cluster.addresses.to_list())
-    assert 3 == cluster.address_count()
+    assert len(cluster.addresses.to_list()) == 3
+    assert cluster.address_count() == 3
 
     assert (
         chain.address_from_string(json_data["merge-addr-1"])
@@ -123,7 +124,7 @@ def test_clustering_with_change(chain, json_data, tmpdir_factory, regtest):
             chain.address_from_string(json_data["merge-addr-1"])
         )
 
-        assert 3 <= len(cluster.addresses.to_list())
+        assert len(cluster.addresses.to_list()) >= 3
 
         assert (
             chain.address_from_string(json_data["merge-addr-1"])
@@ -179,7 +180,7 @@ def test_clustering_ignore_coinjoin(chain, json_data, tmpdir_factory, regtest):
     )
     cluster = cm.cluster_with_address(addresses[0])
     cluster_addresses = cluster.addresses.to_list()
-    assert 1 == len(cluster)
+    assert len(cluster) == 1
 
     for addr in addresses[1:]:
         assert addr not in cluster_addresses
@@ -188,7 +189,7 @@ def test_clustering_ignore_coinjoin(chain, json_data, tmpdir_factory, regtest):
     cluster = cm.cluster_with_address(
         chain.address_from_string(json_data["merge-addr-1"])
     )
-    assert 3 <= len(cluster.addresses.to_list())
+    assert len(cluster.addresses.to_list()) >= 3
 
     assert (
         chain.address_from_string(json_data["merge-addr-1"])
@@ -221,7 +222,7 @@ def test_clustering_cluster_coinjoin(chain, json_data, tmpdir_factory, regtest):
     )
     cluster = cm.cluster_with_address(addresses[0])
     cluster_addresses = cluster.addresses.to_list()
-    assert 1 < len(cluster)
+    assert len(cluster) > 1
 
     for addr in addresses:
         assert addr in cluster_addresses
@@ -230,7 +231,7 @@ def test_clustering_cluster_coinjoin(chain, json_data, tmpdir_factory, regtest):
     cluster = cm.cluster_with_address(
         chain.address_from_string(json_data["merge-addr-1"])
     )
-    assert 3 <= len(cluster.addresses.to_list())
+    assert len(cluster.addresses.to_list()) >= 3
 
     assert (
         chain.address_from_string(json_data["merge-addr-1"])

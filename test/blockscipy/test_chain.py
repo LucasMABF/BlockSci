@@ -1,21 +1,23 @@
 import os
-import pytest
+
 import blocksci
+import pytest
+
 from util import correct_timestamp
 
 
 def test_chain_sanity(chain):
-    assert 110 < len(chain)
+    assert len(chain) > 110
 
 
 def test_chain(chain, regtest):
-    assert 0 < chain.address_count(blocksci.address_type.pubkey)
-    assert 0 < chain.address_count(blocksci.address_type.pubkeyhash)
-    assert 0 < chain.address_count(blocksci.address_type.scripthash)
-    assert 0 < chain.address_count(blocksci.address_type.witness_pubkeyhash)
-    assert 0 < chain.address_count(blocksci.address_type.witness_scripthash)
-    assert 0 < chain.address_count(blocksci.address_type.nulldata)
-    assert 0 < chain.address_count(blocksci.address_type.multisig)
+    assert chain.address_count(blocksci.address_type.pubkey) > 0
+    assert chain.address_count(blocksci.address_type.pubkeyhash) > 0
+    assert chain.address_count(blocksci.address_type.scripthash) > 0
+    assert chain.address_count(blocksci.address_type.witness_pubkeyhash) > 0
+    assert chain.address_count(blocksci.address_type.witness_scripthash) > 0
+    assert chain.address_count(blocksci.address_type.nulldata) > 0
+    assert chain.address_count(blocksci.address_type.multisig) > 0
 
 
 def test_empty_block(chain, regtest):

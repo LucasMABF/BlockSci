@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 #
 # BlockSci documentation build configuration file, created by
 # sphinx-quickstart on Tue Dec 12 16:22:26 2017.
@@ -17,8 +16,6 @@
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 #
-import os
-import sys
 
 
 # -- General configuration ------------------------------------------------

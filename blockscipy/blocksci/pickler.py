@@ -1,7 +1,7 @@
-from ._blocksci import *
 import pickle
-import sqlite3
 from collections import namedtuple
+
+from ._blocksci import *
 
 # Simple class representing a record in our database.
 MemoRecord = namedtuple("MemoRecord", "key, task")

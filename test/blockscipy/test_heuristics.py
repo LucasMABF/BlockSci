@@ -21,7 +21,7 @@ def test_no_coinjoin(chain, json_data):
 
 def test_is_peeling_chain(chain, json_data):
     for i in range(0, 9):
-        txid = json_data["peeling-chain-{}-tx".format(i)]
+        txid = json_data[f"peeling-chain-{i}-tx"]
         tx = chain.tx_with_hash(txid)
         assert blocksci.heuristics.is_peeling_chain(tx)
 

@@ -1,5 +1,3 @@
-import pytest
-import blocksci
 
 
 def chain_length(chain):

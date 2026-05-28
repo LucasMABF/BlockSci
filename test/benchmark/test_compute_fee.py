@@ -1,5 +1,4 @@
 import pytest
-import blocksci
 
 
 def compute_fee_naive(chain):

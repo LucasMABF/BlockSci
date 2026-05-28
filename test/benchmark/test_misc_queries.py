@@ -1,5 +1,5 @@
-import pytest
 import blocksci
+import pytest
 
 
 def count_blocks(chain):

@@ -1,35 +1,34 @@
-# -*- coding: utf-8 -*-
 """BlockSci Module
 
 BlockSci enables fast and expressive analysis of Bitcoin’s and many
 other blockchains.
 """
 
-import tempfile
+import copy
+import heapq
 import importlib
+import inspect
+import io
+import logging
+import operator
+import os
+import re
 import subprocess
 import sys
-import os
-import logging
-import inspect
-import copy
-import io
-import re
-import heapq
-import operator
+import tempfile
 import time
 from functools import reduce
 
-import psutil
-from multiprocess import Pool
 import dateparser
-from dateutil.relativedelta import relativedelta
 import pandas as pd
+import psutil
+from dateutil.relativedelta import relativedelta
+from multiprocess import Pool
 
 from ._blocksci import *
 from ._blocksci import _traverse
-from .currency import *
 from .blockchain_info import *
+from .currency import *
 from .opreturn import label_application
 from .pickler import *
 
@@ -55,7 +54,7 @@ disk_info = os.statvfs("/")
 free_space = (disk_info.f_frsize * disk_info.f_bavail) // (1024**3)
 if free_space < 20:
     logger = logging.getLogger()
-    logger.warning("Warning: You only have {}GB of free disk space left. Running out of disk space may crash the parser and corrupt the BlockSci data files.".format(free_space))
+    logger.warning(f"Warning: You only have {free_space}GB of free disk space left. Running out of disk space may crash the parser and corrupt the BlockSci data files.")
 
 # UTC time zone is recommended
 if time.tzname != ('UTC', 'UTC'):
@@ -330,9 +329,7 @@ def traverse(proxy_func, val):
 def apply_map(prox, prop):
     if prop.ptype == proxy.proxy_type.optional:
         return prox._map_optional(prop)
-    elif prop.ptype == proxy.proxy_type.iterator:
-        return prox._map_sequence(prop)
-    elif prop.ptype == proxy.proxy_type.range:
+    elif prop.ptype == proxy.proxy_type.iterator or prop.ptype == proxy.proxy_type.range:
         return prox._map_sequence(prop)
     else:
         return prox._map(prop)
