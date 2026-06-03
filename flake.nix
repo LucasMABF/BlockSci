@@ -12,7 +12,7 @@
       nixpkgs,
       flake-utils,
     }:
-    flake-utils.lib.eachSystem [ "x86_64-linux" ] (
+    flake-utils.lib.eachDefaultSystem (
       system:
       let
         pkgs = import nixpkgs {
@@ -25,6 +25,9 @@
                     --replace-fail 'option(WITH_COVERAGE "Build with code coverage flags" ON)' \
                                    'option(WITH_COVERAGE "Build with code coverage flags" OFF)'
                 '';
+                meta = (old.meta or { }) // {
+                  platforms = (old.meta.platforms or [ ]) ++ prev.lib.platforms.darwin;
+                };
               });
             })
           ];
@@ -162,8 +165,17 @@
             export PATH="$LOCAL_PIP/bin:$PATH"
 
             export CMAKE_PREFIX_PATH="$PWD/.nix-install:$CMAKE_PREFIX_PATH"
-            export LD_LIBRARY_PATH="$PWD/.nix-install/lib64:$LD_LIBRARY_PATH"
-          '';
+          ''
+          + (
+            if pkgs.stdenv.isDarwin then
+              ''
+                export DYLD_LIBRARY_PATH="$PWD/.nix-install/lib:$DYLD_LIBRARY_PATH"
+              ''
+            else
+              ''
+                export LD_LIBRARY_PATH="$PWD/.nix-install/lib64:$LD_LIBRARY_PATH"
+              ''
+          );
         };
 
         packages.bitcoin-api-cpp = pkgs.stdenv.mkDerivation {
