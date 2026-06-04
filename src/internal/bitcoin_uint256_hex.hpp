@@ -14,31 +14,31 @@
 #include <string>
 
 namespace blocksci {
-    
-    signed char HexDigit(char c);
-    
-    /* uint160 from const char *.
-     * This is a separate function because the constructor uint256(const char*) can result
-     * in dangerously catching uint160(0).
-     */
-    uint160 uint160S(const char *str);
-    /* uint160 from std::string.
-     * This is a separate function because the constructor uint256(const std::string &str) can result
-     * in dangerously catching uint160(0) via std::string(const char*).
-     */
-    uint160 uint160S(const std::string& str);
-    
-    /* uint256 from const char *.
-     * This is a separate function because the constructor uint256(const char*) can result
-     * in dangerously catching uint256(0).
-     */
-    uint256 uint256S(const char *str);
-    
-    /* uint256 from std::string.
-     * This is a separate function because the constructor uint256(const std::string &str) can result
-     * in dangerously catching uint256(0) via std::string(const char*).
-     */
-    uint256 uint256S(const std::string& str);
-}
+
+  signed char HexDigit(char c);
+
+  /* uint160 from const char *.
+   * This is a separate function because the constructor uint256(const char*) can result
+   * in dangerously catching uint160(0).
+   */
+  uint160 uint160S(const char *str);
+  /* uint160 from std::string.
+   * This is a separate function because the constructor uint256(const std::string &str) can result
+   * in dangerously catching uint160(0) via std::string(const char*).
+   */
+  uint160 uint160S(const std::string &str);
+
+  /* uint256 from const char *.
+   * This is a separate function because the constructor uint256(const char*) can result
+   * in dangerously catching uint256(0).
+   */
+  uint256 uint256S(const char *str);
+
+  /* uint256 from std::string.
+   * This is a separate function because the constructor uint256(const std::string &str) can result
+   * in dangerously catching uint256(0) via std::string(const char*).
+   */
+  uint256 uint256S(const std::string &str);
+} // namespace blocksci
 
 #endif // BLOCKSCI_BITCOIN_UINT256_HEX_H

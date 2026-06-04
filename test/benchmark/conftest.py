@@ -1,11 +1,14 @@
-import pytest
-import subprocess
 import os
+import subprocess
+
+import pytest
 
 
 def pytest_addoption(parser):
     parser.addoption("--btc", action="store_true", help="Run tests for Bitcoin")
-    parser.addoption("--local", action="store", default="default", help="Run tests against local chain (useful for benchmark)")
+    parser.addoption(
+        "--local", action="store", default="default", help="Run tests against local chain (useful for benchmark)"
+    )
 
 
 def pytest_generate_tests(metafunc):
@@ -20,11 +23,8 @@ def pytest_generate_tests(metafunc):
 
 def pytest_runtest_call(item):
     markers = [x.name for x in item.iter_markers()]
-    if markers:
-        if item.funcargs["chain_name"] not in markers:
-            pytest.skip(
-                "Skipping test for chain {}".format(item.funcargs["chain_name"])
-            )
+    if markers and item.funcargs["chain_name"] not in markers:
+        pytest.skip("Skipping test for chain {}".format(item.funcargs["chain_name"]))
 
 
 @pytest.fixture(scope="session")
@@ -45,7 +45,7 @@ def chain(tmpdir_factory, chain_name, config):
         "bitcoin_regtest",
         chain_dir,
         "--disk",
-        "{}/../files/{}/regtest/".format(self_dir, chain_name)
+        f"{self_dir}/../files/{chain_name}/regtest/",
     ]
     parse_cmd = ["blocksci_parser", chain_dir + "/config.json", "update"]
 

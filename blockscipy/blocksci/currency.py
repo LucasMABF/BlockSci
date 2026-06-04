@@ -1,27 +1,30 @@
 import datetime
-import requests
+
 import pandas as pd
+import requests
 
 try:
     from IPython.core.display import display
+
     def _print_coindesk_info():
-        display('Exchange rates are provided by CoinDesk (https://www.coindesk.com/price/).')
+        display("Exchange rates are provided by CoinDesk (https://www.coindesk.com/price/).")
 except ImportError:
+
     def _print_coindesk_info():
-        print('Exchange rates are provided by CoinDesk (https://www.coindesk.com/price/).')
+        print("Exchange rates are provided by CoinDesk (https://www.coindesk.com/price/).")
 
 
-class CurrencyConverter(object):
+class CurrencyConverter:
     """
     Imports Bitcoin exchange rates in a variety of currencies using the Coindesk API available at https://www.coindesk.com/price/.
     """
 
-    min_start = pd.to_datetime('2009-01-03').date()
+    min_start = pd.to_datetime("2009-01-03").date()
     max_end = datetime.date.today() - datetime.timedelta(days=1)
     # the API has data starting at 2010-07-19
-    COINDESK_START = pd.to_datetime('2010-07-19').date()
+    COINDESK_START = pd.to_datetime("2010-07-19").date()
 
-    def __init__(self, currency='USD', start=min_start, end=max_end):
+    def __init__(self, currency="USD", start=min_start, end=max_end):
         _print_coindesk_info()
 
         self.currency = currency
@@ -34,25 +37,32 @@ class CurrencyConverter(object):
 
         self.supported_currencies = self._get_supported_currencies()
         if currency not in self.supported_currencies:
-            raise ValueError("Currency {} is not supported. Please use one of the following options: {}.".format(currency, self.supported_currencies))
+            raise ValueError(
+                f"Currency {currency} is not supported. "
+                f"Please use one of the following options: {self.supported_currencies}."
+            )
 
         self.data = self._get_data()
 
     def _get_supported_currencies(self):
-        r = requests.get('https://api.coindesk.com/v1/bpi/supported-currencies.json')
+        r = requests.get("https://api.coindesk.com/v1/bpi/supported-currencies.json")
         r.raise_for_status()
-        return [x['currency'] for x in r.json()]
+        return [x["currency"] for x in r.json()]
 
     def _get_data(self):
-        base_url = 'https://api.coindesk.com/v1/bpi/historical/close.json'
-        r = requests.get('{}?index=USD&currency={}&start={}&end={}'.format(base_url, self.currency, max(self.COINDESK_START, self.start), max(self.COINDESK_START, self.end)))
+        base_url = "https://api.coindesk.com/v1/bpi/historical/close.json"
+        r = requests.get(
+            f"{base_url}?index=USD&currency={self.currency}"
+            f"&start={max(self.COINDESK_START, self.start)}"
+            f"&end={max(self.COINDESK_START, self.end)}"
+        )
         r.raise_for_status()
-        return r.json()['bpi']
+        return r.json()["bpi"]
 
     def validate_date(self, date):
         newdate = pd.to_datetime(date).date()
         if newdate < self.min_start or newdate > self.max_end:
-            raise ValueError("Date must be between {} and {}.".format(self.min_start, self.max_end))
+            raise ValueError(f"Date must be between {self.min_start} and {self.max_end}.")
         return newdate
 
     def exchangerate(self, date):
@@ -79,15 +89,17 @@ class CurrencyConverter(object):
     def satoshi_to_currency_df(self, df, chain, columns=None):
         if columns is None:
             columns = df.columns
+
         def convert_row(row):
             date = row["index"]
-            if hasattr(date, 'date'):
+            if hasattr(date, "date"):
                 date = date.date()
             rate = self.exchangerate(date) / 1e8
             for column in columns:
                 if column in row:
                     row[column] = rate * row[column]
             return row
+
         df["index"] = df.index
         index_type = str(df["index"].dtype)
         if index_type == "int64":

@@ -17,13 +17,13 @@ void addProxyFlowFunctionsScripts(pybind11::module &m, pybind11::module &pm);
 void addProxyFlowFunctionsOther(pybind11::module &m, pybind11::module &pm);
 
 inline void defineProxyFunctions(pybind11::module &m, pybind11::module &pm) {
-    addProxyFunctionsCore(m, pm);
-    addProxyFunctionsScripts(m, pm);
-    addProxyFunctionsOther(m, pm);
+  addProxyFunctionsCore(m, pm);
+  addProxyFunctionsScripts(m, pm);
+  addProxyFunctionsOther(m, pm);
 
-    addProxyFlowFunctionsCore(m, pm);
-    addProxyFlowFunctionsScripts(m, pm);
-    addProxyFlowFunctionsOther(m, pm);
+  addProxyFlowFunctionsCore(m, pm);
+  addProxyFlowFunctionsScripts(m, pm);
+  addProxyFlowFunctionsOther(m, pm);
 }
 
 #endif /* proxy_functions_impl_hpp */

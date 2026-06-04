@@ -8,21 +8,26 @@
 
 #include "proxy_functions_impl.hpp"
 
+#include <blocksci/core/address_types.hpp>
+#include <blocksci/core/bitcoin_uint256.hpp>
+
+#include <pybind11/pybind11.h>
+#include <pybind11/pytypes.h>
+
 #include <chrono>
 #include <cstdint>
 #include <string>
 
 void addProxyFunctionsOther(pybind11::module &m, pybind11::module &pm) {
-	using namespace blocksci;
+  using namespace blocksci;
 
-	addProxyFunctions<AddressType::Enum>(m, pm);
-	addProxyFunctions<int64_t>(m, pm);
-	addProxyFunctions<bool>(m, pm);
-	addProxyFunctions<std::chrono::system_clock::time_point>(m, pm);
-	addProxyFunctions<uint256>(m, pm);
-	addProxyFunctions<uint160>(m, pm);
-	addProxyFunctions<pybind11::bytes>(m, pm);
-	addProxyFunctions<pybind11::list>(m, pm);
-	addProxyFunctions<std::string>(m, pm);
-
+  addProxyFunctions<AddressType::Enum>(m, pm);
+  addProxyFunctions<int64_t>(m, pm);
+  addProxyFunctions<bool>(m, pm);
+  addProxyFunctions<std::chrono::system_clock::time_point>(m, pm);
+  addProxyFunctions<uint256>(m, pm);
+  addProxyFunctions<uint160>(m, pm);
+  addProxyFunctions<pybind11::bytes>(m, pm);
+  addProxyFunctions<pybind11::list>(m, pm);
+  addProxyFunctions<std::string>(m, pm);
 }

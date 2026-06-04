@@ -22,5 +22,4 @@ void init_equiv_address(pybind11::class_<blocksci::EquivAddress> &cl);
 
 void addAddressRangeMethods(RangeClasses<blocksci::AnyScript> &classes);
 
-
 #endif /* blocksci_address_py_h */

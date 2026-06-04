@@ -5,7 +5,6 @@
 //  Created by Harry Kalodner on 11/1/18.
 //
 
-
 #ifndef generic_proxy_optional_hpp
 #define generic_proxy_optional_hpp
 

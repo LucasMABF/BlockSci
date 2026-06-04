@@ -8,6 +8,6 @@
 #include "exception.hpp"
 
 namespace blocksci {
-    ReorgException::~ReorgException() = default;
-    
+  ReorgException::~ReorgException() = default;
+
 } // namespace blocksci

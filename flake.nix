@@ -145,7 +145,9 @@
               python3
               python3Packages.pip
               python3Packages.scikit-build-core
+              clang-tools
               ninja
+              ruff
             ]
             ++ pythonRuntimeDeps pkgs.python3Packages;
 

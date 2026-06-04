@@ -1,13 +1,9 @@
 import os
+import shutil
 import subprocess
 import time
-import shutil
 
-chains = {
-    "btc": "bitcoin_regtest",
-    "bch": "bitcoin_cash_regtest",
-    "ltc": "litecoin_regtest"
-}
+chains = {"btc": "bitcoin_regtest", "bch": "bitcoin_cash_regtest", "ltc": "litecoin_regtest"}
 
 for _ in range(100):
     for chain_name in chains:
@@ -27,7 +23,7 @@ for _ in range(100):
             chains[chain_name],
             chain_dir,
             "--disk",
-            "{}/../files/{}/regtest/".format(self_dir, chain_name),
+            f"{self_dir}/../files/{chain_name}/regtest/",
         ]
 
         parse_cmd = ["blocksci_parser", config, "update"]
@@ -35,21 +31,21 @@ for _ in range(100):
         check_integrity_cmd = ["blocksci_check_integrity", config]
 
         subprocess.run(create_config_cmd, check=True, stdout=subprocess.DEVNULL)
-        subprocess.run(parse_cmd, check=True) #, stdout=subprocess.DEVNULL)
+        subprocess.run(parse_cmd, check=True)  # , stdout=subprocess.DEVNULL)
 
         check_file = chain_dir + "/checksums.txt"
         with open(check_file, "w") as f:
             subprocess.run(check_integrity_cmd, check=True, stdout=f)
 
-        reference_file = "{}/../files/{}/checksums.txt".format(self_dir, chain_name)
+        reference_file = f"{self_dir}/../files/{chain_name}/checksums.txt"
 
         files_are_same = True
         with open(check_file) as check, open(reference_file) as ref:
-            for check_line, ref_line in zip(check, ref):
+            for check_line, ref_line in zip(check, ref, strict=True):
                 if check_line != ref_line:
                     print("Checksums are different!")
-                    print("Reference: {}".format(ref_line))
-                    print("Parsing:   {}".format(check_line))
+                    print(f"Reference: {ref_line}")
+                    print(f"Parsing:   {check_line}")
                     print()
                     files_are_same = False
 
@@ -60,4 +56,3 @@ for _ in range(100):
             shutil.rmtree(chain_dir)
 
         time.sleep(2)
-

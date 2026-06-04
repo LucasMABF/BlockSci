@@ -7,21 +7,23 @@
 //
 
 #include "nonstandard_py.hpp"
+
 #include "caster_py.hpp"
+#include "python_range.hpp"
 #include "ranges_py.hpp"
 
 #include <blocksci/scripts/nonstandard_script.hpp>
+#include <blocksci/scripts/scripts_fwd.hpp>
+
+#include <pybind11/pybind11.h>
 
 using namespace blocksci;
 namespace py = pybind11;
 
 void init_nonstandard(py::class_<script::Nonstandard> &cl) {
-    cl
-    .def("__repr__", &script::Nonstandard::toString)
-    .def("__str__", &script::Nonstandard::toPrettyString)
-    ;
+  cl.def("__repr__", &script::Nonstandard::toString).def("__str__", &script::Nonstandard::toPrettyString);
 }
 
 void addNonstandardRangeMethods(RangeClasses<script::Nonstandard> &classes) {
-	addAllRangeMethods(classes);
+  addAllRangeMethods(classes);
 }

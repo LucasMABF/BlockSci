@@ -16,26 +16,23 @@
 #include <utility>
 
 namespace blocksci {
-    
-    struct FlatMapOptionalsFilter {
-        template <typename T>
-        bool operator()(T && t) const {
-            return static_cast<bool>(std::forward<T>(t));
-        }
-    };
-    
-    struct FlatMapOptionalsTransform {
-        template <typename T>
-        typename T::value_type operator()(T && t) const {
-            return *std::forward<T>(t);
-        }
-    };
-    
-	inline auto BLOCKSCI_EXPORT flatMapOptionals() {
-        return  ranges::views::filter(FlatMapOptionalsFilter{})
-        | ranges::views::transform(FlatMapOptionalsTransform{});
+
+  struct FlatMapOptionalsFilter {
+    template <typename T> bool operator()(T &&t) const {
+      return static_cast<bool>(std::forward<T>(t));
     }
-    
+  };
+
+  struct FlatMapOptionalsTransform {
+    template <typename T> typename T::value_type operator()(T &&t) const {
+      return *std::forward<T>(t);
+    }
+  };
+
+  inline auto BLOCKSCI_EXPORT flatMapOptionals() {
+    return ranges::views::filter(FlatMapOptionalsFilter{}) | ranges::views::transform(FlatMapOptionalsTransform{});
+  }
+
 } // namespace blocksci
 
 #endif // blocksci_range_util_hpp

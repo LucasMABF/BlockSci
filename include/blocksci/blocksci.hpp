@@ -11,12 +11,12 @@
 
 #pragma GCC visibility push(default)
 
-#include <blocksci/chain.hpp>
-#include <blocksci/core.hpp>
-#include <blocksci/script.hpp>
 #include <blocksci/address.hpp>
-#include <blocksci/heuristics.hpp>
+#include <blocksci/chain.hpp>
 #include <blocksci/cluster.hpp>
+#include <blocksci/core.hpp>
+#include <blocksci/heuristics.hpp>
+#include <blocksci/script.hpp>
 
 #pragma GCC visibility pop
 

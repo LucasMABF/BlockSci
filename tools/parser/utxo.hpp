@@ -14,12 +14,13 @@
 #include <cstdint>
 
 struct UTXO {
-    int64_t value;
-    uint32_t txNum;
-    blocksci::AddressType::Enum type;
-    
-    UTXO() = default;
-    UTXO(int64_t value_, uint32_t txNum_, blocksci::AddressType::Enum type_) : value(value_), txNum(txNum_), type(type_) {}
+  int64_t value;
+  uint32_t txNum;
+  blocksci::AddressType::Enum type;
+
+  UTXO() = default;
+  UTXO(int64_t value_, uint32_t txNum_, blocksci::AddressType::Enum type_) : value(value_), txNum(txNum_), type(type_) {
+  }
 };
 
 #endif /* utxo_hpp */

@@ -1,0 +1,8 @@
+# Format-the-world commits. Run once per clone:
+#   git config blame.ignoreRevsFile .git-blame-ignore-revs
+
+# style: apply clang-format
+221bbbcbaa8ccc0a8b86392c6c083c1a9eb7c18f
+
+# style: ruff format
+a16477b5959e1f84291923e6485e430452980d0a

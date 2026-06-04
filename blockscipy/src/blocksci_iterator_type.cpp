@@ -5,40 +5,47 @@
 //  Created by Harry Kalodner on 11/25/18.
 //
 
-#include "blocksci_type.hpp"
 #include "blocksci_iterator_type.hpp"
+
+#include "blocksci_type.hpp"
 #include "caster_py.hpp"
+#include "python_fwd.hpp"
+
+#include <range/v3/view/transform.hpp>
+
+#include <mpark/variant.hpp>
+#include <pybind11/pytypes.h>
 
 #include <any>
 #include <utility>
 
 struct BlocksciIteratorTypeObjectCaster {
-    template <typename T>
-    pybind11::object operator()(const T &o) {
-        return pybind11::cast(o);
-    }
+  template <typename T> pybind11::object operator()(const T &o) {
+    return pybind11::cast(o);
+  }
 };
 
 std::any BlocksciIteratorType::toAny() const {
-    return mpark::visit([&](auto &r) -> std::any { return r; }, var);
+  return mpark::visit([&](auto &r) -> std::any { return r; }, var);
 }
 
 pybind11::object BlocksciIteratorType::toObject() const {
-    return mpark::visit(BlocksciIteratorTypeObjectCaster{}, var);
+  return mpark::visit(BlocksciIteratorTypeObjectCaster{}, var);
 }
 
 RawIterator<BlocksciType> BlocksciIteratorType::toGeneric() {
-    return mpark::visit([&](auto &r) -> RawIterator<BlocksciType> { 
-        return r | ranges::views::transform([](auto && v) -> BlocksciType {
-            return BlocksciType{std::forward<decltype(v)>(v)};
-        });
-    }, var);
+  return mpark::visit(
+      [&](auto &r) -> RawIterator<BlocksciType> {
+        return r | ranges::views::transform(
+                       [](auto &&v) -> BlocksciType { return BlocksciType{std::forward<decltype(v)>(v)}; });
+      },
+      var);
 }
 
 RawIterator<std::any> BlocksciIteratorType::toAnySequence() {
-    return mpark::visit([&](auto &r) -> RawIterator<std::any> { 
-        return r | ranges::views::transform([](auto && v) -> std::any {
-            return std::forward<decltype(v)>(v);
-        });
-    }, var);
+  return mpark::visit(
+      [&](auto &r) -> RawIterator<std::any> {
+        return r | ranges::views::transform([](auto &&v) -> std::any { return std::forward<decltype(v)>(v); });
+      },
+      var);
 }

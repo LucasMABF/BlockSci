@@ -1,10 +1,11 @@
-from ._blocksci import *
 import pickle
-import sqlite3
 from collections import namedtuple
+
+from ._blocksci import Address, Block, EquivAddress, Input, Output, Tx
 
 # Simple class representing a record in our database.
 MemoRecord = namedtuple("MemoRecord", "key, task")
+
 
 class Pickler(pickle.Pickler):
     """Custom Pickler for BlockSci objects"""

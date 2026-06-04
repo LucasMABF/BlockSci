@@ -7,29 +7,26 @@
 //
 
 #define BLOCKSCI_WITHOUT_SINGLETON
-
 #include "basic_types.hpp"
 
 #include <blocksci/core/hash_combine.hpp>
 
 #include <cstddef>
+#include <functional>
 #include <ostream>
 
-namespace std
-{
-    size_t hash<RawOutputPointer>::operator()(const RawOutputPointer &pointer) const {
-        std::size_t seed = 5764245;
-        blocksci::hash_combine(seed, pointer.hash);
-        blocksci::hash_combine(seed, pointer.outputNum);
-        return seed;
-    }
-}
-
+namespace std {
+  size_t hash<RawOutputPointer>::operator()(const RawOutputPointer &pointer) const {
+    std::size_t seed = 5764245;
+    blocksci::hash_combine(seed, pointer.hash);
+    blocksci::hash_combine(seed, pointer.outputNum);
+    return seed;
+  }
+} // namespace std
 
 std::ostream &operator<<(std::ostream &os, RawOutputPointer const &pointer) {
-    os << pointer.hash.GetHex();
-    os << ":";
-    os << pointer.outputNum;
-    return os;
+  os << pointer.hash.GetHex();
+  os << ":";
+  os << pointer.outputNum;
+  return os;
 }
-

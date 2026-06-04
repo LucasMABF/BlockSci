@@ -14,9 +14,10 @@
 #include <functional>
 
 namespace blocksci {
-    class ScriptAccess;
+  class ScriptAccess;
 }
 
-void visit(const blocksci::RawAddress &address, const std::function<bool(const blocksci::RawAddress &)> &visitFunc, const blocksci::ScriptAccess &scripts);
+void visit(const blocksci::RawAddress &address, const std::function<bool(const blocksci::RawAddress &)> &visitFunc,
+           const blocksci::ScriptAccess &scripts);
 
 #endif /* raw_address_visitor_h */

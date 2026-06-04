@@ -8,9 +8,7 @@ def address_types(chain_name):
 def addresses(chain, json_data, chain_name):
     for addr_type in address_types(chain_name):
         for i in range(3):
-            addr = chain.address_from_string(
-                json_data["address-{}-spend-{}".format(addr_type, i)]
-            )
+            addr = chain.address_from_string(json_data[f"address-{addr_type}-spend-{i}"])
             yield addr, addr_type
 
 

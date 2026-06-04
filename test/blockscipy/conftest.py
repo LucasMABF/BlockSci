@@ -1,6 +1,7 @@
-import pytest
-import subprocess
 import os
+import subprocess
+
+import pytest
 
 
 def pytest_addoption(parser):
@@ -25,11 +26,8 @@ def pytest_generate_tests(metafunc):
 
 def pytest_runtest_call(item):
     markers = [x.name for x in item.iter_markers()]
-    if markers:
-        if item.funcargs["chain_name"] not in markers:
-            pytest.skip(
-                "Skipping test for chain {}".format(item.funcargs["chain_name"])
-            )
+    if markers and item.funcargs["chain_name"] not in markers:
+        pytest.skip("Skipping test for chain {}".format(item.funcargs["chain_name"]))
 
 
 @pytest.fixture(scope="session")
@@ -45,7 +43,7 @@ def chain(tmpdir_factory, chain_name):
     elif chain_name == "ltc":
         blocksci_chain_name = "litecoin_regtest"
     else:
-        raise ValueError("Invalid chain name {}".format(chain_name))
+        raise ValueError(f"Invalid chain name {chain_name}")
 
     create_config_cmd = [
         "blocksci_parser",
@@ -54,7 +52,7 @@ def chain(tmpdir_factory, chain_name):
         blocksci_chain_name,
         chain_dir,
         "--disk",
-        "{}/../files/{}/regtest/".format(self_dir, chain_name),
+        f"{self_dir}/../files/{chain_name}/regtest/",
         "--max-block",
         "100",
     ]
@@ -69,6 +67,7 @@ def chain(tmpdir_factory, chain_name):
     subprocess.run(parse_cmd, check=True)
 
     import blocksci
+
     chain = blocksci.Blockchain(chain_dir + "/config.json")
     return chain
 
@@ -77,5 +76,5 @@ def chain(tmpdir_factory, chain_name):
 def json_data(chain_name):
     import json
 
-    with open("../files/{}/output.json".format(chain_name), "r") as f:
+    with open(f"../files/{chain_name}/output.json") as f:
         return json.load(f)

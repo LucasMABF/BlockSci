@@ -9,19 +9,25 @@
 #include "proxy_flow_functions_impl.hpp"
 
 #include <blocksci/address/equiv_address.hpp>
-#include <blocksci/cluster/cluster.hpp>
 #include <blocksci/chain/block.hpp>
+#include <blocksci/chain/input.hpp>
+#include <blocksci/chain/output.hpp>
+#include <blocksci/chain/transaction.hpp>
+#include <blocksci/cluster/cluster.hpp>
+#include <blocksci/scripts/script_variant.hpp>
+
+#include <pybind11/pybind11.h>
 
 void addProxyFlowFunctionsCore(pybind11::module &m, pybind11::module &pm) {
-	using namespace blocksci;
+  using namespace blocksci;
 
-	addProxyFlowFunctions<Block>(m, pm);
-	addProxyFlowFunctions<Transaction>(m, pm);
-	addProxyFlowFunctions<Input>(m, pm);
-	addProxyFlowFunctions<Output>(m, pm);
-	addProxyFlowFunctions<AnyScript>(m, pm);
-	addProxyFlowFunctions<EquivAddress>(m, pm);
-	addProxyFlowFunctions<Cluster>(m, pm);
-	addProxyFlowFunctions<TaggedCluster>(m, pm);
-	addProxyFlowFunctions<TaggedAddress>(m, pm);
+  addProxyFlowFunctions<Block>(m, pm);
+  addProxyFlowFunctions<Transaction>(m, pm);
+  addProxyFlowFunctions<Input>(m, pm);
+  addProxyFlowFunctions<Output>(m, pm);
+  addProxyFlowFunctions<AnyScript>(m, pm);
+  addProxyFlowFunctions<EquivAddress>(m, pm);
+  addProxyFlowFunctions<Cluster>(m, pm);
+  addProxyFlowFunctions<TaggedCluster>(m, pm);
+  addProxyFlowFunctions<TaggedAddress>(m, pm);
 }

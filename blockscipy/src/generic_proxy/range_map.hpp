@@ -5,7 +5,6 @@
 //  Created by Harry Kalodner on 9/23/18.
 //
 
-
 #ifndef proxy_range_map_hpp
 #define proxy_range_map_hpp
 

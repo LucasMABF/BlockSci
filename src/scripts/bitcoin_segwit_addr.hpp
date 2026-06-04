@@ -25,16 +25,16 @@
 #include <vector>
 
 namespace blocksci {
-    struct ChainConfiguration;
+  struct ChainConfiguration;
 } // namespace blocksci
 
 namespace segwit_addr {
 
-/** Decode a SegWit address. Returns (witver, witprog). witver = -1 means failure. */
-std::pair<int, std::vector<uint8_t> > decode(const std::string& hrp, const std::string& addr);
+  /** Decode a SegWit address. Returns (witver, witprog). witver = -1 means failure. */
+  std::pair<int, std::vector<uint8_t>> decode(const std::string &hrp, const std::string &addr);
 
-/** Encode a SegWit address. Empty string means failure. */
-std::string encode(const std::string& hrp, int witver, const std::vector<uint8_t>& witprog);
-std::string encode(const blocksci::ChainConfiguration &config, int witver, const std::vector<uint8_t>& witprog);
-    
+  /** Encode a SegWit address. Empty string means failure. */
+  std::string encode(const std::string &hrp, int witver, const std::vector<uint8_t> &witprog);
+  std::string encode(const blocksci::ChainConfiguration &config, int witver, const std::vector<uint8_t> &witprog);
+
 } // namespace segwit_addr

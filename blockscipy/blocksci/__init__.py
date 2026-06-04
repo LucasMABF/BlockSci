@@ -1,50 +1,48 @@
-# -*- coding: utf-8 -*-
 """BlockSci Module
 
 BlockSci enables fast and expressive analysis of Bitcoin’s and many
 other blockchains.
 """
 
-import tempfile
-import importlib
-import subprocess
-import sys
-import os
-import logging
-import inspect
+# ruff: noqa: F403, F405
+
 import copy
-import io
-import re
 import heapq
+import inspect
+import io
+import logging
 import operator
+import os
+import re
+import sys
 import time
 from functools import reduce
 
-import psutil
-from multiprocess import Pool
 import dateparser
-from dateutil.relativedelta import relativedelta
 import pandas as pd
+import psutil
+from dateutil.relativedelta import relativedelta
+from multiprocess import Pool
 
 from ._blocksci import *
 from ._blocksci import _traverse
-from .currency import *
 from .blockchain_info import *
-from .opreturn import label_application
+from .currency import *
+from .opreturn import label_application as label_application
 from .pickler import *
 
 VERSION = "0.7.0"
 
 
-sys.modules['blocksci.proxy'] = proxy
-sys.modules['blocksci.cluster'] = cluster
-sys.modules['blocksci.heuristics'] = heuristics
-sys.modules['blocksci.heuristics.change'] = heuristics.change
+sys.modules["blocksci.proxy"] = proxy
+sys.modules["blocksci.cluster"] = cluster
+sys.modules["blocksci.heuristics"] = heuristics
+sys.modules["blocksci.heuristics.change"] = heuristics.change
 
 
 class _NoDefault:
     def __repr__(self):
-        return '(no default)'
+        return "(no default)"
 
 
 MISSING_PARAM = _NoDefault()
@@ -55,18 +53,25 @@ disk_info = os.statvfs("/")
 free_space = (disk_info.f_frsize * disk_info.f_bavail) // (1024**3)
 if free_space < 20:
     logger = logging.getLogger()
-    logger.warning("Warning: You only have {}GB of free disk space left. Running out of disk space may crash the parser and corrupt the BlockSci data files.".format(free_space))
+    logger.warning(
+        f"Warning: You only have {free_space}GB of free disk space left. "
+        "Running out of disk space may crash the parser and corrupt the BlockSci data files."
+    )
 
 # UTC time zone is recommended
-if time.tzname != ('UTC', 'UTC'):
+if time.tzname != ("UTC", "UTC"):
     logger = logging.getLogger()
-    logger.warning("Warning: Your system is set to a timezone other than UTC, leading to inconsistencies between datetime objects (which are adjusted to your local timezone) and datetime64 timestamps returned by iterators and ranges, or the fluent interface (which use UTC).")
+    logger.warning(
+        "Warning: Your system is set to a timezone other than UTC, leading to inconsistencies "
+        "between datetime objects (which are adjusted to your local timezone) and datetime64 "
+        "timestamps returned by iterators and ranges, or the fluent interface (which use UTC)."
+    )
 
 
-
-def mapreduce_block_ranges(chain, map_func, reduce_func, init=MISSING_PARAM, start=None, end=None, cpu_count=psutil.cpu_count()):
-    """Initialized multithreaded map reduce function over a stream of block ranges
-    """
+def mapreduce_block_ranges(chain, map_func, reduce_func, init=MISSING_PARAM, start=None, end=None, cpu_count=None):
+    """Initialized multithreaded map reduce function over a stream of block ranges"""
+    if cpu_count is None:
+        cpu_count = psutil.cpu_count()
     if start is None:
         start = 0
         if end is None:
@@ -86,14 +91,14 @@ def mapreduce_block_ranges(chain, map_func, reduce_func, init=MISSING_PARAM, sta
         local_chain = Blockchain(input[1], input[2])
         file = io.BytesIO()
         pickler = Pickler(file)
-        mapped = map_func(local_chain[input[0][0]:input[0][1]])
+        mapped = map_func(local_chain[input[0][0] : input[0][1]])
         pickler.dump(mapped)
         file.seek(0)
         return file
 
     with Pool(cpu_count - 1) as p:
         results_future = p.map_async(real_map_func, segments[1:])
-        first = map_func(chain[raw_segments[0][0]:raw_segments[0][1]])
+        first = map_func(chain[raw_segments[0][0] : raw_segments[0][1]])
         results = results_future.get()
         results = [Unpickler(res, chain).load() for res in results]
     results.insert(0, first)
@@ -103,58 +108,33 @@ def mapreduce_block_ranges(chain, map_func, reduce_func, init=MISSING_PARAM, sta
         return reduce(reduce_func, results, init)
 
 
-def mapreduce_blocks(chain, map_func, reduce_func, init=MISSING_PARAM, start=None, end=None, cpu_count=psutil.cpu_count()):
-    """Initialized multithreaded map reduce function over a stream of blocks
-    """
+def mapreduce_blocks(chain, map_func, reduce_func, init=MISSING_PARAM, start=None, end=None, cpu_count=None):
+    """Initialized multithreaded map reduce function over a stream of blocks"""
+
     def map_range_func(blocks):
         if isinstance(init, type(MISSING_PARAM)):
             return reduce(reduce_func, (map_func(block) for block in blocks))
         else:
-            return reduce(
-                reduce_func,
-                (map_func(block) for block in blocks),
-                copy.deepcopy(init)
-            )
-    return mapreduce_block_ranges(
-        chain,
-        map_range_func,
-        reduce_func,
-        init,
-        start,
-        end,
-        cpu_count
-    )
+            return reduce(reduce_func, (map_func(block) for block in blocks), copy.deepcopy(init))
+
+    return mapreduce_block_ranges(chain, map_range_func, reduce_func, init, start, end, cpu_count)
 
 
-def mapreduce_txes(chain, map_func, reduce_func, init=MISSING_PARAM, start=None, end=None, cpu_count=psutil.cpu_count()):
-    """Initialized multithreaded map reduce function over a stream of transactions
-    """
+def mapreduce_txes(chain, map_func, reduce_func, init=MISSING_PARAM, start=None, end=None, cpu_count=None):
+    """Initialized multithreaded map reduce function over a stream of transactions"""
+
     def map_range_func(blocks):
         if isinstance(init, type(MISSING_PARAM)):
-            return reduce(
-                reduce_func,
-                (map_func(tx) for block in blocks for tx in block)
-            )
+            return reduce(reduce_func, (map_func(tx) for block in blocks for tx in block))
         else:
-            return reduce(
-                reduce_func,
-                (map_func(tx) for block in blocks for tx in block),
-                copy.deepcopy(init)
-            )
-    return mapreduce_block_ranges(
-        chain,
-        map_range_func,
-        reduce_func,
-        init,
-        start,
-        end,
-        cpu_count
-    )
+            return reduce(reduce_func, (map_func(tx) for block in blocks for tx in block), copy.deepcopy(init))
+
+    return mapreduce_block_ranges(chain, map_range_func, reduce_func, init, start, end, cpu_count)
 
 
-def map_blocks(self, block_func, start=None, end=None, cpu_count=psutil.cpu_count()):
-    """Runs the given function over each block in range and returns a list of the results
-    """
+def map_blocks(self, block_func, start=None, end=None, cpu_count=None):
+    """Runs the given function over each block in range and returns a list of the results"""
+
     def map_func(blocks):
         return [block_func(block) for block in blocks]
 
@@ -162,22 +142,11 @@ def map_blocks(self, block_func, start=None, end=None, cpu_count=psutil.cpu_coun
         accum.extend(new_val)
         return accum
 
-    return mapreduce_block_ranges(
-        self,
-        map_func,
-        reduce_func,
-        MISSING_PARAM,
-        start,
-        end,
-        cpu_count
-    )
+    return mapreduce_block_ranges(self, map_func, reduce_func, MISSING_PARAM, start, end, cpu_count)
 
 
-def filter_blocks(
-    self, filter_func, start=None, end=None, cpu_count=psutil.cpu_count()
-):
-    """Return all blocks in range which match the given criteria
-    """
+def filter_blocks(self, filter_func, start=None, end=None, cpu_count=None):
+    """Return all blocks in range which match the given criteria"""
 
     def map_func(blocks):
         return blocks.where(filter_func).to_list()
@@ -186,16 +155,11 @@ def filter_blocks(
         accum.extend(new_val)
         return accum
 
-    return mapreduce_block_ranges(
-        self, map_func, reduce_func, MISSING_PARAM, start, end, cpu_count=cpu_count
-    )
+    return mapreduce_block_ranges(self, map_func, reduce_func, MISSING_PARAM, start, end, cpu_count=cpu_count)
 
 
-def filter_blocks_legacy(
-    self, filter_func, start=None, end=None, cpu_count=psutil.cpu_count()
-):
-    """Return all blocks in range which match the given criteria
-    """
+def filter_blocks_legacy(self, filter_func, start=None, end=None, cpu_count=None):
+    """Return all blocks in range which match the given criteria"""
 
     def map_func(blocks):
         return [block for block in blocks if filter_func(block)]
@@ -204,14 +168,11 @@ def filter_blocks_legacy(
         accum.extend(new_val)
         return accum
 
-    return mapreduce_block_ranges(
-        self, map_func, reduce_func, MISSING_PARAM, start, end, cpu_count=cpu_count
-    )
+    return mapreduce_block_ranges(self, map_func, reduce_func, MISSING_PARAM, start, end, cpu_count=cpu_count)
 
 
-def filter_txes(self, filter_func, start=None, end=None, cpu_count=psutil.cpu_count()):
-    """Return all transactions in range which match the given criteria
-    """
+def filter_txes(self, filter_func, start=None, end=None, cpu_count=None):
+    """Return all transactions in range which match the given criteria"""
 
     def map_func(blocks):
         return blocks.txes.where(filter_func).to_list()
@@ -220,16 +181,11 @@ def filter_txes(self, filter_func, start=None, end=None, cpu_count=psutil.cpu_co
         accum.extend(new_val)
         return accum
 
-    return mapreduce_block_ranges(
-        self, map_func, reduce_func, MISSING_PARAM, start, end, cpu_count
-    )
+    return mapreduce_block_ranges(self, map_func, reduce_func, MISSING_PARAM, start, end, cpu_count)
 
 
-def filter_txes_legacy(
-    self, filter_func, start=None, end=None, cpu_count=psutil.cpu_count()
-):
-    """Return all transactions in range which match the given criteria
-    """
+def filter_txes_legacy(self, filter_func, start=None, end=None, cpu_count=None):
+    """Return all transactions in range which match the given criteria"""
 
     def map_func(blocks):
         return [tx for block in blocks for tx in block if filter_func(tx)]
@@ -238,9 +194,7 @@ def filter_txes_legacy(
         accum.extend(new_val)
         return accum
 
-    return mapreduce_block_ranges(
-        self, map_func, reduce_func, MISSING_PARAM, start, end, cpu_count
-    )
+    return mapreduce_block_ranges(self, map_func, reduce_func, MISSING_PARAM, start, end, cpu_count)
 
 
 Blockchain.map_blocks = map_blocks
@@ -273,11 +227,11 @@ def block_range(self, start, end=None) -> BlockRange:
     start_date = pd.to_datetime(start)
     if end is None:
         res = dateparser.DateDataParser().get_date_data(start)
-        if res['period'] == 'month':
+        if res["period"] == "month":
             end = start_date + relativedelta(months=1)
-        elif res['period'] == 'day':
+        elif res["period"] == "day":
             end = start_date + relativedelta(days=1)
-        elif res['period'] == 'year':
+        elif res["period"] == "year":
             end = start_date + relativedelta(years=1)
     else:
         end = pd.to_datetime(end)
@@ -304,48 +258,61 @@ def new_init(self, loc, max_block=0):
 
     if os.path.exists(ec2_instance_path):
         if not os.path.exists(tx_heated_path):
-            print("Note: this appears to be a fresh instance. Transaction data has not yet been cached locally. Most queries might be slow. Caching is currently ongoing in the background, and usually takes 20 minutes.")
+            print(
+                "Note: this appears to be a fresh instance. Transaction data has not yet been cached locally. "
+                "Most queries might be slow. Caching is currently ongoing in the background, "
+                "and usually takes 20 minutes."
+            )
         elif not os.path.exists(scripts_heated_path):
-            print("Note: this appears to be a fresh instance. Script data has not yet been cached locally. Some queries might be slow. Caching is currently ongoing in the background, and usually takes 1.5 hours.")
+            print(
+                "Note: this appears to be a fresh instance. Script data has not yet been cached locally. "
+                "Some queries might be slow. Caching is currently ongoing in the background, "
+                "and usually takes 1.5 hours."
+            )
         elif not os.path.exists(index_heated_path):
-            print("Note: this appears to be a fresh instance. Index data has not yet been cached locally. A few queries might be slow. Caching is currently ongoing in the background, and usually takes 3.5 hours.")
+            print(
+                "Note: this appears to be a fresh instance. Index data has not yet been cached locally. "
+                "A few queries might be slow. Caching is currently ongoing in the background, "
+                "and usually takes 3.5 hours."
+            )
 
 
 def most_valuable_addresses(self, nlargest=100):
-    current_address_vals = self.blocks.outputs.where(lambda o: ~o.is_spent) \
-    .group_by( \
-        lambda output: output.address, \
-        lambda outputs: outputs.value.sum \
+    current_address_vals = self.blocks.outputs.where(lambda o: ~o.is_spent).group_by(
+        lambda output: output.address, lambda outputs: outputs.value.sum
     )
     return heapq.nlargest(nlargest, current_address_vals.items(), key=operator.itemgetter(1))
+
 
 Blockchain.__init__ = new_init
 Blockchain.range = block_range
 Blockchain.heights_to_dates = heights_to_dates
 Blockchain.most_valuable_addresses = most_valuable_addresses
 
+
 def traverse(proxy_func, val):
     return _traverse(proxy_func(val._self_proxy), val)
+
 
 def apply_map(prox, prop):
     if prop.ptype == proxy.proxy_type.optional:
         return prox._map_optional(prop)
-    elif prop.ptype == proxy.proxy_type.iterator:
-        return prox._map_sequence(prop)
-    elif prop.ptype == proxy.proxy_type.range:
+    elif prop.ptype == proxy.proxy_type.iterator or prop.ptype == proxy.proxy_type.range:
         return prox._map_sequence(prop)
     else:
         return prox._map(prop)
+
 
 def setup_optional_proxy_map_funcs():
     def optional_map_func(r, func):
         p = func(r.nested_proxy)
         return r._map(p)
 
-    optional_cls = [x for x in dir(proxy) if 'Optional' in x and x[0].isupper()]
+    optional_cls = [x for x in dir(proxy) if "Optional" in x and x[0].isupper()]
 
     for cl in optional_cls:
         getattr(proxy, cl).map = optional_map_func
+
 
 def setup_sequence_map_funcs():
     def range_map_func(r, func):
@@ -377,7 +344,7 @@ def setup_sequence_map_funcs():
         evaler = evaler_func(r._self_proxy.nested_proxy.range_proxy)
         return r._group_by(grouper, evaler)
 
-    iterator_and_range_cls = [x for x in globals() if ('Iterator' in x or 'Range' in x) and x[0].isupper()]
+    iterator_and_range_cls = [x for x in globals() if ("Iterator" in x or "Range" in x) and x[0].isupper()]
 
     for cl in iterator_and_range_cls:
         globals()[cl].map = range_map_func
@@ -388,6 +355,7 @@ def setup_sequence_map_funcs():
         globals()[cl].min = range_min_func
         globals()[cl].any = range_any_func
         globals()[cl].all = range_all_func
+
 
 def setup_sequence_proxy_map_funcs():
     def range_map_func(r, func):
@@ -414,7 +382,7 @@ def setup_sequence_proxy_map_funcs():
         p = func(r.nested_proxy)
         return r._all(p)
 
-    iterator_and_range_cls = [x for x in dir(proxy) if ('Iterator' in x or 'Range' in x) and x[0].isupper()]
+    iterator_and_range_cls = [x for x in dir(proxy) if ("Iterator" in x or "Range" in x) and x[0].isupper()]
 
     for cl in iterator_and_range_cls:
         getattr(proxy, cl).map = range_map_func
@@ -425,101 +393,141 @@ def setup_sequence_proxy_map_funcs():
         getattr(proxy, cl).any = range_any_func
         getattr(proxy, cl).all = range_all_func
 
-non_copying_methods = set(["ptype", "iterator_proxy", "range_proxy", "optional_proxy", "output_type_name", "_pybind11_conduit_v1_"])
+
+non_copying_methods = {
+    "ptype",
+    "iterator_proxy",
+    "range_proxy",
+    "optional_proxy",
+    "output_type_name",
+    "_pybind11_conduit_v1_",
+}
+
 
 def _get_core_functions_methods(obj):
-    return (attr for attr in obj.__dict__ if
-            not attr[:2] == '__' and attr not in non_copying_methods and
-            not isinstance(getattr(obj, attr, None), property))
+    return (
+        attr
+        for attr in obj.__dict__
+        if attr[:2] != "__" and attr not in non_copying_methods and not isinstance(getattr(obj, attr, None), property)
+    )
 
 
 def _get_core_properties_methods(obj):
-    return (attr for attr in obj.__dict__ if attr not in non_copying_methods and
-            isinstance(getattr(obj, attr, None), property))
+    return (
+        attr
+        for attr in obj.__dict__
+        if attr not in non_copying_methods and isinstance(getattr(obj, attr, None), property)
+    )
+
 
 def _get_functions_methods(obj):
-    return (attr for attr in dir(obj) if
-            not attr[:2] == '__' and attr not in non_copying_methods and
-            not isinstance(getattr(obj, attr, None), property))
+    return (
+        attr
+        for attr in dir(obj)
+        if attr[:2] != "__" and attr not in non_copying_methods and not isinstance(getattr(obj, attr, None), property)
+    )
 
 
 def _get_properties_methods(obj):
-    return (attr for attr in dir(obj) if attr not in non_copying_methods and
-            isinstance(getattr(obj, attr, None), property))
+    return (
+        attr for attr in dir(obj) if attr not in non_copying_methods and isinstance(getattr(obj, attr, None), property)
+    )
+
 
 # https://gist.github.com/carlsmith/b2e6ba538ca6f58689b4c18f46fef11c
 def replace(string, substitutions):
     substrings = sorted(substitutions, key=len, reverse=True)
-    regex = re.compile('|'.join(map(re.escape, substrings)))
+    regex = re.compile("|".join(map(re.escape, substrings)))
     return regex.sub(lambda match: substitutions[match.group(0)], string)
 
+
 def fix_all_doc_def(doc):
-    doc = replace(doc, {
-        "blocksci.proxy.intIteratorProxy": "numpy.ndarray[int]",
-        "blocksci.proxy.intRangeProxy": "numpy.ndarray[int]",
-        "blocksci.proxy.boolIteratorProxy": "numpy.ndarray[bool]",
-        "blocksci.proxy.boolRangeProxy": "numpy.ndarray[bool]",
-        "blocksci.proxy.ClusterIteratorProxy": "blocksci.cluster.ClusterIterator",
-        "blocksci.proxy.TaggedClusterIteratorProxy": "blocksci.cluster.TaggedClusterIterator",
-        "blocksci.proxy.TaggedAddressIteratorProxy": "blocksci.cluster.TaggedAddressIterator"
-    })
+    doc = replace(
+        doc,
+        {
+            "blocksci.proxy.intIteratorProxy": "numpy.ndarray[int]",
+            "blocksci.proxy.intRangeProxy": "numpy.ndarray[int]",
+            "blocksci.proxy.boolIteratorProxy": "numpy.ndarray[bool]",
+            "blocksci.proxy.boolRangeProxy": "numpy.ndarray[bool]",
+            "blocksci.proxy.ClusterIteratorProxy": "blocksci.cluster.ClusterIterator",
+            "blocksci.proxy.TaggedClusterIteratorProxy": "blocksci.cluster.TaggedClusterIterator",
+            "blocksci.proxy.TaggedAddressIteratorProxy": "blocksci.cluster.TaggedAddressIterator",
+        },
+    )
     doc = re.sub(r"(blocksci\.proxy\.)([a-zA-Z]+)(IteratorProxy)", r"blocksci.\2Iterator", doc)
     return doc
 
+
 def fix_self_doc_def(doc):
     doc = fix_all_doc_def(doc)
-    doc = replace(doc, {
-        "blocksci.proxy.ProxyAddress": "blocksci.Address",
-        "blocksci.proxy.intProxy": "int",
-        "blocksci.proxy.boolProxy": "bool",
-        "blocksci.proxy.ClusterProxy": "blocksci.cluster.Cluster",
-        "blocksci.proxy.TaggedClusterProxy": "blocksci.cluster.TaggedCluster",
-        "blocksci.proxy.TaggedAddressProxy": "blocksci.cluster.TaggedAddress",
-        "blocksci.proxy.ClusterRangeProxy": "blocksci.cluster.ClusterRange",
-        "blocksci.proxy.TaggedClusterRangeProxy": "blocksci.cluster.TaggedClusterRange",
-        "blocksci.proxy.TaggedAddressRangeProxy": "blocksci.cluster.TaggedAddressRange"
-    })
+    doc = replace(
+        doc,
+        {
+            "blocksci.proxy.ProxyAddress": "blocksci.Address",
+            "blocksci.proxy.intProxy": "int",
+            "blocksci.proxy.boolProxy": "bool",
+            "blocksci.proxy.ClusterProxy": "blocksci.cluster.Cluster",
+            "blocksci.proxy.TaggedClusterProxy": "blocksci.cluster.TaggedCluster",
+            "blocksci.proxy.TaggedAddressProxy": "blocksci.cluster.TaggedAddress",
+            "blocksci.proxy.ClusterRangeProxy": "blocksci.cluster.ClusterRange",
+            "blocksci.proxy.TaggedClusterRangeProxy": "blocksci.cluster.TaggedClusterRange",
+            "blocksci.proxy.TaggedAddressRangeProxy": "blocksci.cluster.TaggedAddressRange",
+        },
+    )
 
     doc = re.sub(r"(blocksci\.proxy\.Optional)([a-zA-Z]+)(Proxy)", r"Optional\[blocksci\.\2\]", doc)
     doc = re.sub(r"(blocksci\.proxy\.)([a-zA-Z]+)(RangeProxy)", r"blocksci.\2Range", doc)
     doc = re.sub(r"(blocksci\.proxy\.)([a-zA-Z]+)(Proxy)", r"blocksci.\2", doc)
     return doc
 
+
 def fix_sequence_doc_def(doc):
     doc = fix_all_doc_def(doc)
-    doc = replace(doc, {
-        "blocksci.proxy.intProxy": "numpy.ndarray[int]",
-        "blocksci.proxy.boolProxy": "numpy.ndarray[bool]",
-        "blocksci.proxy.ClusterRangeProxy": "blocksci.cluster.ClusterIterator",
-        "blocksci.proxy.TaggedClusterRangeProxy": "blocksci.cluster.TaggedClusterIterator",
-        "blocksci.proxy.TaggedAddressRangeProxy": "blocksci.cluster.ClusterIterator"
-    })
+    doc = replace(
+        doc,
+        {
+            "blocksci.proxy.intProxy": "numpy.ndarray[int]",
+            "blocksci.proxy.boolProxy": "numpy.ndarray[bool]",
+            "blocksci.proxy.ClusterRangeProxy": "blocksci.cluster.ClusterIterator",
+            "blocksci.proxy.TaggedClusterRangeProxy": "blocksci.cluster.TaggedClusterIterator",
+            "blocksci.proxy.TaggedAddressRangeProxy": "blocksci.cluster.ClusterIterator",
+        },
+    )
 
     doc = re.sub(r"(blocksci\.proxy\.Optional)([a-zA-Z]+)(Proxy)", r"blocksci\.\2Iterator", doc)
     doc = re.sub(r"(blocksci\.proxy\.)([a-zA-Z]+)(RangeProxy)", r"blocksci.\2Iterator", doc)
     return doc
 
+
 def fix_iterator_doc_def(doc):
     doc = fix_sequence_doc_def(doc)
-    doc = replace(doc, {
-        "blocksci.proxy.ClusterProxy": "blocksci.cluster.ClusterIterator",
-        "blocksci.proxy.TaggedClusterProxy": "blocksci.cluster.TaggedClusterIterator",
-        "blocksci.proxy.TaggedAddressProxy": "blocksci.cluster.TaggedAddressIterator"
-    })
+    doc = replace(
+        doc,
+        {
+            "blocksci.proxy.ClusterProxy": "blocksci.cluster.ClusterIterator",
+            "blocksci.proxy.TaggedClusterProxy": "blocksci.cluster.TaggedClusterIterator",
+            "blocksci.proxy.TaggedAddressProxy": "blocksci.cluster.TaggedAddressIterator",
+        },
+    )
 
     doc = re.sub(r"(blocksci\.proxy\.)([a-zA-Z]+)(Proxy)", r"blocksci\.\2Iterator", doc)
     return doc
 
+
 def fix_range_doc_def(doc):
     doc = fix_sequence_doc_def(doc)
-    doc = replace(doc, {
-        "blocksci.proxy.ClusterProxy": "blocksci.cluster.ClusterRange",
-        "blocksci.proxy.TaggedClusterProxy": "blocksci.cluster.TaggedClusterRange",
-        "blocksci.proxy.TaggedAddressProxy": "blocksci.cluster.TaggedAddressRange"
-    })
+    doc = replace(
+        doc,
+        {
+            "blocksci.proxy.ClusterProxy": "blocksci.cluster.ClusterRange",
+            "blocksci.proxy.TaggedClusterProxy": "blocksci.cluster.TaggedClusterRange",
+            "blocksci.proxy.TaggedAddressProxy": "blocksci.cluster.TaggedAddressRange",
+        },
+    )
 
     doc = re.sub(r"(blocksci\.proxy\.)([a-zA-Z]+)(Proxy)", r"blocksci\.\2Range", doc)
     return doc
+
 
 def setup_self_methods(main, proxy_obj_type=None, sample_proxy=None):
     if proxy_obj_type is None:
@@ -532,7 +540,12 @@ def setup_self_methods(main, proxy_obj_type=None, sample_proxy=None):
 
     def self_property_creator(name):
         prop = property(lambda s: getattr(s._self_proxy, name)(s))
-        prop.__doc__ = str(getattr(proxy_obj_type, name).__doc__) + "\n\n:type: :class:`" + getattr(sample_proxy, name).output_type_name + "`"
+        prop.__doc__ = (
+            str(getattr(proxy_obj_type, name).__doc__)
+            + "\n\n:type: :class:`"
+            + getattr(sample_proxy, name).output_type_name
+            + "`"
+        )
         return prop
 
     def self_method_creator(name):
@@ -541,7 +554,7 @@ def setup_self_methods(main, proxy_obj_type=None, sample_proxy=None):
 
         orig_doc = getattr(proxy_obj_type, name).__doc__
         split = orig_doc.split("\n\n")
-        method.__doc__ = fix_self_doc_def(split[0]) + '\n\n' + split[1]
+        method.__doc__ = fix_self_doc_def(split[0]) + "\n\n" + split[1]
         return method
 
     core_properties_methods = set(_get_core_properties_methods(proxy_obj_type)) - existing_properties
@@ -562,12 +575,15 @@ def setup_iterator_methods(iterator, doc_func=fix_iterator_doc_def, nested_proxy
     def iterator_creator(name):
         def method(s):
             return apply_map(s._self_proxy, getattr(s._self_proxy.nested_proxy, name))(s)
+
         prop = property(method)
-        prop.__doc__ = "For each item: " + \
-                       getattr(nested_proxy_cl, name).__doc__ + \
-                       "\n\n:type: :class:`" + \
-                       apply_map(sample_proxy, getattr(sample_proxy.nested_proxy, name)).output_type_name + \
-                       "`"
+        prop.__doc__ = (
+            "For each item: "
+            + getattr(nested_proxy_cl, name).__doc__
+            + "\n\n:type: :class:`"
+            + apply_map(sample_proxy, getattr(sample_proxy.nested_proxy, name)).output_type_name
+            + "`"
+        )
         return prop
 
     def iterator_method_creator(name):
@@ -578,7 +594,7 @@ def setup_iterator_methods(iterator, doc_func=fix_iterator_doc_def, nested_proxy
         split = orig_doc.split("\n\n")
         if len(split) != 2:
             print(iterator, name)
-        method.__doc__ = doc_func(split[0]) + '\n\nFor each item: ' + split[1]
+        method.__doc__ = doc_func(split[0]) + "\n\nFor each item: " + split[1]
         return method
 
     for proxy_func in _get_core_properties_methods(nested_proxy_cl):
@@ -587,6 +603,7 @@ def setup_iterator_methods(iterator, doc_func=fix_iterator_doc_def, nested_proxy
     for proxy_func in _get_core_functions_methods(nested_proxy_cl):
         setattr(iterator, proxy_func, iterator_method_creator(proxy_func))
 
+
 def setup_iterator_proxy_methods(iterator_proxy):
     proxy_cl = type(iterator_proxy)
     nested_proxy_cl = type(iterator_proxy.nested_proxy)
@@ -594,6 +611,7 @@ def setup_iterator_proxy_methods(iterator_proxy):
     def iterator_proxy_creator(name):
         def method(rng):
             return apply_map(rng, getattr(rng.nested_proxy, name))
+
         return property(method)
 
     def iterator_proxy_method_creator(name):
@@ -608,6 +626,7 @@ def setup_iterator_proxy_methods(iterator_proxy):
     for proxy_func in _get_core_functions_methods(nested_proxy_cl):
         setattr(proxy_cl, proxy_func, iterator_proxy_method_creator(proxy_func))
 
+
 def setup_size_property(iterator):
     iterator.count = property(lambda rng: rng._self_proxy.size(rng))
     iterator.size = property(lambda rng: rng._self_proxy.size(rng))
@@ -617,15 +636,18 @@ def setup_range_methods(blocksci_range, nested_proxy_cl=None, sample_proxy=None)
     setup_iterator_methods(blocksci_range, fix_range_doc_def, nested_proxy_cl, sample_proxy)
     blocksci_range.__getitem__ = lambda rng, index: rng._self_proxy[index](rng)
 
+
 def setup_iterator_and_proxy_methods(iterator):
     setup_iterator_methods(iterator)
     setup_iterator_proxy_methods(iterator._self_proxy)
     setup_size_property(iterator)
 
+
 def setup_range_and_proxy_methods(blocksci_range):
     setup_range_methods(blocksci_range)
     setup_iterator_proxy_methods(blocksci_range._self_proxy)
     setup_size_property(blocksci_range)
+
 
 setup_optional_proxy_map_funcs()
 setup_sequence_proxy_map_funcs()
@@ -701,38 +723,34 @@ setup_range_and_proxy_methods(cluster.TaggedAddressRange)
 def txes_including_output_of_type(txes, typ):
     return txes.where(lambda tx: tx.outputs.any(lambda o: o.address_type == typ))
 
+
 TxIterator.including_output_of_type = txes_including_output_of_type
 
 TxRange.including_output_of_type = txes_including_output_of_type
 
 
 def inputs_sent_before_height(inputs, height: int) -> InputIterator:
-    """Filter the inputs to include only inputs which spent an output created before the given height
-    """
+    """Filter the inputs to include only inputs which spent an output created before the given height"""
     return inputs.where(lambda inp: inp.spent_tx.block.height < height)
 
 
 def inputs_sent_after_height(inputs, height: int) -> InputIterator:
-    """Filter the inputs to include only inputs which spent an output created after the given height
-    """
+    """Filter the inputs to include only inputs which spent an output created after the given height"""
     return inputs.where(lambda inp: inp.spent_tx.block.height >= height)
 
 
 def inputs_with_age_less_than(inputs, age: int) -> InputIterator:
-    """Filter the inputs to include only inputs with age less than the given value
-    """
+    """Filter the inputs to include only inputs with age less than the given value"""
     return inputs.where(lambda inp: inp.tx.block_height - inp.spent_tx.block.height < age)
 
 
 def inputs_with_age_greater_than(inputs, age: int) -> InputIterator:
-    """Filter the inputs to include only inputs with age more than the given value
-    """
+    """Filter the inputs to include only inputs with age more than the given value"""
     return inputs.where(lambda inp: inp.tx.block_height - inp.spent_tx.block.height >= age)
 
 
 def inputs_with_address_type(inputs, typ: address_type) -> InputIterator:
-    """Filter the inputs to include only inputs that came from an address with the given type
-    """
+    """Filter the inputs to include only inputs that came from an address with the given type"""
     return inputs.where(lambda inp: inp.address_type == typ)
 
 
@@ -748,26 +766,37 @@ InputRange.with_age_less_than = inputs_with_age_less_than
 InputRange.with_age_greater_than = inputs_with_age_greater_than
 InputRange.with_address_type = inputs_with_address_type
 
+
 def _outputAge(output):
     return output.spending_tx.map(lambda tx: tx.block_height) - output.tx.block_height
 
-def outputs_unspent(outputs, height = -1):
+
+def outputs_unspent(outputs, height=-1):
     if height == -1:
         return outputs.where(lambda output: ~output.is_spent)
     else:
         return outputs.where(lambda output: (~output.is_spent) | (output.spending_tx.block_height.or_value(0) > height))
 
+
 def outputs_spent_before_height(outputs, height):
-    return outputs.where(lambda output: output.is_spent).where(lambda output: output.spending_tx.map(lambda tx: tx.block_height).or_value(0) < height)
+    return outputs.where(lambda output: output.is_spent).where(
+        lambda output: output.spending_tx.map(lambda tx: tx.block_height).or_value(0) < height
+    )
+
 
 def outputs_spent_after_height(outputs, height):
-    return outputs.where(lambda output: output.is_spent).where(lambda output: output.spending_tx.map(lambda tx: tx.block_height).or_value(0) >= height)
+    return outputs.where(lambda output: output.is_spent).where(
+        lambda output: output.spending_tx.map(lambda tx: tx.block_height).or_value(0) >= height
+    )
+
 
 def outputs_spent_with_age_less_than(outputs, age):
     return outputs.where(lambda output: output.is_spent).where(lambda output: _outputAge(output).or_value(0) < age)
 
+
 def outputs_spent_with_age_greater_than(outputs, age):
     return outputs.where(lambda output: output.is_spent).where(lambda output: _outputAge(output).or_value(0) >= age)
+
 
 def outputs_with_address_type(outputs, typ):
     return outputs.where(lambda output: output.address_type == typ)
@@ -791,24 +820,32 @@ OutputRange.with_address_type = outputs_with_address_type
 def coinjoin_txes(txes):
     return txes.where(heuristics.is_coinjoin)
 
+
 def possible_coinjoin_txes(txes):
     return txes.where(heuristics.is_possible_coinjoin)
+
 
 def address_deanon_txes(txes):
     return txes.where(heuristics.is_address_deanon)
 
+
 def change_over_txes(txes):
     return txes.where(heuristics.is_change_over)
+
 
 def keyset_change_txes(txes):
     return txes.where(heuristics.is_keyset_change)
 
+
 old_power_of_ten_value = heuristics.change.power_of_ten_value
+
+
 def new_power_of_ten_value(digits, tx=None):
     if tx is None:
         return old_power_of_ten_value(digits)
     else:
         return old_power_of_ten_value(digits)(tx)
+
 
 heuristics.change.power_of_ten_value = new_power_of_ten_value
 heuristics.coinjoin_txes = coinjoin_txes
@@ -838,11 +875,16 @@ def get_miner(block) -> str:
     global coinbase_tag_re
     if first_miner_run:
         import json
+
         with open(loaderDirectory + "/Blockchain-Known-Pools/pools.json") as f:
             pool_data = json.load(f)
         addresses = [block._access.address_from_string(addr_string) for addr_string in pool_data["payout_addresses"]]
-        tagged_addresses = {pointer: pool_data["payout_addresses"][address] for address in addresses if address in pool_data["payout_addresses"]}
-        coinbase_tag_re = re.compile('|'.join(map(re.escape, pool_data["coinbase_tags"])))
+        tagged_addresses = {
+            pointer: pool_data["payout_addresses"][address]
+            for address in addresses
+            if address in pool_data["payout_addresses"]
+        }
+        coinbase_tag_re = re.compile("|".join(map(re.escape, pool_data["coinbase_tags"])))
         first_miner_run = False
     coinbase = block.coinbase_param.decode("utf_8", "replace")
     tag_matches = re.findall(coinbase_tag_re, coinbase)
@@ -864,7 +906,7 @@ def get_miner(block) -> str:
         "pool.mkalinin.ru": "pool.mkalinin.ru",
         "For Pierce and Paul": "Pierce and Paul",
         "50btc.com": "50btc.com",
-        "七彩神仙鱼": "F2Pool"
+        "七彩神仙鱼": "F2Pool",
     }
 
     for miner in additional_miners:

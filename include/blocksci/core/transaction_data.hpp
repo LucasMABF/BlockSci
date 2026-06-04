@@ -17,33 +17,36 @@
 #include <cstdint>
 
 namespace blocksci {
-    /** Class that brings transaction data from several files together */
-    struct BLOCKSCI_EXPORT TxData {
-        /** Raw transaction data, stored in chain/tx_data.dat */
-        const RawTransaction *rawTx;
+  /** Class that brings transaction data from several files together */
+  struct BLOCKSCI_EXPORT TxData {
+    /** Raw transaction data, stored in chain/tx_data.dat */
+    const RawTransaction *rawTx;
 
-        /** Version field of this transaction (blockchain data), stored in chain/tx_version.dat */
-        const int32_t *version;
+    /** Version field of this transaction (blockchain data), stored in chain/tx_version.dat */
+    const int32_t *version;
 
-        /** Transaction hash (256 bit), stored in chain/tx_hashes.dat */
-        const uint256 *hash;
+    /** Transaction hash (256 bit), stored in chain/tx_hashes.dat */
+    const uint256 *hash;
 
-        /** Pointer to the tx-internal output number that the first input of the transaction spends. stored in chain/input_out_num.dat */
-        const uint16_t *spentOutputNums;
+    /** Pointer to the tx-internal output number that the first input of the transaction spends. stored in
+     * chain/input_out_num.dat */
+    const uint16_t *spentOutputNums;
 
-        /** Pointer to the blockchain field <sequence number> of the transaction's first input, stored in chain/sequence.dat */
-        const uint32_t *sequenceNumbers;
+    /** Pointer to the blockchain field <sequence number> of the transaction's first input, stored in chain/sequence.dat
+     */
+    const uint32_t *sequenceNumbers;
 
-        TxData &operator++() {
-            sequenceNumbers += rawTx->inputCount;
-            spentOutputNums += rawTx->inputCount;
-            version++;
-            hash++;
-            auto currentTxSize = sizeof(RawTransaction) + static_cast<size_t>(rawTx->inputCount) * sizeof(Inout) + static_cast<size_t>(rawTx->outputCount) * sizeof(Inout);
-            rawTx = reinterpret_cast<const RawTransaction *>(reinterpret_cast<const char*>(rawTx) + currentTxSize);
-            return *this;
-        }
-    };
-}
+    TxData &operator++() {
+      sequenceNumbers += rawTx->inputCount;
+      spentOutputNums += rawTx->inputCount;
+      version++;
+      hash++;
+      auto currentTxSize = sizeof(RawTransaction) + static_cast<size_t>(rawTx->inputCount) * sizeof(Inout) +
+                           static_cast<size_t>(rawTx->outputCount) * sizeof(Inout);
+      rawTx = reinterpret_cast<const RawTransaction *>(reinterpret_cast<const char *>(rawTx) + currentTxSize);
+      return *this;
+    }
+  };
+} // namespace blocksci
 
 #endif /* transaction_data_hpp */

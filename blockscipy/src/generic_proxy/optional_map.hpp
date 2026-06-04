@@ -5,7 +5,6 @@
 //  Created by Harry Kalodner on 10/31/18.
 //
 
-
 #ifndef proxy_optional_map_hpp
 #define proxy_optional_map_hpp
 

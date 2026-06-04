@@ -10,26 +10,26 @@
 #define blocksci_core_fwd_hpp
 
 namespace blocksci {
-    struct RawBlock;
-    struct RawTransaction;
-    struct Inout;
-    struct InoutPointer;
-    
-    struct ScriptDataBase;
-    struct PubkeyData;
-    struct MultisigData;
-    struct ScriptHashData;
-    struct RawData;
-    struct NonstandardScriptData;
-    struct NonstandardSpendScriptData;
-    struct WitnessUnknownScriptData;
-    struct WitnessUnknownSpendScriptData;
+  struct RawBlock;
+  struct RawTransaction;
+  struct Inout;
+  struct InoutPointer;
 
-    struct RawAddress;
-    struct DedupAddress;
+  struct ScriptDataBase;
+  struct PubkeyData;
+  struct MultisigData;
+  struct ScriptHashData;
+  struct RawData;
+  struct NonstandardScriptData;
+  struct NonstandardSpendScriptData;
+  struct WitnessUnknownScriptData;
+  struct WitnessUnknownSpendScriptData;
 
-    class uint256;
-    class uint160;
+  struct RawAddress;
+  struct DedupAddress;
+
+  class uint256;
+  class uint160;
 } // namespace blocksci
 
 #endif /* blocksci_core_fwd_hpp */

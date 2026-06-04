@@ -7,34 +7,44 @@
 //
 
 #include "multisig_proxy_py.hpp"
+
+#include "generic_proxy.hpp"
+#include "method_tags.hpp"
 #include "multisig_py.hpp"
-#include "scripts/address_py.hpp"
-#include "proxy_apply_py.hpp"
 #include "proxy/basic.hpp"
 #include "proxy/equality.hpp"
 #include "proxy/optional.hpp"
 #include "proxy/range.hpp"
+#include "proxy_apply_py.hpp"
+#include "proxy_py.hpp"
+#include "python_fwd.hpp"
+#include "scripts/address_py.hpp"
 
 #include <blocksci/chain/block.hpp>
 #include <blocksci/cluster/cluster.hpp>
 #include <blocksci/scripts/multisig_script.hpp>
+#include <blocksci/scripts/scripts_fwd.hpp>
 
 struct AddMultisigMethods {
-    template <typename FuncApplication>
-    void operator()(FuncApplication func) {
-        func(property_tag, "required", &blocksci::script::Multisig::getRequired, "The number of signatures required for this address");
-		func(property_tag, "total", &blocksci::script::Multisig::getTotal, "The total number of keys that can sign for this address");
-		func(property_tag, "addresses", +[](blocksci::script::Multisig &address) -> RawRange<blocksci::script::MultisigPubkey> {
-            return address.pubkeyScripts();
-        }, "The list of the keys that can sign for this address");
-    }
+  template <typename FuncApplication> void operator()(FuncApplication func) {
+    func(property_tag, "required", &blocksci::script::Multisig::getRequired,
+         "The number of signatures required for this address");
+    func(property_tag, "total", &blocksci::script::Multisig::getTotal,
+         "The total number of keys that can sign for this address");
+    func(
+        property_tag, "addresses",
+        +[](blocksci::script::Multisig &address) -> RawRange<blocksci::script::MultisigPubkey> {
+          return address.pubkeyScripts();
+        },
+        "The list of the keys that can sign for this address");
+  }
 };
 
 void addMultisigProxyMethods(AllProxyClasses<blocksci::script::Multisig, ProxyAddress> &cls) {
-	cls.applyToAll(AddProxyMethods{});
-    setupRangesProxy(cls);
-    addProxyOptionalMethods(cls.optional);
+  cls.applyToAll(AddProxyMethods{});
+  setupRangesProxy(cls);
+  addProxyOptionalMethods(cls.optional);
 
-	applyMethodsToProxy(cls.base, AddMultisigMethods{});
-    addProxyEqualityMethods(cls.base);
+  applyMethodsToProxy(cls.base, AddMultisigMethods{});
+  addProxyEqualityMethods(cls.base);
 }

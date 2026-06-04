@@ -16,11 +16,10 @@
 #include <functional>
 
 namespace blocksci {
-	template <class T>
-	inline void BLOCKSCI_EXPORT hash_combine(std::size_t &seed, const T& v) {
-	    std::hash<T> hasher;
-	    seed ^= hasher(v) + 0x9e3779b9 + (seed<<6) + (seed>>2);
-	}
-}
+  template <class T> inline void BLOCKSCI_EXPORT hash_combine(std::size_t &seed, const T &v) {
+    std::hash<T> hasher;
+    seed ^= hasher(v) + 0x9e3779b9 + (seed << 6) + (seed >> 2);
+  }
+} // namespace blocksci
 
 #endif /* blocksci_core_hash_combine_hpp */

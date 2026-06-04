@@ -11,7 +11,7 @@
 
 #include <blocksci/heuristics/blockchain_heuristics.hpp>
 #include <blocksci/heuristics/change_address.hpp>
-#include <blocksci/heuristics/tx_identification.hpp>
 #include <blocksci/heuristics/taint.hpp>
+#include <blocksci/heuristics/tx_identification.hpp>
 
 #endif /* heuristics_group_header_h */

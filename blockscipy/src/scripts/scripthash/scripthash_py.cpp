@@ -7,33 +7,32 @@
 //
 
 #include "scripthash_py.hpp"
+
 #include "caster_py.hpp"
+#include "python_range.hpp"
 #include "ranges_py.hpp"
 
 #include <blocksci/scripts/scripthash_script.hpp>
+#include <blocksci/scripts/scripts_fwd.hpp>
+
+#include <pybind11/pybind11.h>
 
 using namespace blocksci;
 namespace py = pybind11;
 
 void init_scripthash(py::class_<script::ScriptHash> &cl) {
-    cl
-    .def("__repr__", &script::ScriptHash::toString)
-    .def("__str__", &script::ScriptHash::toPrettyString)
-    ;
+  cl.def("__repr__", &script::ScriptHash::toString).def("__str__", &script::ScriptHash::toPrettyString);
 }
 
 void init_witness_scripthash(py::class_<script::WitnessScriptHash> &cl) {
-    
-    cl
-    .def("__repr__", &script::WitnessScriptHash::toString)
-    .def("__str__", &script::WitnessScriptHash::toPrettyString)
-    ;
+
+  cl.def("__repr__", &script::WitnessScriptHash::toString).def("__str__", &script::WitnessScriptHash::toPrettyString);
 }
 
 void addScriptHashRangeMethods(RangeClasses<script::ScriptHash> &classes) {
-	addAllRangeMethods(classes);
+  addAllRangeMethods(classes);
 }
 
 void addWitnessScriptHashRangeMethods(RangeClasses<script::WitnessScriptHash> &classes) {
-	addAllRangeMethods(classes);
+  addAllRangeMethods(classes);
 }

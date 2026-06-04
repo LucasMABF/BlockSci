@@ -1,7 +1,3 @@
-import pytest
-import blocksci
-
-
 def chain_length(chain):
     return len(chain)
 
@@ -20,7 +16,7 @@ def chain_slice(chain):
     lengths = []
 
     for i in range(len(start_ranges)):
-        rng = chain[start_ranges[i]:end_ranges[i]]
+        rng = chain[start_ranges[i] : end_ranges[i]]
         lengths.append(len(rng))
 
 
@@ -77,9 +73,9 @@ def test_chain_size_txes_outputs(chain, benchmark):
     benchmark(size_txes_outputs, chain)
 
 
-def size_txes_outputs(chain):
+def size_blocks_outputs(chain):
     assert chain.blocks.outputs.size
 
 
 def test_chain_size_blocks_outputs(chain, benchmark):
-    benchmark(size_txes_outputs, chain)
+    benchmark(size_blocks_outputs, chain)

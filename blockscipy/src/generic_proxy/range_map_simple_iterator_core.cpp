@@ -6,12 +6,17 @@
 //
 //
 
+#include "generic_proxy.hpp"
 #include "range_map.hpp"
 #include "range_map_simple_impl.hpp"
 
 #include <blocksci/address/equiv_address.hpp>
 #include <blocksci/cluster/cluster.hpp>
 
+#include <range/v3/view/any_view.hpp>
+
+#include <pybind11/pybind11.h>
+
 void applyProxyMapFuncsCore(pybind11::class_<IteratorProxy, GenericProxy> &cl) {
-	addProxyMapFuncsMethodsCore<ranges::category::input>(cl);
+  addProxyMapFuncsMethodsCore<ranges::category::input>(cl);
 }

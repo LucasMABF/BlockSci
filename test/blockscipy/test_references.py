@@ -9,10 +9,8 @@ def test_block_references(chain):
 def test_tx_references(chain, json_data, chain_name):
     for addr_type in address_types(chain_name):
         for i in range(3):
-            tx = chain.tx_with_hash(
-                json_data["address-{}-spend-{}-tx".format(addr_type, i)]
-            )
-            height = json_data["address-{}-spend-{}-height".format(addr_type, i)]
+            tx = chain.tx_with_hash(json_data[f"address-{addr_type}-spend-{i}-tx"])
+            height = json_data[f"address-{addr_type}-spend-{i}-height"]
 
             assert chain[height] == tx.block
 
@@ -20,10 +18,8 @@ def test_tx_references(chain, json_data, chain_name):
 def test_output_references(chain, json_data, chain_name):
     for addr_type in address_types(chain_name):
         for i in range(3):
-            tx = chain.tx_with_hash(
-                json_data["address-{}-spend-{}-tx".format(addr_type, i)]
-            )
-            height = json_data["address-{}-spend-{}-height".format(addr_type, i)]
+            tx = chain.tx_with_hash(json_data[f"address-{addr_type}-spend-{i}-tx"])
+            height = json_data[f"address-{addr_type}-spend-{i}-height"]
 
             for j in range(tx.output_count):
                 assert tx == tx.outputs[j].tx
@@ -32,21 +28,18 @@ def test_output_references(chain, json_data, chain_name):
 
 def test_spending_tx_references(chain, json_data):
     for i in range(8):
-        tx = chain.tx_with_hash(json_data["peeling-chain-{}-tx".format(i)])
-        next_tx = chain.tx_with_hash(json_data["peeling-chain-{}-tx".format(i + 1)])
+        tx = chain.tx_with_hash(json_data[f"peeling-chain-{i}-tx"])
+        next_tx = chain.tx_with_hash(json_data[f"peeling-chain-{i + 1}-tx"])
 
-        assert (
-            next_tx
-            == tx.outputs[json_data["peeling-chain-{}-position".format(i)]].spending_tx
-        )
+        assert next_tx == tx.outputs[json_data[f"peeling-chain-{i}-position"]].spending_tx
         assert tx == next_tx.inputs[0].spent_tx
 
 
 def test_spent_output_references(chain, json_data):
     for i in range(8):
-        tx = chain.tx_with_hash(json_data["peeling-chain-{}-tx".format(i + 1)])
-        prev_tx = chain.tx_with_hash(json_data["peeling-chain-{}-tx".format(i)])
-        output_index = json_data["peeling-chain-{}-position".format(i)]
+        tx = chain.tx_with_hash(json_data[f"peeling-chain-{i + 1}-tx"])
+        prev_tx = chain.tx_with_hash(json_data[f"peeling-chain-{i}-tx"])
+        output_index = json_data[f"peeling-chain-{i}-position"]
 
         assert tx.inputs[0].spent_output
         assert output_index == tx.inputs[0].spent_output.index
@@ -63,13 +56,9 @@ def test_spending_input_references(chain, json_data):
 def test_address_references(chain, json_data, chain_name):
     for addr_type in address_types(chain_name):
         for i in range(2):
-            addr = chain.address_from_string(
-                json_data["address-{}-spend-{}".format(addr_type, i)]
-            )
-            tx = chain.tx_with_hash(
-                json_data["address-{}-spend-{}-tx".format(addr_type, i)]
-            )
-            height = json_data["address-{}-spend-{}-height".format(addr_type, i)]
+            addr = chain.address_from_string(json_data[f"address-{addr_type}-spend-{i}"])
+            tx = chain.tx_with_hash(json_data[f"address-{addr_type}-spend-{i}-tx"])
+            height = json_data[f"address-{addr_type}-spend-{i}-height"]
 
             for j in range(i):
                 assert tx == addr.outs.to_list()[j].tx

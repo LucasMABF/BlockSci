@@ -12,28 +12,30 @@
 #include <blocksci/core/bitcoin_uint256.hpp>
 
 #include <cstddef>
-#include <functional>
 #include <cstdint>
+#include <functional>
 #include <ostream>
 
 /** Represents a pointer to an output by tx hash and output number */
 struct RawOutputPointer {
-    blocksci::uint256 hash;
-    uint16_t outputNum;
-    
-    bool operator==(const RawOutputPointer& other) const {
-        return hash == other.hash && outputNum == other.outputNum;
-    }
-    
-    RawOutputPointer() {}
-    RawOutputPointer(const blocksci::uint256 &hash_, uint16_t outputNum_) : hash(hash_), outputNum(outputNum_) {}
+  blocksci::uint256 hash;
+  uint16_t outputNum;
+
+  bool operator==(const RawOutputPointer &other) const {
+    return hash == other.hash && outputNum == other.outputNum;
+  }
+
+  RawOutputPointer() {
+  }
+  RawOutputPointer(const blocksci::uint256 &hash_, uint16_t outputNum_) : hash(hash_), outputNum(outputNum_) {
+  }
 };
 
 namespace std {
-    template<> struct hash<RawOutputPointer> {
-        size_t operator()(const RawOutputPointer &pointer) const;
-    };
-}
+  template <> struct hash<RawOutputPointer> {
+    size_t operator()(const RawOutputPointer &pointer) const;
+  };
+} // namespace std
 
 std::ostream &operator<<(std::ostream &os, RawOutputPointer const &pointer);
 
