@@ -19,6 +19,8 @@
 #include <blocksci/cluster/cluster.hpp>
 #include <blocksci/address/equiv_address.hpp>
 
+#include <chrono>
+#include <cstdint>
 #include <date/date.h>
 
 struct AddTimeMethods {

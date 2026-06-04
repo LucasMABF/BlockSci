@@ -18,7 +18,12 @@
 
 #include <range/v3/view/any_view.hpp>
 
+#include <cstddef>
+#include <cstdint>
+#include <functional>
+#include <string>
 #include <unordered_set>
+#include <vector>
 
 namespace blocksci {
     class DataAccess;

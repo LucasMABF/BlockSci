@@ -7,8 +7,7 @@ This project ships a Nix flake that provides:
 - A development shell (`devShells.default`) that reproduces the upstream
   build manual with all native dependencies preinstalled, no system pollution.
 
-The flake is pinned to `nixpkgs-19.03`, the last nixpkgs release on which
-BlockSci builds unpatched. Supported systems: `x86_64-linux`.
+The flake is pinned to `nixpkgs-25.11`. Supported systems: `x86_64-linux`.
 
 ## Build libblocksci and the command-line tools
 
@@ -47,8 +46,10 @@ cd ..
 3. Build the Python bindings:
 
 ```
-pip install --prefix=$LOCAL_PIP -e blockscipy
+pip install --no-build-isolation --prefix=$LOCAL_PIP ./blockscipy
 ```
 
-`LOCAL_PIP` and `CMAKE_PREFIX_PATH` are exported by the shellHook so the
-two halves find each other.
+`LOCAL_PIP`, `CMAKE_PREFIX_PATH` and `LD_LIBRARY_PATH` are exported by the
+shellHook so the two halves find each other at build and run time.
+`--no-build-isolation` makes pip use the `scikit-build-core` backend from the
+shell instead of fetching it from PyPI.

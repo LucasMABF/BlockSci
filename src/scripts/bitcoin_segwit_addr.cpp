@@ -25,6 +25,12 @@
 
 #include <internal/data_configuration.hpp>
 
+#include <cstddef>
+#include <cstdint>
+#include <string>
+#include <utility>
+#include <vector>
+
 namespace {
 
 typedef std::vector<uint8_t> segwit_data;

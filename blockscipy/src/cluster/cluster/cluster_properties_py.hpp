@@ -14,6 +14,7 @@
 
 #include <pybind11/operators.h>
 
+#include <cstdint>
 
 struct AddClusterMethods {
     template <typename FuncApplication>

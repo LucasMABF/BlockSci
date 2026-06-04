@@ -16,6 +16,11 @@
 
 #include <blocksci/core/dedup_address.hpp>
 
+#include <cstdint>
+#include <type_traits>
+#include <utility>
+#include <vector>
+
 class AddressDB;
 
 template<blocksci::DedupAddressType::Enum type>

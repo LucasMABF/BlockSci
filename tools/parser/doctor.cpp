@@ -11,6 +11,8 @@
 #include <sys/statvfs.h>
 
 #include <iostream>
+#include <sstream>
+#include <string>
 
 void printInfo(std::string str) {
     std::cout << str << std::endl;

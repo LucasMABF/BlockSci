@@ -10,8 +10,13 @@
 
 #include <google/dense_hash_map>
 
+#include <cstdint>
+#include <stdexcept>
 #include <string>
 #include <fstream>
+#include <functional>
+#include <type_traits>
+#include <utility>
 
 template<typename Key, typename Value>
 class SerializableMap {

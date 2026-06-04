@@ -22,6 +22,11 @@
 #include <range/v3/view/group_by.hpp>
 #include <range/v3/view/transform.hpp>
 
+#include <cstdint>
+#include <memory>
+#include <string>
+#include <utility>
+
 namespace blocksci {
     
     Blockchain::Blockchain(std::unique_ptr<DataAccess> access_) : BlockRange{{0, access_->getChain().blockCount()}, access_.get()}, access(std::move(access_)) {}

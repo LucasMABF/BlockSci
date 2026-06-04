@@ -17,6 +17,10 @@
 #include <range/v3/view/empty.hpp>
 #include <range/v3/view/single.hpp>
 
+#include <any>
+#include <functional>
+#include <utility>
+
 template<typename T>
 struct SequenceProxy {
 	virtual std::function<RawIterator<T>(std::any &)> getIteratorFunc() const = 0;

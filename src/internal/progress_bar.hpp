@@ -11,6 +11,7 @@
 #include <cmath>
 #include <cstdint>
 #include <iostream>
+#include <utility>
 
 namespace blocksci {
     /** Helper class to output the progress of an ongoing action, eg. the parser process. */

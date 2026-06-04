@@ -10,7 +10,9 @@
 
 #include "address_info.hpp"
 
+#include <cstddef>
 #include <iostream>
+#include <string>
 
 namespace blocksci {
     constexpr char AddressInfo<AddressType::PUBKEY>::name[];

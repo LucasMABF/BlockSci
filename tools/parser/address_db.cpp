@@ -15,6 +15,12 @@
 
 #include <internal/address_info.hpp>
 
+#include <cstdint>
+#include <functional>
+#include <set>
+#include <unordered_set>
+#include <utility>
+
 using blocksci::RawAddress;
 using blocksci::DedupAddress;
 using blocksci::InoutPointer;

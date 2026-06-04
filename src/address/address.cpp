@@ -28,8 +28,14 @@
 #include <range/v3/view/unique.hpp>
 #include <range/v3/algorithm/min.hpp>
 
+#include <cassert>
+#include <cstdint>
+#include <functional>
 #include <iostream>
 #include <sstream>
+#include <string>
+#include <utility>
+#include <vector>
 
 namespace blocksci {
     

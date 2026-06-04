@@ -25,7 +25,12 @@
 #include <range/v3/view/iota.hpp>
 #include <range/v3/view/zip_with.hpp>
 
+#include <chrono>
+#include <cstdint>
+#include <ostream>
 #include <sstream>
+#include <string>
+#include <vector>
 
 namespace {
     uint32_t getTxIndex(const blocksci::uint256 &hash, blocksci::HashIndex &index) {

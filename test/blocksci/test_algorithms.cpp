@@ -6,7 +6,13 @@
 //
 
 #include "unit_test.h"
+
+#include <range/v3/range/conversion.hpp>
+
+#include <cstdint>
+#include <functional>
 #include <iostream>
+#include <vector>
 
 namespace blocksci {
 
@@ -101,7 +107,7 @@ TEST_F(AlgorithmsTest, TxesFromChain) {
     }
     EXPECT_TRUE(transactions.size() > 0);
 
-    auto algo_txes = txes(chain) | ranges::to_vector;
+    auto algo_txes = txes(chain) | ranges::to<std::vector>();
 
     ASSERT_EQ(transactions, algo_txes);
 }
@@ -114,7 +120,7 @@ TEST_F(AlgorithmsTest, TxesFromBlock) {
     }
     EXPECT_TRUE(transactions.size() > 0);
 
-    auto algo_txes = txes(block) | ranges::to_vector;
+    auto algo_txes = txes(block) | ranges::to<std::vector>();
 
     ASSERT_EQ(transactions, algo_txes);
 }
@@ -129,7 +135,7 @@ TEST_F(AlgorithmsTest, InputsFromBlock) {
     }
     EXPECT_TRUE(ins.size() > 0);
 
-    auto algo_inputs = inputs(block) | ranges::to_vector;
+    auto algo_inputs = inputs(block) | ranges::to<std::vector>();
 
     ASSERT_EQ(ins, algo_inputs);
 }
@@ -142,7 +148,7 @@ TEST_F(AlgorithmsTest, InputsFromTransaction) {
     }
     EXPECT_TRUE(ins.size() > 0);
 
-    auto algo_inputs = inputs(tx) | ranges::to_vector;
+    auto algo_inputs = inputs(tx) | ranges::to<std::vector>();
 
     ASSERT_EQ(ins, algo_inputs);
 }
@@ -155,7 +161,7 @@ TEST_F(AlgorithmsTest, InputsFromInputRange) {
     }
     EXPECT_TRUE(ins.size() > 0);
 
-    auto algo_inputs = inputs(tx.inputs()) | ranges::to_vector;
+    auto algo_inputs = inputs(tx.inputs()) | ranges::to<std::vector>();
 
     ASSERT_EQ(ins, algo_inputs);
 }
@@ -170,7 +176,7 @@ TEST_F(AlgorithmsTest, OutputsFromBlock) {
     }
     EXPECT_TRUE(outs.size() > 0);
 
-    auto algo_outputs = outputs(block) | ranges::to_vector;
+    auto algo_outputs = outputs(block) | ranges::to<std::vector>();
 
     ASSERT_EQ(outs, algo_outputs);
 }
@@ -183,7 +189,7 @@ TEST_F(AlgorithmsTest, OutputsFromTransaction) {
     }
     EXPECT_TRUE(outs.size() > 0);
 
-    auto algo_outputs = outputs(tx) | ranges::to_vector;
+    auto algo_outputs = outputs(tx) | ranges::to<std::vector>();
 
     ASSERT_EQ(outs, algo_outputs);
 }
@@ -196,7 +202,7 @@ TEST_F(AlgorithmsTest, OutputsFromOutputRange) {
     }
     EXPECT_TRUE(outs.size() > 0);
 
-    auto algo_outputs = outputs(tx.outputs()) | ranges::to_vector;
+    auto algo_outputs = outputs(tx.outputs()) | ranges::to<std::vector>();
 
     ASSERT_EQ(outs, algo_outputs);
 }
@@ -208,7 +214,7 @@ TEST_F(AlgorithmsTest, OutputsUnspent) {
 
     EXPECT_TRUE(outs.size() > 0);
 
-    auto algo_outputs = outputsUnspent(chain) | ranges::to_vector;
+    auto algo_outputs = outputsUnspent(chain) | ranges::to<std::vector>();
 
     ASSERT_EQ(outs, algo_outputs);
 }
@@ -220,7 +226,7 @@ TEST_F(AlgorithmsTest, OutputsSpentBeforeHeight) {
 
     EXPECT_TRUE(outs.size() > 0);
 
-    auto algo_outputs = outputsSpentBeforeHeight(chain, 160) | ranges::to_vector;
+    auto algo_outputs = outputsSpentBeforeHeight(chain, 160) | ranges::to<std::vector>();
 
     ASSERT_EQ(outs.size(), algo_outputs.size());
     ASSERT_EQ(outs, algo_outputs);
@@ -232,7 +238,7 @@ TEST_F(AlgorithmsTest, OutputsSpentAfterHeight) {
 
     EXPECT_TRUE(outs.size() > 0);
 
-    auto algo_outputs = outputsSpentAfterHeight(chain, 160) | ranges::to_vector;
+    auto algo_outputs = outputsSpentAfterHeight(chain, 160) | ranges::to<std::vector>();
 
     ASSERT_EQ(outs.size(), algo_outputs.size());
     ASSERT_EQ(outs, algo_outputs);
@@ -244,7 +250,7 @@ TEST_F(AlgorithmsTest, InputsCreatedBeforeHeight) {
 
     EXPECT_TRUE(ins.size() > 0);
 
-    auto algo_inputs = inputsCreatedBeforeHeight(chain, 160) | ranges::to_vector;
+    auto algo_inputs = inputsCreatedBeforeHeight(chain, 160) | ranges::to<std::vector>();
 
     ASSERT_EQ(ins.size(), algo_inputs.size());
     ASSERT_EQ(ins, algo_inputs);
@@ -256,7 +262,7 @@ TEST_F(AlgorithmsTest, InputsCreatedAfterHeight) {
 
     EXPECT_TRUE(ins.size() > 0);
 
-    auto algo_inputs = inputsCreatedAfterHeight(chain, 160) | ranges::to_vector;
+    auto algo_inputs = inputsCreatedAfterHeight(chain, 160) | ranges::to<std::vector>();
 
     ASSERT_EQ(ins.size(), algo_inputs.size());
     ASSERT_EQ(ins, algo_inputs);
@@ -268,7 +274,7 @@ TEST_F(AlgorithmsTest, OutputsSpentWithinRelativeHeight) {
 
     EXPECT_TRUE(outs.size() > 0);
 
-    auto algo_outputs = outputsSpentWithinRelativeHeight(chain, 10) | ranges::to_vector;
+    auto algo_outputs = outputsSpentWithinRelativeHeight(chain, 10) | ranges::to<std::vector>();
 
     ASSERT_EQ(outs.size(), algo_outputs.size());
     ASSERT_EQ(outs, algo_outputs);
@@ -280,7 +286,7 @@ TEST_F(AlgorithmsTest, OutputsSpentOutsideRelativeHeight) {
 
     EXPECT_TRUE(outs.size() > 0);
 
-    auto algo_outputs = outputsSpentOutsideRelativeHeight(chain, 10) | ranges::to_vector;
+    auto algo_outputs = outputsSpentOutsideRelativeHeight(chain, 10) | ranges::to<std::vector>();
 
     ASSERT_EQ(outs.size(), algo_outputs.size());
     ASSERT_EQ(outs, algo_outputs);
@@ -292,7 +298,7 @@ TEST_F(AlgorithmsTest, InputsCreatedWithinRelativeHeight) {
 
     EXPECT_TRUE(ins.size() > 0);
 
-    auto algo_inputs = inputsCreatedWithinRelativeHeight(chain, 10) | ranges::to_vector;
+    auto algo_inputs = inputsCreatedWithinRelativeHeight(chain, 10) | ranges::to<std::vector>();
 
     ASSERT_EQ(ins.size(), algo_inputs.size());
     ASSERT_EQ(ins, algo_inputs);
@@ -304,7 +310,7 @@ TEST_F(AlgorithmsTest, InputsCreatedOutsideRelativeHeight) {
 
     EXPECT_TRUE(ins.size() > 0);
 
-    auto algo_inputs = inputsCreatedOutsideRelativeHeight(chain, 10) | ranges::to_vector;
+    auto algo_inputs = inputsCreatedOutsideRelativeHeight(chain, 10) | ranges::to<std::vector>();
 
     ASSERT_EQ(ins.size(), algo_inputs.size());
     ASSERT_EQ(ins, algo_inputs);
@@ -316,7 +322,7 @@ TEST_F(AlgorithmsTest, OutputsOfType) {
 
     EXPECT_TRUE(outs.size() > 0);
 
-    auto algo_outputs = outputsOfType(chain, AddressType::PUBKEYHASH) | ranges::to_vector;
+    auto algo_outputs = outputsOfType(chain, AddressType::PUBKEYHASH) | ranges::to<std::vector>();
 
     ASSERT_EQ(outs.size(), algo_outputs.size());
     ASSERT_EQ(outs, algo_outputs);
@@ -328,7 +334,7 @@ TEST_F(AlgorithmsTest, InputsOfType) {
 
     EXPECT_TRUE(ins.size() > 0);
 
-    auto algo_inputs = inputsOfType(chain, AddressType::SCRIPTHASH) | ranges::to_vector;
+    auto algo_inputs = inputsOfType(chain, AddressType::SCRIPTHASH) | ranges::to<std::vector>();
 
     ASSERT_EQ(ins.size(), algo_inputs.size());
     ASSERT_EQ(ins, algo_inputs);
@@ -414,7 +420,7 @@ TEST_F(AlgorithmsTest, FeeLessThan) {
     }
     EXPECT_TRUE(txes.size() > 0);
 
-    auto algo_txes = feeLessThan(chain, 1) | ranges::to_vector;
+    auto algo_txes = feeLessThan(chain, 1) | ranges::to<std::vector>();
 
     ASSERT_EQ(txes.size(), algo_txes.size());
     ASSERT_EQ(txes, algo_txes);
@@ -431,7 +437,7 @@ TEST_F(AlgorithmsTest, FeeGreaterThan) {
     }
     EXPECT_TRUE(txes.size() > 0);
 
-    auto algo_txes = feeGreaterThan(chain, 1) | ranges::to_vector;
+    auto algo_txes = feeGreaterThan(chain, 1) | ranges::to<std::vector>();
 
     ASSERT_EQ(txes.size(), algo_txes.size());
     ASSERT_EQ(txes, algo_txes);
@@ -446,7 +452,7 @@ TEST_F(AlgorithmsTest, Fees) {
     }
     EXPECT_TRUE(txFees.size() > 0);
 
-    auto algo_fees = fees(chain) | ranges::to_vector;
+    auto algo_fees = fees(chain) | ranges::to<std::vector>();
 
     ASSERT_EQ(txFees.size(), algo_fees.size());
     ASSERT_EQ(txFees, algo_fees);

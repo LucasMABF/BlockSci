@@ -8,9 +8,13 @@
 
 #include <blocksci/blocksci_export.h>
 
+#include <algorithm>
 #include <cassert>
+#include <cstddef>
+#include <cstdint>
 #include <cstring>
 #include <functional>
+#include <iterator>
 #include <string>
 
 namespace blocksci {

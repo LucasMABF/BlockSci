@@ -14,7 +14,12 @@
 #include <blocksci/core/raw_address.hpp>
 #include <blocksci/scripts/bitcoin_pubkey.hpp>
 
+#include <algorithm>
 #include <array>
+#include <cstddef>
+#include <cstdint>
+#include <functional>
+#include <initializer_list>
 #include <limits>
 #include <string>
 #include <vector>

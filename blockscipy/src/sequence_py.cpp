@@ -12,6 +12,11 @@
 #include "blocksci_type.hpp"
 #include "blocksci_iterator_type.hpp"
 
+#include <any>
+#include <unordered_map>
+#include <utility>
+#include <vector>
+
 void addCommonRangeMethods(pybind11::class_<GenericRange, GenericIterator> &cl) {
     cl
     .def("__bool__", [](GenericRange &range) {

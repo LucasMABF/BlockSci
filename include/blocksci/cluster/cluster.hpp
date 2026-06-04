@@ -19,7 +19,11 @@
 
 #include <range/v3/range_for.hpp>
 
+#include <cstddef>
+#include <cstdint>
+#include <string>
 #include <unordered_map>
+#include <utility>
 #include <vector>
 
 namespace blocksci {

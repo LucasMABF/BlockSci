@@ -14,6 +14,8 @@
 
 #include <range/v3/range/concepts.hpp>
 
+#include <cstdint>
+
 namespace blocksci {
     class ChainAccess;
     class DataAccess;
@@ -105,5 +107,9 @@ namespace blocksci {
     CPP_assert(ranges::random_access_range<OutputRange>);
     CPP_assert(ranges::sized_range<OutputRange>);
 }
+
+namespace ranges {
+    template <> inline constexpr bool enable_view<blocksci::OutputRange> = true;
+} // namespace ranges
 
 #endif /* blocksci_output_range_hpp */

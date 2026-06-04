@@ -15,6 +15,10 @@
 #include <range/v3/view/empty.hpp>
 #include <range/v3/view/single.hpp>
 
+#include <any>
+#include <functional>
+#include <string>
+
 template <typename To>
 std::string proxyName() {
     return typenameLookup().getName<To>() + "Proxy";

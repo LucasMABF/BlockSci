@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.8.2)
+cmake_minimum_required(VERSION 3.15...3.31)
 project(blockscipy)
 
 set (CMAKE_CXX_STANDARD 17)
@@ -47,4 +47,4 @@ target_link_libraries(
 
 target_include_directories (_blocksci PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/src)
 
-get_property(PYBIND11_PACKAGE_LOCATION GLOBAL PROPERTY pybind11_package_location)
+install(TARGETS _blocksci DESTINATION blocksci)

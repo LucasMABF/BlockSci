@@ -9,9 +9,13 @@
 #include <blocksci/chain/blockchain.hpp>
 
 #include <range/v3/action/push_back.hpp>
+#include <range/v3/range/conversion.hpp>
 #include <range/v3/view/filter.hpp>
 
 #include <algorithm>
+#include <cstdint>
+#include <functional>
+#include <vector>
 
 namespace blocksci {
     
@@ -51,7 +55,7 @@ namespace blocksci {
     
     std::vector<Block> BlockRange::filter(std::function<bool(const Block &block)> testFunc)  {
         auto mapFunc = [&testFunc](const BlockRange &segment) -> std::vector<Block> {
-            return segment | ranges::views::filter(testFunc) | ranges::to_vector;
+            return segment | ranges::views::filter(testFunc) | ranges::to<std::vector>();
         };
         
         auto reduceFunc = [] (std::vector<Block> &vec1, std::vector<Block> &vec2) -> std::vector<Block> & {
@@ -67,7 +71,7 @@ namespace blocksci {
         auto mapFunc = [&testFunc](const BlockRange &segment) -> std::vector<Transaction> {
             std::vector<Transaction> txes;
             for (auto block : segment) {
-                txes |= ranges::action::push_back(block | ranges::views::filter(testFunc));
+                txes |= ranges::actions::push_back(block | ranges::views::filter(testFunc));
             }
             return txes;
         };

@@ -13,6 +13,7 @@
 #include <blocksci/chain/block.hpp>
 
 #include <chrono>
+#include <cstdint>
 
 using namespace blocksci;
 

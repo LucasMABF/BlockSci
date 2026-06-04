@@ -13,6 +13,7 @@
 #include <blocksci/chain/chain_fwd.hpp>
 
 #include <cstdint>
+#include <utility>
 #include <vector>
 
 namespace blocksci { namespace heuristics {

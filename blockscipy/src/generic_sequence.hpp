@@ -11,6 +11,7 @@
 #include "python_fwd.hpp"
 
 #include <any>
+#include <cstdint>
 
 template <typename T>
 struct Iterator;

@@ -14,6 +14,11 @@
 
 #include <range/v3/view/single.hpp>
 
+#include <any>
+#include <functional>
+#include <utility>
+#include <type_traits>
+
 std::function<std::any(std::any &)> IteratorProxy::getGenericAny() const {
 	auto generic = getGenericIterator();
 	return [generic](std::any &val) -> std::any {

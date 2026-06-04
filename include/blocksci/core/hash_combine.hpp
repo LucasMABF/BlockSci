@@ -11,6 +11,7 @@
 
 #include <blocksci/blocksci_export.h>
 
+#include <cstddef>
 #include <cstdint>
 #include <functional>
 

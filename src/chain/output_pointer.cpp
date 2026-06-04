@@ -17,11 +17,16 @@
 
 #include <range/v3/action/sort.hpp>
 #include <range/v3/action/unique.hpp>
+#include <range/v3/range/conversion.hpp>
 #include <range/v3/view/filter.hpp>
 #include <range/v3/view/transform.hpp>
 
+#include <cstdint>
+#include <ostream>
 #include <sstream>
+#include <string>
 #include <unordered_set>
+#include <vector>
 
 namespace blocksci {
     
@@ -45,7 +50,7 @@ namespace blocksci {
         }
         return allPointers
         | ranges::views::transform([&access](const InputPointer &pointer) { return Input(pointer, access); })
-        | ranges::to_vector;
+        | ranges::to<std::vector>();
     }
     
     std::vector<Transaction> getTransactions(const std::vector<OutputPointer> &pointers, DataAccess &access) {
@@ -62,13 +67,13 @@ namespace blocksci {
     }
     
     std::vector<Transaction> getOutputTransactions(const std::vector<OutputPointer> &pointers, DataAccess &access) {
-        auto txNums = pointers | ranges::views::transform([](const OutputPointer &pointer) { return pointer.txNum; }) | ranges::to_vector;
+        auto txNums = pointers | ranges::views::transform([](const OutputPointer &pointer) { return pointer.txNum; }) | ranges::to<std::vector>();
         txNums |= ranges::action::sort | ranges::action::unique;
-        return txNums | ranges::views::transform([&access](uint32_t txNum) { return Transaction(txNum, access.getChain().getBlockHeight(txNum), access); }) | ranges::to_vector;
+        return txNums | ranges::views::transform([&access](uint32_t txNum) { return Transaction(txNum, access.getChain().getBlockHeight(txNum), access); }) | ranges::to<std::vector>();
     }
     
     std::vector<Transaction> getInputTransactions(const std::vector<OutputPointer> &pointers, DataAccess &access) {
-        auto txes = pointers | ranges::views::transform([&access](const OutputPointer &pointer) { return Output(pointer, access).getSpendingTx(); }) | flatMapOptionals() | ranges::to_vector;
+        auto txes = pointers | ranges::views::transform([&access](const OutputPointer &pointer) { return Output(pointer, access).getSpendingTx(); }) | flatMapOptionals() | ranges::to<std::vector>();
         txes |= ranges::action::sort | ranges::action::unique;
         return txes;
     }

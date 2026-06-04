@@ -16,6 +16,10 @@
 #include <range/v3/range_for.hpp>
 #include <range/v3/view/filter.hpp>
 
+#include <algorithm>
+#include <cstdint>
+#include <initializer_list>
+#include <limits>
 #include <unordered_set>
 #include <cmath>
 

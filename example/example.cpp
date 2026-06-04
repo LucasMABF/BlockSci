@@ -17,6 +17,7 @@
 
 #include <range/v3/all.hpp>
 
+#include <cstdint>
 #include <numeric>
 #include <chrono>
 #include <unordered_map>

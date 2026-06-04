@@ -13,6 +13,8 @@
 #include <range/v3/view/subrange.hpp>
 
 #include <cassert>
+#include <cstdint>
+#include <cstring>
 #include <limits>
 #include <stdexcept>
 #include <string>

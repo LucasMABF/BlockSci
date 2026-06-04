@@ -14,6 +14,8 @@
 
 #include <stdexcept>
 #include <sstream>
+#include <string>
+#include <typeinfo>
 
 using namespace blocksci;
 

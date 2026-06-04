@@ -14,7 +14,15 @@
 
 #include <secp256k1.h>
 
+#include <algorithm>
+#include <cassert>
+#include <cstddef>
+#include <cstdint>
 #include <iostream>
+#include <iterator>
+#include <memory>
+#include <utility>
+#include <vector>
 
 struct ScriptInputGenerator {
     const InputView &inputView;

@@ -16,6 +16,10 @@
 
 #include <range/v3/range_for.hpp>
 
+#include <cstddef>
+#include <cstdint>
+#include <functional>
+#include <string>
 #include <vector>
 
 namespace blocksci {

@@ -12,6 +12,10 @@
 #include "proxy.hpp"
 #include "proxy_type_check.hpp"
 
+#include <any>
+#include <functional>
+#include <utility>
+
 template<typename Class>
 void addProxyBooleanMethods(Class &cl) {
 	using P = typename Class::type;

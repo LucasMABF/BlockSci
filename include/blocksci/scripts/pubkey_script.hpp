@@ -13,6 +13,10 @@
 
 #include <blocksci/blocksci_export.h>
 
+#include <cstddef>
+#include <cstdint>
+#include <string>
+
 namespace blocksci {
     template <>
     class BLOCKSCI_EXPORT ScriptAddress<AddressType::PUBKEY> : public PubkeyAddressBase {

@@ -8,7 +8,9 @@
 
 #include <blocksci/chain/input_pointer.hpp>
 
+#include <ostream>
 #include <sstream>
+#include <string>
 
 namespace blocksci {
     std::string InputPointer::toString() const {

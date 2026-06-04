@@ -14,7 +14,9 @@
 
 #include <range/v3/view/transform.hpp>
 
+#include <cstdint>
 #include <sstream>
+#include <string>
 
 namespace blocksci {
     ScriptAddress<AddressType::MULTISIG>::ScriptAddress(uint32_t addressNum_, DataAccess &access_) : ScriptAddress(addressNum_, access_.getScripts().getScriptData<dedupType(addressType)>(addressNum_), access_) {}

@@ -16,6 +16,13 @@
 #include <blocksci/scripts/script_range.hpp>
 #include <blocksci/cluster/cluster.hpp>
 
+#include <cstddef>
+#include <cstdint>
+#include <stdexcept>
+#include <string>
+#include <utility>
+#include <vector>
+
 namespace py = pybind11;
 
 using namespace blocksci;

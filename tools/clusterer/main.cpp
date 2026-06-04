@@ -13,6 +13,7 @@
 #include <clipp.h>
 
 #include <iostream>
+#include <string>
 
 int main(int argc, char * argv[]) {
     std::string configLocation;

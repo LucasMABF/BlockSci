@@ -15,6 +15,9 @@
 #include <range/v3/algorithm/min.hpp>
 #include <range/v3/numeric/accumulate.hpp>
 
+#include <cstdint>
+#include <utility>
+
 template<typename T>
 void addProxyArithRangeMethods(pybind11::class_<SequenceProxy<T>> &cl) {
 	cl

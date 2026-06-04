@@ -13,7 +13,11 @@
 
 #include <wjfilesystem/path.h>
 
+#include <array>
+#include <cstddef>
+#include <cstdint>
 #include <fstream>
+#include <string>
 #include <vector>
 
 struct BloomStore {

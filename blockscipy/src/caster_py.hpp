@@ -17,6 +17,8 @@
 #include <range/v3/utility/optional.hpp>
 #include <mpark/variant.hpp>
 
+#include <utility>
+
 namespace pybind11 { namespace detail {
     // Specifies the function used to visit the variant -- `apply_visitor` instead of `visit`
     template <>

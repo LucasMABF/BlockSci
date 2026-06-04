@@ -12,6 +12,10 @@
 
 #include <range/v3/range/concepts.hpp>
 
+#include <cstdint>
+#include <initializer_list>
+#include <limits>
+
 namespace blocksci {
     
     void TransactionRange::iterator::resetTx() {

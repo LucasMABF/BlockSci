@@ -14,6 +14,8 @@
 
 #include <rocksdb/db.h>
 
+#include <memory>
+#include <utility>
 #include <vector>
 
 namespace rocksdb {

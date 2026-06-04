@@ -19,6 +19,8 @@
 #include <range/v3/view/filter.hpp>
 #include <range/v3/view/transform.hpp>
 
+#include <utility>
+
 namespace {
 	constexpr auto isOptional = [](const auto &optional) { return static_cast<bool>(optional); };
 	constexpr auto derefOptional = [](const auto &optional) { return *optional; };

@@ -12,9 +12,15 @@
 #include <blocksci/blocksci_export.h>
 #include <blocksci/chain/block.hpp>
 
+#include <cstdint>
+#include <functional>
+#include <iterator>
 #include <map>
+#include <thread>
 #include <type_traits>
 #include <future>
+#include <utility>
+#include <vector>
 
 namespace blocksci {
     struct DataConfiguration;
@@ -226,5 +232,8 @@ namespace blocksci {
     CPP_assert(ranges::sized_range<BlockRange>);
 } // namespace blocksci
 
+namespace ranges {
+    template <> inline constexpr bool enable_view<blocksci::BlockRange> = true;
+} // namespace ranges
 
 #endif /* block_range_hpp */

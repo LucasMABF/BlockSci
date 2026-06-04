@@ -10,6 +10,11 @@
 
 #include <wjfilesystem/path.h>
 
+#include <cstddef>
+#include <sstream>
+#include <stdexcept>
+#include <string>
+
 void UTXOAddressState::addOutput(const AnySpendData &spendData, const blocksci::InoutPointer &pointer) {
     mpark::visit([&](const auto &spendData) { this->addOutput(spendData, pointer); }, spendData.wrapped);
 }

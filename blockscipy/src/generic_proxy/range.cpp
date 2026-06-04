@@ -16,6 +16,10 @@
 #include <range/v3/algorithm/any_of.hpp>
 #include <range/v3/algorithm/all_of.hpp>
 
+#include <cstdint>
+#include <utility>
+#include <vector>
+
 void applyProxyIteratorFuncs(pybind11::class_<IteratorProxy, GenericProxy> &cl, pybind11::module &m) {
 	applyProxyMapFuncsCore(cl);
 	applyProxyMapFuncsScripts(cl);

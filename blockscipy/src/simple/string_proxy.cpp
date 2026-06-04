@@ -17,6 +17,8 @@
 #include <blocksci/cluster/cluster.hpp>
 #include <blocksci/address/equiv_address.hpp>
 
+#include <string>
+
 void addStringProxyMethods(AllProxyClasses<std::string> &cls) {
 	cls.applyToAll(AddProxyMethods{});
 	addProxyEqualityMethods(cls.base);

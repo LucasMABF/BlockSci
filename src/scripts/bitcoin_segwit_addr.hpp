@@ -19,8 +19,9 @@
  * THE SOFTWARE.
  */
 
-#include <stdint.h>
+#include <cstdint>
 #include <string>
+#include <utility>
 #include <vector>
 
 namespace blocksci {

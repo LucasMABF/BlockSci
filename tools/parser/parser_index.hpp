@@ -22,8 +22,12 @@
 
 #include <wjfilesystem/path.h>
 
+#include <cstddef>
+#include <cstdint>
 #include <iostream>
 #include <fstream>
+#include <string>
+#include <type_traits>
 
 template <typename T, blocksci::DedupAddressType::Enum type>
 struct ParserIndexScriptInfo;

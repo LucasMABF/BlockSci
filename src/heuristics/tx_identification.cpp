@@ -14,8 +14,13 @@
 #include <range/v3/range_for.hpp>
 
 #include <algorithm>
+#include <cstddef>
+#include <cstdint>
+#include <functional>
+#include <iterator>
 #include <unordered_set>
 #include <unordered_map>
+#include <vector>
 
 namespace blocksci {
 namespace heuristics {

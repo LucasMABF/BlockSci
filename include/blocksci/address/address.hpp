@@ -20,7 +20,11 @@
 #include <range/v3/view/any_view.hpp>
 #include <range/v3/utility/optional.hpp>
 
+#include <cstddef>
+#include <cstdint>
 #include <functional>
+#include <string>
+#include <tuple>
 #include <unordered_set>
 #include <vector>
 

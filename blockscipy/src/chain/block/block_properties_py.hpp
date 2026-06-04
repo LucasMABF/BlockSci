@@ -16,6 +16,8 @@
 #include <pybind11/chrono.h>
 #include <pybind11/pytypes.h>
 
+#include <cstdint>
+
 struct AddBlockMethods {
     template <typename FuncApplication>
     void operator()(FuncApplication func) {

@@ -13,8 +13,11 @@
 #include <blocksci/address/address_fwd.hpp>
 #include <blocksci/chain/block_range.hpp>
 
+#include <cstdint>
 #include <map>
+#include <memory>
 #include <type_traits>
+#include <string>
 #include <future>
 
 namespace blocksci {
@@ -46,5 +49,9 @@ namespace blocksci {
         
 } // namespace blocksci
 
+
+namespace ranges {
+    template <> inline constexpr bool enable_view<blocksci::Blockchain> = true;
+} // namespace ranges
 
 #endif /* blockchain_hpp */

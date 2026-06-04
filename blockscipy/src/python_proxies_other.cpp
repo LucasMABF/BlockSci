@@ -14,6 +14,10 @@
 
 #include <blocksci/chain/block.hpp>
 
+#include <chrono>
+#include <cstdint>
+#include <string>
+
 namespace py = pybind11;
 using namespace blocksci;
 

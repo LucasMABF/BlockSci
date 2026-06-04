@@ -18,7 +18,13 @@
 #include <internal/address_info.hpp>
 #include <internal/hash_index.hpp>
 
+#include <cstddef>
+#include <cstdint>
+#include <functional>
 #include <tuple>
+#include <type_traits>
+#include <utility>
+#include <vector>
 
 namespace blocksci {
     class uint256;

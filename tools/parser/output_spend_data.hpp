@@ -16,6 +16,9 @@
 
 #include <mpark/variant.hpp>
 
+#include <array>
+#include <cstdint>
+
 namespace blocksci {
     class ScriptAccess;
 }

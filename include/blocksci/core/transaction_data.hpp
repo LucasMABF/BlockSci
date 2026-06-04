@@ -13,6 +13,7 @@
 #include <blocksci/core/bitcoin_uint256.hpp>
 #include <blocksci/core/raw_transaction.hpp>
 
+#include <cstddef>
 #include <cstdint>
 
 namespace blocksci {

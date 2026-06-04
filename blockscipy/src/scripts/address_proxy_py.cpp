@@ -20,6 +20,9 @@
 #include <blocksci/chain/block.hpp>
 #include <blocksci/cluster/cluster.hpp>
 
+#include <cstddef>
+#include <cstdint>
+
 using namespace blocksci;
 
 template <blocksci::AddressType::Enum type>

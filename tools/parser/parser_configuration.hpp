@@ -17,7 +17,11 @@
 
 #include <wjfilesystem/path.h>
 
+#include <cstdint>
 #include <functional>
+#include <string>
+#include <unordered_map>
+#include <utility>
 
 struct ParserConfigurationBase {
     blocksci::DataConfiguration dataConfig;

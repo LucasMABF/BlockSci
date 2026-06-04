@@ -29,9 +29,24 @@
 
 #include <range/v3/view/iota.hpp>
 #include <range/v3/range_for.hpp>
+
+#include <algorithm>
+#include <cstddef>
+#include <cstdint>
 #include <fstream>
+#include <functional>
 #include <future>
 #include <map>
+#include <memory>
+#include <initializer_list>
+#include <limits>
+#include <sstream>
+#include <stdexcept>
+#include <string>
+#include <thread>
+#include <unordered_map>
+#include <utility>
+#include <vector>
 
 namespace {
     template <typename Job>

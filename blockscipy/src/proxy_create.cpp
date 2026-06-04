@@ -9,7 +9,12 @@
 
 #include <boost/core/demangle.hpp>
 
+#include <any>
+#include <functional>
 #include <sstream>
+#include <stdexcept>
+#include <string>
+#include <typeinfo>
 
 using namespace blocksci;
 using namespace blocksci::script;

@@ -9,7 +9,12 @@
 #ifndef file_writer_hpp
 #define file_writer_hpp
 
+#include <array>
+#include <cstddef>
+#include <cstdint>
 #include <fstream>
+#include <iterator>
+#include <type_traits>
 
 #include <wjfilesystem/path.h>
 

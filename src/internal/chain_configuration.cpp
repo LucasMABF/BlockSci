@@ -10,6 +10,11 @@
 
 #include <nlohmann/json.hpp>
 
+#include <initializer_list>
+#include <limits>
+#include <string>
+#include <vector>
+
 using json = nlohmann::json;
 
 namespace blocksci {

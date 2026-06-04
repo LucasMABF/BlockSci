@@ -12,6 +12,9 @@
 
 #include <range/v3/view/facade.hpp>
 
+#include <memory>
+#include <utility>
+
 namespace rocksdb {
     class Iterator;
 }

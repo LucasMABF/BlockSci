@@ -11,6 +11,8 @@
 #include <blocksci/blocksci_export.h>
 #include <blocksci/core/bitcoin_uint256.hpp>
 
+#include <cstdint>
+
 namespace blocksci {
     /** Represents raw block data as stored in the chain/blocks.dat file.
      *

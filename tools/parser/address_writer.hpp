@@ -12,6 +12,12 @@
 #include "script_output.hpp"
 #include "script_input.hpp"
 
+#include <cassert>
+#include <cstdint>
+#include <initializer_list>
+#include <limits>
+#include <tuple>
+
 template<typename T>
 struct ScriptFileType;
 

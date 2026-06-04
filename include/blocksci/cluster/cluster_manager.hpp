@@ -14,6 +14,13 @@
 
 #include <blocksci/blocksci_export.h>
 
+#include <cstdint>
+#include <functional>
+#include <memory>
+#include <string>
+#include <unordered_map>
+#include <utility>
+
 namespace blocksci {
     namespace heuristics {
         struct ChangeHeuristic;

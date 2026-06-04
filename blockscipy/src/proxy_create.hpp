@@ -12,6 +12,11 @@
 
 #include <blocksci/scripts/scripts_fwd.hpp>
 
+#include <any>
+#include <functional>
+#include <stdexcept>
+#include <typeinfo>
+
 template <typename T>
 struct SimpleProxyCreator {
 	Proxy<T> operator()() const {

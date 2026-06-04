@@ -19,8 +19,10 @@
 
 #include <wjfilesystem/path.h>
 
+#include <cstdint>
 #include <memory>
 #include <unordered_set>
+#include <utility>
 #include <string>
 #include <vector>
 

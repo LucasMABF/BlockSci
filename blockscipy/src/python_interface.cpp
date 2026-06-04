@@ -39,6 +39,8 @@
 
 #include <pybind11/functional.h>
 
+#include <any>
+
 namespace py = pybind11;
 
 using namespace blocksci;

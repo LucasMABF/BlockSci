@@ -9,6 +9,9 @@
 #include "blocksci_iterator_type.hpp"
 #include "blocksci_range_type.hpp"
 
+#include <any>
+#include <utility>
+
 RawIterator<std::any> GenericIterator::getAllIterator() {
     return mpark::visit([](auto && seq) -> RawIterator<std::any> {
         return ranges::views::transform(std::forward<decltype(seq)>(seq), [](auto && item) -> std::any {

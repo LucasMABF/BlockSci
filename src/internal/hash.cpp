@@ -10,17 +10,46 @@
 
 #include <blocksci/core/bitcoin_uint256.hpp>
 
-#include <openssl/sha.h>
-#include <openssl/ripemd.h>
+#include <cstddef>
+#include <cstdint>
+#include <cstring>
+#include <openssl/evp.h>
+#include <stdexcept>
 
+
+Sha256Stream::Sha256Stream() : ctx(EVP_MD_CTX_new()) {
+    if (ctx == nullptr) {
+        throw std::runtime_error("EVP_MD_CTX_new failed");
+    }
+    if (EVP_DigestInit_ex(ctx, EVP_sha256(), nullptr) != 1) {
+        EVP_MD_CTX_free(ctx);
+        throw std::runtime_error("EVP_DigestInit_ex failed");
+    }
+}
+
+Sha256Stream::~Sha256Stream() {
+    EVP_MD_CTX_free(ctx);
+}
+
+void Sha256Stream::update(const void *data, size_t len) {
+    if (EVP_DigestUpdate(ctx, data, len) != 1) {
+        throw std::runtime_error("EVP_DigestUpdate failed");
+    }
+}
+
+blocksci::uint256 Sha256Stream::finalize() {
+    blocksci::uint256 hash;
+    unsigned int hash_len;
+    if (EVP_DigestFinal_ex(ctx, reinterpret_cast<unsigned char *>(&hash), &hash_len) != 1) {
+        throw std::runtime_error("EVP_DigestFinal_ex failed");
+    }
+    return hash;
+}
 
 blocksci::uint256 sha256(const uint8_t *data, size_t len) {
-    blocksci::uint256 hash;
-    SHA256_CTX sha256;
-    SHA256_Init(&sha256);
-    SHA256_Update(&sha256, data, len);
-    SHA256_Final(reinterpret_cast<unsigned char *>(&hash), &sha256);
-    return hash;
+    Sha256Stream stream;
+    stream.update(data, len);
+    return stream.finalize();
 }
 
 blocksci::uint256 sha256(const unsigned char *begin, const unsigned char *end) {
@@ -41,10 +70,10 @@ blocksci::uint256 doubleSha256(const char *data, uint64_t len) {
 
 blocksci::uint160 ripemd160(const char *data, uint64_t len) {
     blocksci::uint160 hash;
-    RIPEMD160_CTX ripemd;
-    RIPEMD160_Init(&ripemd);
-    RIPEMD160_Update(&ripemd, data, len);
-    RIPEMD160_Final(reinterpret_cast<unsigned char *>(&hash), &ripemd);
+    unsigned int hash_len;
+    if (EVP_Digest(data, len, reinterpret_cast<unsigned char *>(&hash), &hash_len, EVP_ripemd160(), nullptr) != 1) {
+        throw std::runtime_error("EVP_Digest failed");
+    }
     return hash;
 }
 

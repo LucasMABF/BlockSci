@@ -9,6 +9,11 @@
 #include <blocksci/heuristics/tx_identification.hpp>
 #include <blocksci/chain/blockchain.hpp>
 
+#include <cstddef>
+#include <cstdint>
+#include <utility>
+#include <vector>
+
 namespace blocksci { namespace heuristics {
     std::vector<Transaction> getDeanonTxes(BlockRange &chain) {
         return chain.filter([](const Transaction &tx) {

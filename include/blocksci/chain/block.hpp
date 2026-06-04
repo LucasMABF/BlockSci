@@ -13,9 +13,16 @@
 #include <blocksci/chain/transaction_range.hpp>
 #include <blocksci/core/raw_block.hpp>
 
+#include <cstddef>
+#include <cstdint>
+#include <ctime>
+#include <functional>
+#include <ostream>
+#include <string>
 #include <unordered_map>
 #include <chrono>
 #include <vector>
+#include <ostream>
 
 namespace blocksci {
 
@@ -139,5 +146,9 @@ namespace std {
         }
     };
 } // namespace std
+
+namespace ranges {
+    template <> inline constexpr bool enable_view<blocksci::Block> = true;
+} // namespace ranges
 
 #endif /* block_hpp */

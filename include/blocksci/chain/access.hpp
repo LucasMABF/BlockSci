@@ -13,6 +13,10 @@
 #include <blocksci/chain/transaction.hpp>
 #include <blocksci/address/address.hpp>
 
+#include <cstdint>
+#include <string>
+#include <vector>
+
 namespace blocksci {
     struct DataConfiguration;
     class DataAccess;

@@ -12,6 +12,9 @@
 #include <blocksci/core/inout.hpp>
 #include <blocksci/core/typedefs.hpp>
 
+#include <cstddef>
+#include <cstdint>
+
 namespace blocksci {
     /** Represents raw transaction data as stored in the chain/tx_data.dat file.
      *

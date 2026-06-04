@@ -12,7 +12,9 @@
 #include <blocksci/core/typedefs.hpp>
 #include <blocksci/chain/chain_fwd.hpp>
 
+#include <cstddef>
 #include <cstdint>
+#include <utility>
 #include <vector>
 
 namespace blocksci { namespace heuristics {

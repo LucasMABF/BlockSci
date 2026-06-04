@@ -20,8 +20,16 @@
 #include <range/v3/range_for.hpp>
 #include <range/v3/view/transform.hpp>
 #include <range/v3/algorithm/copy.hpp>
+#include <range/v3/range/conversion.hpp>
 
+#include <algorithm>
+#include <array>
 #include <chrono>
+#include <cstddef>
+#include <cstdint>
+#include <string>
+#include <utility>
+#include <vector>
 
 using namespace blocksci;
 namespace py = pybind11;
@@ -70,7 +78,7 @@ convertRandomSizedNumpy(T && t) {
 template <typename T>
 pybind11::array_t<decltype(NumpyConverter{}(std::declval<ranges::range_value_type_t<T>>()))>
 convertInputNumpy(T && t) {
-    auto ret = ranges::to_vector(ranges::views::transform(std::move(t), NumpyConverter{}));
+    auto ret = ranges::to<std::vector>(ranges::views::transform(std::move(t), NumpyConverter{}));
     return pybind11::array_t<typename decltype(ret)::value_type>{ret.size(), ret.data()};
 }
 

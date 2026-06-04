@@ -23,7 +23,18 @@
 
 #include <endian/big_endian.hpp>
 
+#include <array>
+#include <cstddef>
+#include <cstdint>
+#include <cstring>
+#include <memory>
+#include <set>
 #include <sstream>
+#include <stdexcept>
+#include <string>
+#include <unordered_set>
+#include <utility>
+#include <vector>
 
 namespace blocksci {
 

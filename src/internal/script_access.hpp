@@ -18,6 +18,10 @@
 
 #include <wjfilesystem/path.h>
 
+#include <array>
+#include <cstddef>
+#include <cstdint>
+#include <string>
 #include <tuple>
 
 namespace blocksci {

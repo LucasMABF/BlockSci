@@ -12,8 +12,14 @@
 #include <range/v3/view/slice.hpp>
 #include <clipp.h>
 
+#include <algorithm>
+#include <chrono>
+#include <cstdint>
 #include <numeric>
 #include <iostream>
+#include <string>
+#include <utility>
+#include <vector>
 
 using namespace blocksci;
 

@@ -15,6 +15,10 @@
 
 #include <blocksci/core/inout_pointer.hpp>
 
+#include <cstdint>
+#include <initializer_list>
+#include <limits>
+
 /** Map of the current UTXO set of the parser */
 class UTXOState : public SerializableMap<RawOutputPointer, UTXO> {
 public:

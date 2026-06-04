@@ -16,6 +16,9 @@
 #include <blocksci/chain/blockchain.hpp>
 #include <blocksci/chain/block.hpp>
 
+#include <cstdint>
+#include <string>
+
 namespace py = pybind11;
 
 using namespace blocksci;

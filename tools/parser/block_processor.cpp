@@ -28,13 +28,30 @@
 
 #include <boost/lockfree/spsc_queue.hpp>
 
+#include <algorithm>
 #include <atomic>
+#include <cassert>
+#include <cctype>
+#include <chrono>
 #include <cmath>
+#include <cstddef>
+#include <cstdint>
+#include <exception>
 #include <fstream>
+#include <functional>
 #include <future>
 #include <iostream>
 #include <thread>
 #include <list>
+#include <memory>
+#include <set>
+#include <stdexcept>
+#include <sstream>
+#include <string>
+#include <unordered_map>
+#include <unordered_set>
+#include <utility>
+#include <vector>
 
 std::vector<unsigned char> ParseHex(const char* psz);
 

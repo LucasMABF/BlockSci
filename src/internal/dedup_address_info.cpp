@@ -7,6 +7,8 @@
 
 #include "dedup_address_info.hpp"
 
+#include <array>
+#include <cstddef>
 #include <string>
 
 namespace blocksci {

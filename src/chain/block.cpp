@@ -15,7 +15,13 @@
 #include <internal/data_access.hpp>
 #include <internal/mempool_index.hpp>
 
+#include <chrono>
+#include <cstdint>
+#include <ostream>
 #include <sstream>
+#include <string>
+#include <unordered_map>
+#include <vector>
 
 namespace blocksci {
     Block::Block(const RawBlock *rawBlock_, BlockHeight blockNum_, DataAccess &access_) : Block(rawBlock_, Transaction(access_.getChain().getTxData(rawBlock_->firstTxIndex), rawBlock_->firstTxIndex, blockNum_, static_cast<uint32_t>(access_.getChain().txCount()), access_)) {}

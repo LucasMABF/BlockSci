@@ -15,6 +15,8 @@
 #include <range/v3/view/join.hpp>
 #include <range/v3/view/transform.hpp>
 
+#include <utility>
+
 template<typename R>
 Proxy<RawIterator<R>> mapSequence(IteratorProxy &p, Proxy<RawIterator<R>> &p2) {
 	return liftGeneric(p, [p2](auto && seq) -> RawIterator<R> {
